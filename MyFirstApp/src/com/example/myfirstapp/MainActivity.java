@@ -56,4 +56,11 @@ public class MainActivity extends Activity {
         }
 	}
     
+    public void actionBarHide(View view){
+    	if(this.getActionBar().isShowing())
+    		this.getActionBar().hide();
+    	else
+    		this.getActionBar().show();
+    }
+    
 }
