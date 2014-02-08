@@ -47,7 +47,8 @@ public class DisplayMessageActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		// No need to handle the up button once the setDisplay... is set to true !
+		/*switch (item.getItemId()) {
 		case android.R.id.home:
 			// This ID represents the Home or Up button. In the case of this
 			// activity, the Up button is shown. Use NavUtils to allow users
@@ -58,7 +59,7 @@ public class DisplayMessageActivity extends Activity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
-		}
+		}*/
 		return super.onOptionsItemSelected(item);
 	}
 
