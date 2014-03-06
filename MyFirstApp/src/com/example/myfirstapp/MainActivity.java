@@ -63,4 +63,10 @@ public class MainActivity extends Activity {
     		this.getActionBar().show();
     }
     
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Another activity is taking focus (this activity is about to be "paused").
+    }
+    
 }
