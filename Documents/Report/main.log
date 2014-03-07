@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  6 MAR 2014 23:29
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  7 MAR 2014 23:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -423,6 +423,17 @@ Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 \Gin@req@height=\dimen122
 \Gin@req@width=\dimen123
 )
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\@emptytoks=\toks22
+\symAMSa=\mathgroup5
+\symAMSb=\mathgroup6
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
 (./main.aux)
 \openout1 = `main.aux'.
 
@@ -449,12 +460,12 @@ File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
 \scratchbox=\box33
 \nofMPsegments=\count106
 \nofMParguments=\count107
-\everyMPshowfont=\toks22
+\everyMPshowfont=\toks23
 \MPscratchCnt=\count108
 \MPscratchDim=\dimen125
 \MPnumerator=\count109
 \makeMPintoPDFobject=\count110
-\everyMPtoPDFconversion=\toks23
+\everyMPtoPDFconversion=\toks24
 )
 \big@size=\dimen126
 Package caption Info: Begin \AtBeginDocument code.
@@ -558,13 +569,13 @@ LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <12> not available
 LaTeX Warning: File `../Entity Relationship DB diagram.png' not found on input 
 line 103.
 
-<../Entity Relationship DB diagram.png, id=9, 205.76875pt x 409.53pt>
+<../Entity Relationship DB diagram.png, id=9, 205.76875pt x 437.635pt>
 File: ../Entity Relationship DB diagram.png Graphic file (type png)
 
 <use ../Entity Relationship DB diagram.png>
 Package pdftex.def Info: ../Entity Relationship DB diagram.png used on input li
 ne 103.
-(pdftex.def)             Requested size: 144.03712pt x 286.66904pt.
+(pdftex.def)             Requested size: 144.03712pt x 306.3424pt.
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <10> not available
 (Font)              Font shape `T1/ppl/b/n' tried instead on input line 110.
 LaTeX Font Info:    Try loading font information for OMS+ppl on input line 111.
@@ -575,13 +586,55 @@ File: omsppl.fd
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 111.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 112.
+
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/ot1ppl.fd
+File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
+)
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 112
+.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/omlzplm.fd
+File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
+)
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 112
+.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/omszplm.fd
+File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
+)
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 112
+.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/omxzplm.fd
+File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
+)
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 112
+.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/psnfss/ot1zplm.fd
+File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
+)
+LaTeX Font Info:    Font shape `U/msa/m/n' will be
+(Font)              scaled to size 10.42007pt on input line 112.
+LaTeX Font Info:    Font shape `U/msa/m/n' will be
+(Font)              scaled to size 7.91925pt on input line 112.
+LaTeX Font Info:    Font shape `U/msa/m/n' will be
+(Font)              scaled to size 6.25204pt on input line 112.
+LaTeX Font Info:    Font shape `U/msb/m/n' will be
+(Font)              scaled to size 10.42007pt on input line 112.
+LaTeX Font Info:    Font shape `U/msb/m/n' will be
+(Font)              scaled to size 7.91925pt on input line 112.
+LaTeX Font Info:    Font shape `U/msb/m/n' will be
+(Font)              scaled to size 6.25204pt on input line 112.
  [2 <../Entity Relationship DB diagram.png>] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 4345 strings out of 493633
- 61362 string characters out of 3143378
- 137332 words of memory out of 3000000
- 7575 multiletter control sequences out of 15000+200000
- 21357 words of font info for 36 fonts, out of 3000000 for 9000
+ 4696 strings out of 493633
+ 65625 string characters out of 3143378
+ 138830 words of memory out of 3000000
+ 7895 multiletter control sequences out of 15000+200000
+ 28749 words of font info for 59 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
  37i,7n,38p,242b,299s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/
@@ -590,7 +643,7 @@ Here is how much of TeX's memory you used:
 fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2011/texmf-dist/fonts/t
 ype1/urw/palatino/uplr8a.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/ur
 w/palatino/uplri8a.pfb>
-Output written on main.pdf (2 pages, 68798 bytes).
+Output written on main.pdf (2 pages, 72840 bytes).
 PDF statistics:
  31 PDF objects out of 1000 (max. 8388607)
  20 compressed objects within 1 object stream

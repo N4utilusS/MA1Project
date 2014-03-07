@@ -50,7 +50,7 @@ footnotesep=50mm
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{color}
-
+\usepackage{amssymb}
 
 
 \newcommand*{\course}{\fbox{PROJ-H-400}} % Generic publisher logo
@@ -109,6 +109,13 @@ footnotesep=50mm
 
 \begin{itemize}
 	\item If the type is "Champagne", then the Year attribute is not mandatory.
+	\item The AddDate must be $\leq$ the current date.
+	\item Id, Code, Quantity, Vintage, Apogee are a natural numbers.
+	\item Price is a positive real number.
+	\item Colour is a natural number in $\{ 0, 1, 2\}$.
+	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
+	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
+	\item Mark is a natural number in $\{0, 1, 2, 3, 4, 5\}$.
 \end{itemize}
 
 \subsection{The Relational Model}
