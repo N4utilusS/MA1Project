@@ -116,9 +116,37 @@ footnotesep=50mm
 	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
 	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
 	\item Mark is a natural number in $\{0, 1, 2, 3, 4, 5\}$.
+	\item Vintage is mandatory if the Effervescence attribute is set to "None".
 \end{itemize}
 
 \subsection{The Relational Model}
+
+The translation of the ENR into the relational model:
+
+\begin{description}
+	\item[Bottle](\underline{Id}, Code, Name, Colour, Sugar, Effervescence, Appellation, Region, Vintage, Quantity, AddDate, \textit{Apogee}, \textit{Price}, \textit{Location}, \textit{Mark}, \textit{Image}, \textit{Note})
+	
+	\item[Variety](\underline{Id}, \underline{Name})
+	
+	\item[BottleVarieties](\underline{IdBottle, IdVariety})\\ \\
+	\emph{BottleVarieties.IdBottle} foreign key to \emph{Bottle.Id}\\
+	\emph{BottleVarieties.IdVariety} foreign key to \emph{Variety.Id}
+
+\end{description}
+
+\paragraph{Constraints}
+
+\begin{itemize}
+	\item If the type is "Champagne", then the Year attribute is not mandatory.
+	\item The AddDate must be $\leq$ the current date.
+	\item Id, Code, Quantity, Vintage, Apogee are a natural numbers.
+	\item Price is a positive real number.
+	\item Colour is a natural number in $\{ 0, 1, 2\}$.
+	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
+	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
+	\item Mark is a natural number in $\{0, 1, 2, 3, 4, 5\}$.
+	\item Vintage is mandatory if the Effervescence attribute is set to "None".
+\end{itemize}
 
 \subsection{Normalisation}
 
