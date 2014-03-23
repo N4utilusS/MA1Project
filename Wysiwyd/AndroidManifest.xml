@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="be.n4utiluss.wysiwyd"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="be.n4utiluss.wysiwyd.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="be.n4utiluss.wysiwyd.ScanChoice"
+            android:label="@string/title_activity_scan_choice"
+            android:parentActivityName="be.n4utiluss.wysiwyd.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.n4utiluss.wysiwyd.MainActivity" />
+        </activity>
+        <activity
+            android:name="be.n4utiluss.wysiwyd.BottleListActivity"
+            android:label="@string/title_bottle_list"
+            android:parentActivityName="be.n4utiluss.wysiwyd.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.n4utiluss.wysiwyd.MainActivity" />
+        </activity>
+        <activity
+            android:name="be.n4utiluss.wysiwyd.BottleDetailActivity"
+            android:label="@string/title_bottle_detail"
+            android:parentActivityName="be.n4utiluss.wysiwyd.BottleListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.n4utiluss.wysiwyd.BottleListActivity" />
+        </activity>
+        <activity
+            android:name="be.n4utiluss.wysiwyd.ResultsActivity"
+            android:label="@string/title_activity_results"
+            android:parentActivityName="be.n4utiluss.wysiwyd.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.n4utiluss.wysiwyd.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

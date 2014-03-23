@@ -1,5 +1,7 @@
-*.class
-MyFirstApp/bin/*
+.class
+MyFirstApp/bin/
+Wysiwyd/bin/
+bin
 ######################
 # OSX
 ######################
