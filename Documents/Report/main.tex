@@ -116,7 +116,8 @@ footnotesep=50mm
 	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
 	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
 	\item Mark is a natural number in $\{1, 2, 3, 4, 5\}$.
-	\item Vintage is mandatory if the Effervescence attribute is set to "None".
+	\item Vintage is mandatory if the Effervescence attribute is set to "0".
+	
 \end{itemize}
 
 \subsection{The Relational Model}
@@ -128,8 +129,8 @@ The translation of the ENR into the relational model:
 	
 	\item[Variety](\underline{Id}, \underline{Name})
 	
-	\item[BottleVarieties](\underline{IdBottle, IdVariety})\\ \\
-	\emph{BottleVarieties.IdBottle} foreign key to \emph{Bottle.Id}\\
+	\item[BottleVarieties](\underline{Bottle Id, Variety Id})\\ \\
+	\emph{BottleVarieties.Bottle Id} foreign key to \emph{Bottle.Id}\\
 	\emph{BottleVarieties.IdVariety} foreign key to \emph{Variety.Id}
 
 \end{description}
@@ -145,9 +146,16 @@ The translation of the ENR into the relational model:
 	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
 	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
 	\item Mark is a natural number in $\{1, 2, 3, 4, 5\}$.
-	\item Vintage is mandatory if the Effervescence attribute is set to "None".
+	\item Vintage is mandatory if the Effervescence attribute is set to "0".
+	\item For each Bottle Id in BottleVariety, there exists an Id in Bottle.
+	\item For each Variety Id in BottleVariety, there exists an Id in Variety.
 \end{itemize}
 
+\paragraph{Remark}
+Number are given to colours, varieties, etc. to allow the use of different string resources for different languages.
+
 \subsection{Normalisation}
+
+No normalisation was necessary.
 
 \end{document}
