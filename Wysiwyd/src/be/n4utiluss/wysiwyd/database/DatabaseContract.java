@@ -67,7 +67,7 @@ public final class DatabaseContract {
 	 * @author anthonydebruyn
 	 *
 	 */
-	public static abstract class Variety implements BaseColumns {
+	public static abstract class VarietyTable implements BaseColumns {
 		public static final String TABLE_NAME = "Variety";
 		public static final String COLUMN_NAME_NAME = "Name";
 		
@@ -85,7 +85,7 @@ public final class DatabaseContract {
 	 * @author anthonydebruyn
 	 *
 	 */
-	public static abstract class BottleVariety implements BaseColumns {
+	public static abstract class BottleVarietyTable implements BaseColumns {
 		public static final String TABLE_NAME = "BottleVariety";
 		public static final String COLUMN_NAME_BOTTLE_ID = "Bottle Id";
 		public static final String COLUMN_NAME_VARIETY_ID = "Variety Id";

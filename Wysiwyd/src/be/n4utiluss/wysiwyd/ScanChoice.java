@@ -7,6 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import be.n4utiluss.wysiwyd.DAO.Bottle;
+import be.n4utiluss.wysiwyd.DAO.DAO;
+import be.n4utiluss.wysiwyd.DAO.DAOFactory;
+import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 
@@ -48,8 +52,13 @@ public class ScanChoice extends Activity {
 		  if (scanResult != null) {
 		    TextView tv = (TextView) this.findViewById(R.id.testText);
 		    tv.setText(scanResult.toString());
+		    
+		    // Ask the database for the bottles corresponding to the code.
+		    // Do a manager for the db, so all connections take place in one single spot (singleton)?
+
+		    	
+		    DAOFactory dFactory = new DAOFactory(null);
 		  }
 		  // else continue with any other code you need in the method
-		  
 		}
 }

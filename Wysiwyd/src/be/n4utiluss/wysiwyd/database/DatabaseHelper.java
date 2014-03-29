@@ -13,15 +13,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DatabaseContract.BottleTable.CREATE_TABLE);
-		db.execSQL(DatabaseContract.Variety.CREATE_TABLE);
-		db.execSQL(DatabaseContract.BottleVariety.CREATE_TABLE);	
+		db.execSQL(DatabaseContract.VarietyTable.CREATE_TABLE);
+		db.execSQL(DatabaseContract.BottleVarietyTable.CREATE_TABLE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL(DatabaseContract.BottleTable.DELETE_TABLE);
-		db.execSQL(DatabaseContract.Variety.DELETE_TABLE);
-		db.execSQL(DatabaseContract.BottleVariety.DELETE_TABLE);
+		db.execSQL(DatabaseContract.VarietyTable.DELETE_TABLE);
+		db.execSQL(DatabaseContract.BottleVarietyTable.DELETE_TABLE);
 		onCreate(db);
 	}
 
