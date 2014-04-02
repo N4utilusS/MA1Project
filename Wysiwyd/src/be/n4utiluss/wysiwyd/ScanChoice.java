@@ -2,6 +2,8 @@ package be.n4utiluss.wysiwyd;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,11 +12,13 @@ import android.widget.TextView;
 import be.n4utiluss.wysiwyd.DAO.Bottle;
 import be.n4utiluss.wysiwyd.DAO.DAO;
 import be.n4utiluss.wysiwyd.DAO.DAOFactory;
-import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import be.n4utiluss.wysiwyd.DAO.requests.RequestBottlesByCode;
+import be.n4utiluss.wysiwyd.database.DatabaseManager;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 
 public class ScanChoice extends Activity {
+	public final static String BOTTLE_CODE = "be.n4utiluss.wysiwyd.BOTTLE_CODE";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +57,15 @@ public class ScanChoice extends Activity {
 		    TextView tv = (TextView) this.findViewById(R.id.testText);
 		    tv.setText(scanResult.toString());
 		    
-		    // Ask the database for the bottles corresponding to the code.
-		    // Do a manager for the db, so all connections take place in one single spot (singleton)?
-
+		    
+		    
+		    // Check if the cursor is empty, which means the user is adding a bottle.
+		    if (cursor.isAfterLast()){
 		    	
-		    DAOFactory dFactory = new DAOFactory(null);
+		    } else {	// If not empty, list the results.
+		    	Intent listIntent = new Intent(this, ResultsActivity.class);
+		    	listIntent.putExtra(BOTTLE_CODE, 1l);
+		    }
 		  }
 		  // else continue with any other code you need in the method
 		}

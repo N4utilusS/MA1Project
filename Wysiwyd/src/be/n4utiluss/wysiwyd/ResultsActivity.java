@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ResultsActivity extends Activity {
+public class ResultsActivity extends Activity implements BottlesListFragment.OnBottleSelectedListener{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class ResultsActivity extends Activity {
 				getFragmentManager().beginTransaction().add(R.id.results_list_container, bottlesListFragment).commit();
 				
 			}
+			
 			
 		}
 	}
@@ -44,6 +45,12 @@ public class ResultsActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBottleSelected(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

@@ -27,7 +27,7 @@ public final class R {
         public static final int search_icon=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000b;
+        public static final int action_settings=0x7f08000f;
         public static final int bottle_detail_container=0x7f080000;
         public static final int bottle_list=0x7f080001;
         public static final int buttonNFC=0x7f080009;
@@ -35,6 +35,10 @@ public final class R {
         public static final int container=0x7f080007;
         public static final int imageButtonScan=0x7f080002;
         public static final int imageButtonSearch=0x7f080003;
+        public static final int list_element_bottle_mark=0x7f08000d;
+        public static final int list_element_bottle_name=0x7f08000b;
+        public static final int list_element_bottle_quantity=0x7f08000e;
+        public static final int list_element_bottle_vintage=0x7f08000c;
         public static final int results_details_container=0x7f080006;
         public static final int results_list_container=0x7f080005;
         public static final int results_main_container=0x7f080004;
@@ -62,6 +66,7 @@ public final class R {
         public static final int activity_main=0x7f030003;
         public static final int activity_results=0x7f030004;
         public static final int activity_scan_choice=0x7f030005;
+        public static final int list_element=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f070000;
