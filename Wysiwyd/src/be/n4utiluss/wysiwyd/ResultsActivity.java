@@ -7,6 +7,8 @@ import android.view.MenuItem;
 
 public class ResultsActivity extends Activity implements BottlesListFragment.OnBottleSelectedListener{
 
+	private boolean twoPane = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,7 +22,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.OnB
 				getFragmentManager().beginTransaction().add(R.id.results_main_container, bottlesListFragment).commit();
 			} else {
 				getFragmentManager().beginTransaction().add(R.id.results_list_container, bottlesListFragment).commit();
-				
+				this.twoPane = true;
 			}
 			
 			
@@ -49,8 +51,11 @@ public class ResultsActivity extends Activity implements BottlesListFragment.OnB
 
 	@Override
 	public void onBottleSelected(int id) {
-		// TODO Auto-generated method stub
-		
+		if (this.twoPane) {
+			
+		} else {
+			
+		}
 	}
 
 	

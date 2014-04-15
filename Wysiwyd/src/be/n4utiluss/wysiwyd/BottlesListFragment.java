@@ -156,6 +156,11 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 *
 	 */
 	public interface OnBottleSelectedListener {
+		/**
+		 * Called on the listener when a bottle is selected,
+		 * passing the id of the bottle.
+		 * @param id The id of the bottle.
+		 */
 		public void onBottleSelected(int id);
 	}
 }
