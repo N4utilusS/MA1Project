@@ -6,6 +6,8 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ListView;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
@@ -35,10 +37,25 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setHasOptionsMenu(true);	// So the onCreateOptionsMenu method is called, and the actions are set.
+		
 		// Find the bottles:
 		this.bottleCursorAdapter = new BottleCursorAdapter(this.getActivity(), null, 0);
 	    this.setListAdapter(bottleCursorAdapter);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
 	    this.getLoaderManager().initLoader(0, null, this);
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		// Inflate the menu; this adds items to the action bar if it is present.
+		inflater.inflate(R.menu.list, menu);
 	}
 
 
@@ -50,7 +67,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 
 		SQLiteCursorLoader cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 				new DatabaseHelper(this.getActivity()), 
-				"SELECT " + BottleTable._ID + " " + BottleTable.COLUMN_NAME_NAME + " " + BottleTable.COLUMN_NAME_VINTAGE + " " + BottleTable.COLUMN_NAME_MARK + " " + BottleTable.COLUMN_NAME_QUANTITY +
+				"SELECT " + BottleTable._ID + ", " + BottleTable.COLUMN_NAME_NAME + ", " + BottleTable.COLUMN_NAME_VINTAGE + ", " + BottleTable.COLUMN_NAME_MARK + ", " + BottleTable.COLUMN_NAME_QUANTITY +
 				" FROM " + BottleTable.TABLE_NAME +
 				" WHERE " + BottleTable.COLUMN_NAME_CODE + " = ?", 
 				new String[] { codeString });
@@ -141,10 +158,8 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		Cursor cursor = this.bottleCursorAdapter.getCursor();
-		cursor.moveToPosition(position);
-		int BottleId = cursor.getInt(cursor.getColumnIndex(BottleTable._ID));
-		this.bottleListener.onBottleSelected(BottleId);
+		
+		this.bottleListener.onBottleSelected(id);
 	}
 	
 	
@@ -161,6 +176,6 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		 * passing the id of the bottle.
 		 * @param id The id of the bottle.
 		 */
-		public void onBottleSelected(int id);
+		public void onBottleSelected(long id);
 	}
 }

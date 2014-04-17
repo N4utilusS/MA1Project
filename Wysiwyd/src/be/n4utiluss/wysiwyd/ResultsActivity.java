@@ -1,6 +1,7 @@
 package be.n4utiluss.wysiwyd;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,18 +44,45 @@ public class ResultsActivity extends Activity implements BottlesListFragment.OnB
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		
+		switch (id) {
+		case R.id.action_new:
+			showNewBottleFragment();
+			break;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onBottleSelected(int id) {
+	private void showNewBottleFragment() {
+		NewBottleFragment fragment = new NewBottleFragment();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		
 		if (this.twoPane) {
-			
+			transaction.replace(R.id.results_details_container, fragment);
 		} else {
-			
+			transaction.replace(R.id.results_main_container, fragment);
+		}
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+
+	@Override
+	public void onBottleSelected(long id) {
+		Bundle arguments = new Bundle();
+		arguments.putLong(BottleDetailsFragment.BOTTLE_ID, id);
+		BottleDetailsFragment fragment = new BottleDetailsFragment();
+		fragment.setArguments(arguments);
+		
+		
+		if (this.twoPane) {
+			getFragmentManager().beginTransaction()
+			.replace(R.id.results_details_container, fragment).commit();
+		} else {
+			getFragmentManager().beginTransaction()
+			.replace(R.id.results_main_container, fragment).commit();
 		}
 	}
 

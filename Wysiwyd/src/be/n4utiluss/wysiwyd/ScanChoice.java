@@ -36,37 +36,29 @@ public class ScanChoice extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
 	public void QRCode(View view) {
-		IntentIntegrator integrator = new IntentIntegrator(this);
-		integrator.initiateScan();
+		//IntentIntegrator integrator = new IntentIntegrator(this);
+		//integrator.initiateScan();
+		
+		// TODO Remove:
+		Intent listIntent = new Intent(this, ResultsActivity.class);
+		listIntent.putExtra(BOTTLE_CODE, 1l);
+		this.startActivity(listIntent);
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		  if (scanResult != null) {
-		    TextView tv = (TextView) this.findViewById(R.id.testText);
-		    tv.setText(scanResult.toString());
-		    
-		    
-		    
-		    // Check if the cursor is empty, which means the user is adding a bottle.
-		    if (cursor.isAfterLast()){
-		    	
-		    } else {	// If not empty, list the results.
-		    	Intent listIntent = new Intent(this, ResultsActivity.class);
-		    	listIntent.putExtra(BOTTLE_CODE, 1l);
-		    }
-		  }
-		  // else continue with any other code you need in the method
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		if (scanResult != null) {
+			TextView tv = (TextView) this.findViewById(R.id.testText);
+			tv.setText(scanResult.toString());
+
+			Intent listIntent = new Intent(this, ResultsActivity.class);
+			listIntent.putExtra(BOTTLE_CODE, 1l);
+			this.startActivity(listIntent);
 		}
+	}
 }

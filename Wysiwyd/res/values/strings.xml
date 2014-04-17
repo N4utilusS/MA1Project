@@ -10,5 +10,9 @@
     <string name="title_bottle_list">Bottles</string>
     <string name="title_bottle_detail">Bottle Detail</string>
     <string name="title_activity_results">ResultsActivity</string>
-
+    <string name="action_new">New Bottle</string>
+    <string name="action_add_new_bottle">Done!</string>
+    <string name="action_edit">Edit</string>
+    
+    
 </resources>
