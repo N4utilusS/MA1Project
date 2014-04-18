@@ -38,6 +38,8 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		
 		View rootView = inflater.inflate(R.layout.fragment_bottle_details, container, false);
 
 		return rootView;
@@ -45,7 +47,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
+		super.onCreateOptionsMenu(menu, inflater);
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.details, menu);
 	}

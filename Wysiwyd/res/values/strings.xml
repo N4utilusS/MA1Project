@@ -7,11 +7,9 @@
     <string name="title_activity_scan_choice">Scan Type</string>
     <string name="qr_code">QR Code</string>
     <string name="nfc_code">NFC Code</string>
-    <string name="title_bottle_list">Bottles</string>
-    <string name="title_bottle_detail">Bottle Detail</string>
-    <string name="title_activity_results">ResultsActivity</string>
+    <string name="title_activity_results">Matches</string>
     <string name="action_new">New Bottle</string>
-    <string name="action_add_new_bottle">Done!</string>
+    <string name="action_add_new_bottle">Done</string>
     <string name="action_edit">Edit</string>
     
     

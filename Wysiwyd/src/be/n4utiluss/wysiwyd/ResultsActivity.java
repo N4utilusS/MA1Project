@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ResultsActivity extends Activity implements BottlesListFragment.OnBottleSelectedListener{
+public class ResultsActivity extends Activity implements BottlesListFragment.BottlesListFragmentCallbacks,
+														NewBottleFragment.NewBottleFragmentCallbacks{
 
 	private boolean twoPane = false;
+	private BottlesListFragment bottlesListFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -16,16 +18,22 @@ public class ResultsActivity extends Activity implements BottlesListFragment.OnB
 		setContentView(R.layout.activity_results);
 
 		if (savedInstanceState == null) {
-			BottlesListFragment bottlesListFragment = new BottlesListFragment();
+			bottlesListFragment = new BottlesListFragment();
 			bottlesListFragment.setArguments(getIntent().getExtras());
+			Bundle arguments = getIntent().getExtras();
 			
 			if (findViewById(R.id.results_main_container) != null) {
+				arguments.putBoolean(BottlesListFragment.ACTIVATE_ON_ITEM_CLICK, false);
+				bottlesListFragment.setArguments(arguments);
+
 				getFragmentManager().beginTransaction().add(R.id.results_main_container, bottlesListFragment).commit();
 			} else {
+				arguments.putBoolean(BottlesListFragment.ACTIVATE_ON_ITEM_CLICK, true);
+				bottlesListFragment.setArguments(arguments);
+
 				getFragmentManager().beginTransaction().add(R.id.results_list_container, bottlesListFragment).commit();
 				this.twoPane = true;
 			}
-			
 			
 		}
 	}
@@ -36,24 +44,6 @@ public class ResultsActivity extends Activity implements BottlesListFragment.OnB
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.results, menu);
 		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		
-		switch (id) {
-		case R.id.action_new:
-			showNewBottleFragment();
-			break;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		
-		return super.onOptionsItemSelected(item);
 	}
 
 	private void showNewBottleFragment() {
@@ -84,6 +74,16 @@ public class ResultsActivity extends Activity implements BottlesListFragment.OnB
 			getFragmentManager().beginTransaction()
 			.replace(R.id.results_main_container, fragment).commit();
 		}
+	}
+
+	@Override
+	public void onNewBottleAdded() {
+		this.bottlesListFragment.refreshList();
+	}
+
+	@Override
+	public void onNewBottleButtonPushed() {
+		this.showNewBottleFragment();
 	}
 
 	

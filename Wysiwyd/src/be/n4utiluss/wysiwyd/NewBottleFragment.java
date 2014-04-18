@@ -1,12 +1,12 @@
 package be.n4utiluss.wysiwyd;
 
-import be.n4utiluss.wysiwyd.database.DatabaseContract;
-import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,8 +16,12 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import be.n4utiluss.wysiwyd.database.DatabaseContract;
+import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 
 public class NewBottleFragment extends Fragment {
+
+	private NewBottleFragmentCallbacks linkedActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,18 @@ public class NewBottleFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_new_bottle, container, false);
 
 		return rootView;
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof NewBottleFragmentCallbacks)) {
+			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+		}
+
+		this.linkedActivity = (NewBottleFragmentCallbacks) activity;
 	}
 	
 	@Override
@@ -48,14 +64,15 @@ public class NewBottleFragment extends Fragment {
 		switch (id) {
 		case R.id.action_add_new_bottle:
 			addBottle();
-			showBottlesListFragment();
+			dismissFragment();
+			this.linkedActivity.onNewBottleAdded();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	private void showBottlesListFragment() {
+	private void dismissFragment() {
 		this.getFragmentManager().popBackStack();
 	}
 
@@ -201,4 +218,17 @@ public class NewBottleFragment extends Fragment {
 		
 		db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
 	}	
+
+	/**
+	 * Interface that must be implemented by the linked activity, to be able to communicate with this fragment.
+	 * @author anthonydebruyn
+	 *
+	 */
+	public interface NewBottleFragmentCallbacks {
+		
+		/**
+		 * Called when the new bottle has been added in the db.
+		 */
+		public void onNewBottleAdded();
+	}
 }

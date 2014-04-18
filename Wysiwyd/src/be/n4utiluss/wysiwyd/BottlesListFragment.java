@@ -6,8 +6,10 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
@@ -21,7 +23,9 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
 	 */
-	private static final String STATE_ACTIVATED_POSITION = "activated_position";
+	private static final String STATE_ACTIVATED_POSITION = "be.n4utiluss.wysiwyd.Activated_Position";
+	public final static String ACTIVATE_ON_ITEM_CLICK = "be.n4utiluss.wysiwyd.Activate_On_Item_Clicked";
+
 	private BottleCursorAdapter bottleCursorAdapter;
 	/**
 	 * The current activated item position. Only used on tablets.
@@ -31,7 +35,8 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
 	 */
-	private OnBottleSelectedListener bottleListener;
+	private BottlesListFragmentCallbacks bottleListener;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,13 +47,13 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		// Find the bottles:
 		this.bottleCursorAdapter = new BottleCursorAdapter(this.getActivity(), null, 0);
 	    this.setListAdapter(bottleCursorAdapter);
+	    this.getLoaderManager().initLoader(0, null, this);
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
 		
-	    this.getLoaderManager().initLoader(0, null, this);
 	}
 	
 	@Override
@@ -58,6 +63,22 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		inflater.inflate(R.menu.list, menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		
+		switch (id) {
+		case R.id.action_new:
+			this.bottleListener.onNewBottleButtonPushed();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		
+	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
@@ -103,6 +124,13 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		// Set the activation mode/choice mode.
+		Bundle arguments = this.getArguments();
+		boolean activate = false;
+		if (arguments.containsKey(ACTIVATE_ON_ITEM_CLICK))
+			activate = arguments.getBoolean(ACTIVATE_ON_ITEM_CLICK);
+		this.setActivateOnItemClick(activate);
+		
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
@@ -127,7 +155,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		// When setting CHOICE_MODE_SINGLE, ListView will automatically
 		// give items the 'activated' state when touched.
 		getListView().setChoiceMode(
-				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
+				activateOnItemClick  ? ListView.CHOICE_MODE_SINGLE
 									: ListView.CHOICE_MODE_NONE);
 	}
 	
@@ -145,11 +173,11 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		super.onAttach(activity);
 
 		// Activities containing this fragment must implement its callbacks.
-		if (!(activity instanceof OnBottleSelectedListener)) {
+		if (!(activity instanceof BottlesListFragmentCallbacks)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
 		}
 
-		this.bottleListener = (OnBottleSelectedListener) activity;
+		this.bottleListener = (BottlesListFragmentCallbacks) activity;
 	}
 	
 	@Override
@@ -162,6 +190,13 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		this.bottleListener.onBottleSelected(id);
 	}
 	
+	/**
+	 * Relaunches the cursor loader to refresh the data.
+	 */
+	public void refreshList(){
+		this.getLoaderManager().restartLoader(0, null, this);
+	}
+	
 	
 	
 	/**
@@ -170,12 +205,16 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 * @author anthonydebruyn
 	 *
 	 */
-	public interface OnBottleSelectedListener {
+	public interface BottlesListFragmentCallbacks {
 		/**
 		 * Called on the listener when a bottle is selected,
 		 * passing the id of the bottle.
 		 * @param id The id of the bottle.
 		 */
 		public void onBottleSelected(long id);
+		/**
+		 * Called when the new bottle button is pushed.
+		 */
+		public void onNewBottleButtonPushed();
 	}
 }

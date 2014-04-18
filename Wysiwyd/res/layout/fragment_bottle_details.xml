@@ -21,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="0"
-                android:text="Appellation"
                 android:textAppearance="@style/TextSmall" />
 
             <TextView
@@ -30,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="1"
-                android:text="Name"
                 android:textAppearance="@style/TextName" />
 
             <TextView
@@ -39,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="2"
-                android:text="1992"
                 android:textAppearance="@style/TextSmall" />
 
             <TextView
@@ -48,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="3"
-                android:text="Disneyland"
                 android:textAppearance="@style/TextSmall" />
 
             
@@ -65,7 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="0"
-                android:text="4 bottles"
                 android:textAppearance="@style/TextSmall" />
             
             <TextView
@@ -74,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_row="0"
-                android:text="21 €"
                 android:layout_gravity="right"
                 android:textAppearance="@style/TextSmall" />
             
@@ -108,7 +102,6 @@
                 android:id="@+id/details_colour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Red coloured"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextSmall" />
             
@@ -116,7 +109,6 @@
                 android:id="@+id/details_sugar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sweet"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextSmall" />
@@ -125,7 +117,6 @@
                 android:id="@+id/details_effervescence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sparkling"
                 android:layout_weight="1"
                 android:layout_gravity="right"
                 android:textAppearance="@style/TextSmall" />
@@ -154,7 +145,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="0"
-                android:text="4/10/92"
                 android:textAppearance="@style/TextSmall" />
             
             <TextView
@@ -163,7 +153,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_row="0"
-                android:text="4/10/14"
                 android:layout_gravity="right"
                 android:textAppearance="@style/TextSmall" />
             
@@ -178,7 +167,6 @@
                 android:id="@+id/details_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="C'est dans la zone 51."
                 android:textAppearance="@style/TextSmall" />
             
         </GridLayout>
@@ -192,7 +180,6 @@
                 android:id="@+id/details_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello Wine!"
                 android:textAppearance="@style/TextSmall" />
             
         </GridLayout>
@@ -207,7 +194,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="47"
                 android:textAppearance="@style/TextSmall" />
             
         </GridLayout>
