@@ -36,6 +36,8 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 * clicks.
 	 */
 	private BottlesListFragmentCallbacks bottleListener;
+	private Menu menu;
+	private boolean actionNewActivated = true;
 	
 	
 	@Override
@@ -51,16 +53,16 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	}
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		
-	}
-	
-	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.list, menu);
+		
+		// Save the menu object to use it later.
+		this.menu = menu;
+		
+		// Set the new bottle button state.
+		setNewBottleButtonActivated(this.actionNewActivated);
 	}
 
 	@Override
@@ -100,7 +102,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		// Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
-        this.bottleCursorAdapter.swapCursor(cursor);
+        this.bottleCursorAdapter.changeCursor(cursor);
 
         // The list should now be shown.
         if (isResumed()) {
@@ -117,7 +119,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		// This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
-		this.bottleCursorAdapter.swapCursor(null);
+		this.bottleCursorAdapter.changeCursor(null);
 	}
 	
 	@Override
@@ -196,8 +198,18 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	public void refreshList(){
 		this.getLoaderManager().restartLoader(0, null, this);
 	}
-	
-	
+
+	/**
+	 * Sets the state of the "New Bottle" button.
+	 * @param status Hide it and disable it when set to false.
+	 */
+	public void setNewBottleButtonActivated(boolean status) {
+		if (this.menu != null){
+			this.menu.findItem(R.id.action_new).setVisible(status);
+			this.menu.findItem(R.id.action_new).setEnabled(status);
+		}
+		this.actionNewActivated = status;
+	}
 	
 	/**
 	 * The interface that must be implemented by the connected activity, 
@@ -213,7 +225,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		 */
 		public void onBottleSelected(long id);
 		/**
-		 * Called when the new bottle button is pushed.
+		 * Called after the new bottle button is pushed.
 		 */
 		public void onNewBottleButtonPushed();
 	}

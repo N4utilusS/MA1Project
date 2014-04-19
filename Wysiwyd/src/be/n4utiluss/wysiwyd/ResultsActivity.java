@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 public class ResultsActivity extends Activity implements BottlesListFragment.BottlesListFragmentCallbacks,
 														NewBottleFragment.NewBottleFragmentCallbacks{
@@ -84,6 +83,12 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	@Override
 	public void onNewBottleButtonPushed() {
 		this.showNewBottleFragment();
+		this.bottlesListFragment.setNewBottleButtonActivated(false);
+	}
+
+	@Override
+	public void onNewBottleFragmentDismissed() {
+		this.bottlesListFragment.setNewBottleButtonActivated(true);
 	}
 
 	

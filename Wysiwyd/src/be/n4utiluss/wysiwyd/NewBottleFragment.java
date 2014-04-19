@@ -55,7 +55,7 @@ public class NewBottleFragment extends Fragment {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.new_bottle, menu);
 	}
-	
+		
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
@@ -74,6 +74,14 @@ public class NewBottleFragment extends Fragment {
 
 	private void dismissFragment() {
 		this.getFragmentManager().popBackStack();
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		
+		// We notify the activity that this fragment is being stopped with a callback method.
+		this.linkedActivity.onNewBottleFragmentDismissed();
 	}
 
 	private void addBottle() {
@@ -218,7 +226,7 @@ public class NewBottleFragment extends Fragment {
 		
 		db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
 	}	
-
+	
 	/**
 	 * Interface that must be implemented by the linked activity, to be able to communicate with this fragment.
 	 * @author anthonydebruyn
@@ -230,5 +238,10 @@ public class NewBottleFragment extends Fragment {
 		 * Called when the new bottle has been added in the db.
 		 */
 		public void onNewBottleAdded();
+		/**
+		 * Called when the new bottle fragment is being stopped.
+		 * The call occurs during the onStop() method of this fragment.
+		 */
+		public void onNewBottleFragmentDismissed();
 	}
 }

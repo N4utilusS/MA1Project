@@ -31,9 +31,8 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		super.onCreate(savedInstanceState);
 		
 		setHasOptionsMenu(true);	// So the onCreateOptionsMenu method is called, and the actions are set.
-
-		this.getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
-		this.getLoaderManager().initLoader(VARIETY_LOADER, null, this);
+		
+		
 	}
 	
 	@Override
@@ -42,6 +41,12 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		
 		View rootView = inflater.inflate(R.layout.fragment_bottle_details, container, false);
 
+		// Restart the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
+		// after we popped the previous state from the stack.
+		
+		getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
+		getLoaderManager().initLoader(VARIETY_LOADER, null, this);
+		
 		return rootView;
 	}
 	
@@ -90,9 +95,8 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 		switch (loader.getId()){
 		case MAIN_INFO_LOADER:
-			if (cursor.moveToNext()) {
-				if (this.getView() == null)
-					Log.e("Details", "Null POINTER!!!!");
+			if (cursor.moveToFirst()) {
+				
 				TextView appellation = (TextView) getView().findViewById(R.id.details_appellation);
 				TextView name = (TextView) getView().findViewById(R.id.details_name);
 				TextView vintage = (TextView) getView().findViewById(R.id.details_vintage);
@@ -131,6 +135,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			if (this.getView() == null)
 				Log.e("Details", "Null POINTER!!!!");
 			LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
+			cursor.moveToPosition(-1);
 			while (cursor.moveToNext()) {
 				TextView tv = new TextView(getActivity());
 				tv.setText(cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME)));
