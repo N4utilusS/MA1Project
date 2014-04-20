@@ -22,7 +22,18 @@
     <string name="details_section_location">Find me there</string>
     <string name="details_section_note">About</string>
     <string name="details_section_code">Scan Code</string>
+    <string name="details_section_appellation">Appellation</string>
+    <string name="details_section_name">Name</string>
+    <string name="details_section_vintage">Vintage</string>
+    <string name="details_section_region">Region</string>
+    <string name="details_section_quantity">Quantity</string>
+    <string name="details_section_price">Price</string>
+    <string name="details_section_rating">Rating</string>
+    <string name="details_section_varieties">Varieties</string>
     
+    
+    
+        
     
 	    
 </resources>

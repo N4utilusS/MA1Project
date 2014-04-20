@@ -266,14 +266,22 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int details_section_add_date=0x7f06000d;
         public static final int details_section_apogee=0x7f06000e;
+        public static final int details_section_appellation=0x7f060012;
         public static final int details_section_code=0x7f060011;
         /**  Strings for the details fragment 
          */
         public static final int details_section_colour=0x7f06000a;
         public static final int details_section_effervescence=0x7f06000c;
         public static final int details_section_location=0x7f06000f;
+        public static final int details_section_name=0x7f060013;
         public static final int details_section_note=0x7f060010;
+        public static final int details_section_price=0x7f060017;
+        public static final int details_section_quantity=0x7f060016;
+        public static final int details_section_rating=0x7f060018;
+        public static final int details_section_region=0x7f060015;
         public static final int details_section_sugar=0x7f06000b;
+        public static final int details_section_varieties=0x7f060019;
+        public static final int details_section_vintage=0x7f060014;
         public static final int hello_world=0x7f060001;
         public static final int nfc_code=0x7f060005;
         public static final int qr_code=0x7f060004;
