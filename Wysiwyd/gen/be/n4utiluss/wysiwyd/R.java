@@ -168,16 +168,17 @@ public final class R {
     public static final class drawable {
         public static final int details_bloc=0x7f020000;
         public static final int ic_launcher=0x7f020001;
-        public static final int scan_icon=0x7f020002;
-        public static final int search_icon=0x7f020003;
+        public static final int list_selector=0x7f020002;
+        public static final int scan_icon=0x7f020003;
+        public static final int search_icon=0x7f020004;
     }
     public static final class id {
         public static final int action_add_new_bottle=0x7f090031;
         public static final int action_edit=0x7f09002f;
         public static final int action_new=0x7f090030;
         public static final int action_settings=0x7f090032;
-        public static final int bottle_detail_container=0x7f090000;
-        public static final int bottle_list=0x7f090001;
+        public static final int bottle_detail_container=0x7f090001;
+        public static final int bottle_list=0x7f090000;
         public static final int buttonNFC=0x7f090009;
         public static final int buttonQRCode=0x7f090008;
         public static final int container=0x7f090007;
@@ -225,7 +226,6 @@ public final class R {
         public static final int testText=0x7f09000a;
     }
     public static final class layout {
-        public static final int activity_bottle_detail=0x7f030000;
         /** 
     Layout alias to replace the single-pane version of the layout with a
     two-pane version on Large screens.
@@ -241,14 +241,14 @@ public final class R {
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     
          */
-        public static final int activity_bottle_list=0x7f030001;
-        public static final int activity_bottle_twopane=0x7f030002;
-        public static final int activity_main=0x7f030003;
-        public static final int activity_results=0x7f030004;
-        public static final int activity_scan_choice=0x7f030005;
-        public static final int fragment_bottle_details=0x7f030006;
-        public static final int fragment_new_bottle=0x7f030007;
-        public static final int list_element=0x7f030008;
+        public static final int activity_bottle_list=0x7f030007;
+        public static final int activity_bottle_twopane=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_results=0x7f030002;
+        public static final int activity_scan_choice=0x7f030003;
+        public static final int fragment_bottle_details=0x7f030004;
+        public static final int fragment_new_bottle=0x7f030005;
+        public static final int list_element=0x7f030006;
     }
     public static final class menu {
         public static final int details=0x7f080000;
@@ -264,6 +264,16 @@ public final class R {
         public static final int action_new=0x7f060007;
         public static final int action_settings=0x7f060002;
         public static final int app_name=0x7f060000;
+        public static final int details_section_add_date=0x7f06000d;
+        public static final int details_section_apogee=0x7f06000e;
+        public static final int details_section_code=0x7f060011;
+        /**  Strings for the details fragment 
+         */
+        public static final int details_section_colour=0x7f06000a;
+        public static final int details_section_effervescence=0x7f06000c;
+        public static final int details_section_location=0x7f06000f;
+        public static final int details_section_note=0x7f060010;
+        public static final int details_section_sugar=0x7f06000b;
         public static final int hello_world=0x7f060001;
         public static final int nfc_code=0x7f060005;
         public static final int qr_code=0x7f060004;
@@ -299,5 +309,6 @@ public final class R {
         public static final int AppTheme=0x7f070001;
         public static final int TextName=0x7f070003;
         public static final int TextSmall=0x7f070002;
+        public static final int TextTitle=0x7f070004;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
+import be.n4utiluss.wysiwyd.fonts.Fonts;
 
 /**
  * This class is used to replace the simpleCursorAdapter, to allow the use of rating bars in the list.
@@ -28,6 +29,7 @@ public class BottleCursorAdapter extends CursorAdapter {
 		// Set the name of the bottle.
 		TextView name = (TextView) view.findViewById(R.id.list_element_bottle_name);
 		name.setText(cursor.getString(cursor.getColumnIndex(DatabaseContract.BottleTable.COLUMN_NAME_NAME)));
+		name.setTypeface(Fonts.getFonts(context).chopinScript);
 		
 		// Set the vintage of the bottle.
 		TextView vintage = (TextView) view.findViewById(R.id.list_element_bottle_vintage);

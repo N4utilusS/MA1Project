@@ -97,13 +97,28 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@drawable/details_bloc" >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/details_section_colour"
+                android:textAppearance="@style/TextTitle" />
 
             <TextView
                 android:id="@+id/details_colour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextSmall" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/details_section_sugar"
+                android:textAppearance="@style/TextTitle" />
             
             <TextView
                 android:id="@+id/details_sugar"
@@ -114,11 +129,18 @@
                 android:textAppearance="@style/TextSmall" />
             
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/details_section_effervescence"
+                android:textAppearance="@style/TextTitle" />
+            
+            <TextView
                 android:id="@+id/details_effervescence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="right"
+                android:layout_gravity="center"
                 android:textAppearance="@style/TextSmall" />
             
         </LinearLayout>
@@ -140,11 +162,30 @@
             android:background="@drawable/details_bloc" >
 
             <TextView
-                android:id="@+id/details_addDate"
+                android:text="@string/details_section_add_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="0"
+                android:layout_gravity="left"
+                android:textAppearance="@style/TextTitle" />
+            
+            <TextView
+                android:text="@string/details_section_apogee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_gravity="right"
+                android:textAppearance="@style/TextTitle" />
+            
+            <TextView
+                android:id="@+id/details_addDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_gravity="right"
                 android:textAppearance="@style/TextSmall" />
             
             <TextView
@@ -152,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="0"
+                android:layout_row="1"
                 android:layout_gravity="right"
                 android:textAppearance="@style/TextSmall" />
             
@@ -162,11 +203,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/details_bloc" >
+            
+            <TextView
+                android:text="@string/details_section_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="left"
+                android:textAppearance="@style/TextTitle" />
 
             <TextView
                 android:id="@+id/details_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_gravity="center"
                 android:textAppearance="@style/TextSmall" />
             
         </GridLayout>
@@ -175,11 +228,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/details_bloc" >
+            
+            <TextView
+                android:text="@string/details_section_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="left"
+                android:textAppearance="@style/TextTitle" />
 
             <TextView
                 android:id="@+id/details_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_gravity="center"
                 android:textAppearance="@style/TextSmall" />
             
         </GridLayout>
@@ -188,11 +253,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/details_bloc" >
+            
+            <TextView
+                android:text="@string/details_section_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="left"
+                android:textAppearance="@style/TextTitle" />
 
             <TextView
                 android:id="@+id/details_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
                 android:layout_gravity="center"
                 android:textAppearance="@style/TextSmall" />
             

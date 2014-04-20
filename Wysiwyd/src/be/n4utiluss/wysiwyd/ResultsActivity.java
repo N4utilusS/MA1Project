@@ -21,19 +21,22 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			bottlesListFragment.setArguments(getIntent().getExtras());
 			Bundle arguments = getIntent().getExtras();
 			
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			
 			if (findViewById(R.id.results_main_container) != null) {
 				arguments.putBoolean(BottlesListFragment.ACTIVATE_ON_ITEM_CLICK, false);
 				bottlesListFragment.setArguments(arguments);
 
-				getFragmentManager().beginTransaction().add(R.id.results_main_container, bottlesListFragment).commit();
+				transaction.add(R.id.results_main_container, bottlesListFragment);
 			} else {
 				arguments.putBoolean(BottlesListFragment.ACTIVATE_ON_ITEM_CLICK, true);
 				bottlesListFragment.setArguments(arguments);
 
-				getFragmentManager().beginTransaction().add(R.id.results_list_container, bottlesListFragment).commit();
+				transaction.add(R.id.results_list_container, bottlesListFragment);
 				this.twoPane = true;
 			}
 			
+			transaction.commit();
 		}
 	}
 
@@ -65,14 +68,16 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		BottleDetailsFragment fragment = new BottleDetailsFragment();
 		fragment.setArguments(arguments);
 		
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
 		if (this.twoPane) {
-			getFragmentManager().beginTransaction()
-			.replace(R.id.results_details_container, fragment).commit();
+			transaction.replace(R.id.results_details_container, fragment);
 		} else {
-			getFragmentManager().beginTransaction()
-			.replace(R.id.results_main_container, fragment).commit();
+			transaction.replace(R.id.results_main_container, fragment);
 		}
+		
+		transaction.addToBackStack(null);
+		transaction.commit();
 	}
 
 	@Override
@@ -83,12 +88,14 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	@Override
 	public void onNewBottleButtonPushed() {
 		this.showNewBottleFragment();
-		this.bottlesListFragment.setNewBottleButtonActivated(false);
+		if (twoPane)
+			this.bottlesListFragment.setNewBottleButtonActivated(false);
 	}
 
 	@Override
 	public void onNewBottleFragmentDismissed() {
-		this.bottlesListFragment.setNewBottleButtonActivated(true);
+		if (twoPane)
+			this.bottlesListFragment.setNewBottleButtonActivated(true);
 	}
 
 	

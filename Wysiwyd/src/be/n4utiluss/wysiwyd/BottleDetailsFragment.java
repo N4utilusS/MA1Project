@@ -2,6 +2,7 @@ package be.n4utiluss.wysiwyd;
 
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.*;
+import be.n4utiluss.wysiwyd.fonts.Fonts;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
@@ -9,6 +10,7 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,27 +31,35 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setHasOptionsMenu(true);	// So the onCreateOptionsMenu method is called, and the actions are set.
-		
-		
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		
+
 		View rootView = inflater.inflate(R.layout.fragment_bottle_details, container, false);
 
 		// Restart the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
 		// after we popped the previous state from the stack.
-		
+
 		getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
 		getLoaderManager().initLoader(VARIETY_LOADER, null, this);
-		
+
 		return rootView;
 	}
-	
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		// Fonts
+		TextView name = (TextView) getView().findViewById(R.id.details_name);
+		name.setTypeface(Fonts.getFonts(getActivity()).chopinScript);
+
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -96,7 +106,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		switch (loader.getId()){
 		case MAIN_INFO_LOADER:
 			if (cursor.moveToFirst()) {
-				
+
 				TextView appellation = (TextView) getView().findViewById(R.id.details_appellation);
 				TextView name = (TextView) getView().findViewById(R.id.details_name);
 				TextView vintage = (TextView) getView().findViewById(R.id.details_vintage);
@@ -117,12 +127,61 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 				name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
 				vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
 				region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
-				quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))));
-				price.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
+				quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))) + " bottles");
+				price.setText("Price: " + Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
 				ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
-				colour.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR))));
-				sugar.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR))));				
-				effervescence.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE))));
+
+				int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
+				switch (colourValue) {
+				case BottleTable.WHITE:
+					colour.setText("White");
+					break;
+				case BottleTable.RED:
+					colour.setText("Red");
+					break;
+				case BottleTable.ROSE:
+					colour.setText("Rose");
+					break;
+				default:
+					colour.setText("NA");
+				}
+
+				int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
+				switch (sugarValue) {
+				case BottleTable.DRY:
+					sugar.setText("Dry");				
+					break;
+				case BottleTable.MEDIUM_DRY:
+					sugar.setText("Medium dry");				
+					break;
+				case BottleTable.MEDIUM_SWEET:
+					sugar.setText("Medium sweet");				
+					break;
+				case BottleTable.SWEET:
+					sugar.setText("Sweet");				
+					break;
+				default:
+					sugar.setText("NA");				
+				}
+
+				int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
+				switch (effervescenceValue) {
+				case BottleTable.NOT_SPARKLING:
+					effervescence.setText("Not sparkling");				
+					break;
+				case BottleTable.LIGHT_SPARKLING:
+					effervescence.setText("Light sparkling");				
+					break;
+				case BottleTable.MEDIUM_SPARKLING:
+					effervescence.setText("Medium sparkling");				
+					break;
+				case BottleTable.HIGH_SPARKLING:
+					effervescence.setText("High sparkling");				
+					break;
+				default:
+					effervescence.setText("NA");				
+				}
+
 				addDate.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE)));
 				apogee.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE)));
 				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
@@ -139,7 +198,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			while (cursor.moveToNext()) {
 				TextView tv = new TextView(getActivity());
 				tv.setText(cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME)));
-				
+
 				ll.addView(tv);
 			}
 			break;

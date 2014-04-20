@@ -11,6 +11,18 @@
     <string name="action_new">New Bottle</string>
     <string name="action_add_new_bottle">Done</string>
     <string name="action_edit">Edit</string>
+
+    <!-- Strings for the details fragment -->
+
+    <string name="details_section_colour">Colour</string>
+    <string name="details_section_sugar">Sweetness</string>
+    <string name="details_section_effervescence">Effervescence</string>
+	<string name="details_section_add_date">Added the</string>
+    <string name="details_section_apogee">Apogee the</string>
+    <string name="details_section_location">Find me there</string>
+    <string name="details_section_note">About</string>
+    <string name="details_section_code">Scan Code</string>
     
     
+	    
 </resources>
