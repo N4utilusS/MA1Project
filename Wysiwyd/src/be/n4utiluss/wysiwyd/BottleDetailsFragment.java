@@ -6,16 +6,17 @@ import be.n4utiluss.wysiwyd.fonts.Fonts;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int VARIETY_LOADER = 1;
+	private BottleDetailsFragmentCallbacks linkedActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,9 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		// after we popped the previous state from the stack.
 
 		if (this.getArguments().containsKey(BottleTable._ID)) {
-			getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
-			getLoaderManager().initLoader(VARIETY_LOADER, null, this);
+			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
+			getLoaderManager().restartLoader(VARIETY_LOADER, null, this);
+			Log.i("CREATE", "Test");
 		}
 
 		return rootView;
@@ -58,7 +61,18 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		// Fonts
 		TextView name = (TextView) getView().findViewById(R.id.details_name);
 		name.setTypeface(Fonts.getFonts(getActivity()).chopinScript);
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof BottleDetailsFragmentCallbacks)) {
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
+		}
+
+		this.linkedActivity = (BottleDetailsFragmentCallbacks) activity;
 	}
 
 	@Override
@@ -66,6 +80,20 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		super.onCreateOptionsMenu(menu, inflater);
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.details, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		switch (id) {
+		case R.id.action_edit:
+			this.linkedActivity.onEditEvent(getArguments().getLong(BottleTable._ID));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -96,8 +124,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			break;
 		default:
 		}
-
-
+		
 		return cursorLoader;
 	}
 
@@ -133,59 +160,14 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 				ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
 
 				int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
-				/*switch (colourValue) {
-				case BottleTable.WHITE:
-					colour.setText("White");
-					break;
-				case BottleTable.RED:
-					colour.setText("Red");
-					break;
-				case BottleTable.ROSE:
-					colour.setText("Rose");
-					break;
-				default:
-					colour.setText("NA");
-				}*/
 				String[] colourArray = getResources().getStringArray(R.array.colour_array);
 				colour.setText(colourArray[colourValue]);
 
 				int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
-				/*switch (sugarValue) {
-				case BottleTable.DRY:
-					sugar.setText("Dry");				
-					break;
-				case BottleTable.MEDIUM_DRY:
-					sugar.setText("Medium dry");				
-					break;
-				case BottleTable.MEDIUM_SWEET:
-					sugar.setText("Medium sweet");				
-					break;
-				case BottleTable.SWEET:
-					sugar.setText("Sweet");				
-					break;
-				default:
-					sugar.setText("NA");				
-				}*/
 				String[] sugarArray = getResources().getStringArray(R.array.sugar_array);
 				sugar.setText(sugarArray[sugarValue]);
 
 				int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
-				/*switch (effervescenceValue) {
-				case BottleTable.NOT_SPARKLING:
-					effervescence.setText("Not sparkling");				
-					break;
-				case BottleTable.LIGHT_SPARKLING:
-					effervescence.setText("Light sparkling");				
-					break;
-				case BottleTable.MEDIUM_SPARKLING:
-					effervescence.setText("Medium sparkling");				
-					break;
-				case BottleTable.HIGH_SPARKLING:
-					effervescence.setText("High sparkling");				
-					break;
-				default:
-					effervescence.setText("NA");				
-				}*/
 				String[] effervescenceArray = getResources().getStringArray(R.array.effervescence_array);
 				effervescence.setText(effervescenceArray[effervescenceValue]);
 				
@@ -194,6 +176,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
 				note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
 				code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
+				Log.i("CUR", "Test");
 			}
 			break;
 
@@ -211,11 +194,6 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			break;
 		default:
 		}
-
-
-
-
-
 	}
 
 	@Override
@@ -223,5 +201,16 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	}
 
-
+	/**
+	 * The interface that must be implemented by the connected activity, 
+	 * to allow this fragment to communicate with it.
+	 * @author anthonydebruyn
+	 *
+	 */
+	public interface BottleDetailsFragmentCallbacks {
+		/**
+		 * Called after the edit action button has been pushed.
+		 */
+		public void onEditEvent(long id);
+	}
 }

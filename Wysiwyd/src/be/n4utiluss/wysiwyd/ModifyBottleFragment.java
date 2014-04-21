@@ -5,20 +5,22 @@ import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-public class NewBottleFragment extends AbstractBottleInfoFragment {
-
+public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 
 	@Override
 	protected void writeToDB(ContentValues values) {
 		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		
+		String selection = DatabaseContract.BottleTable._ID + " = ?";
+		String[] selectionArgs = { Long.toString(getArguments().getLong(DatabaseContract.BottleTable._ID)) };
 
-		db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
+		db.update(DatabaseContract.BottleTable.TABLE_NAME, values, selection, selectionArgs);
 		db.close();
 		dismissFragment();
 		getLinkedActivity().onNewBottleAdded();
 	}
-	
+
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
@@ -32,16 +34,16 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 	 * @author anthonydebruyn
 	 *
 	 */
-	public interface NewBottleFragmentCallbacks {
+	public interface ModifyBottleFragmentCallbacks {
 
 		/**
-		 * Called when the new bottle has been added in the db.
+		 * Called when the bottle has been modified in the db.
 		 */
-		public void onNewBottleAdded();
+		public void onBottleModified();
 		/**
-		 * Called when the new bottle fragment is being destroyed.
+		 * Called when the modify bottle fragment is being destroyed.
 		 * The call occurs during the onDestroy() method of this fragment.
 		 */
-		public void onNewBottleFragmentDismissed();
+		public void onModifyBottleFragmentDismissed();
 	}
 }

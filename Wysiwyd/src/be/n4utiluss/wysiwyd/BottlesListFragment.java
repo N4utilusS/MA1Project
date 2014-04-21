@@ -183,7 +183,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 
 		// Activities containing this fragment must implement its callbacks.
 		if (!(activity instanceof BottlesListFragmentCallbacks)) {
-			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
 		}
 
 		this.linkedActivity = (BottlesListFragmentCallbacks) activity;

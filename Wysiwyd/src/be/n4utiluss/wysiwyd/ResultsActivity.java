@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 
 public class ResultsActivity extends Activity implements BottlesListFragment.BottlesListFragmentCallbacks,
-														NewBottleFragment.NewBottleFragmentCallbacks{
+														NewBottleFragment.NewBottleFragmentCallbacks,
+														ModifyBottleFragment.ModifyBottleFragmentCallbacks,
+														BottleDetailsFragment.BottleDetailsFragmentCallbacks {
 
 	private boolean twoPane = false;
 	private BottlesListFragment bottlesListFragment;
@@ -100,10 +102,40 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 
 	@Override
 	public void onNewBottleFragmentDismissed() {
+		// Only in two pane mode, since for the single pane the fragment is already hidden, and so is the button.
 		if (twoPane)
 			this.bottlesListFragment.setNewBottleButtonActivated(true);
 	}
 
-	
+	@Override
+	public void onBottleModified() {
+		this.bottlesListFragment.refreshList();
+	}
+
+	@Override
+	public void onModifyBottleFragmentDismissed() {
+		// Only in two pane mode, since for the single pane the fragment is already hidden, and so is the button.
+		if (twoPane)
+			this.bottlesListFragment.setNewBottleButtonActivated(true);
+	}
+
+	@Override
+	public void onEditEvent(long id) {
+		Bundle arguments = new Bundle();
+		arguments.putLong(DatabaseContract.BottleTable._ID, id);
+		ModifyBottleFragment fragment = new ModifyBottleFragment();
+		fragment.setArguments(arguments);
+		
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		
+		if (this.twoPane) {
+			transaction.replace(R.id.results_details_container, fragment);
+		} else {
+			transaction.replace(R.id.results_main_container, fragment);
+		}
+		
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
 
 }
