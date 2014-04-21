@@ -173,13 +173,12 @@
                 android:text="@string/details_section_colour"
                 android:textAppearance="@style/TextTitle" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/new_bottle_colour"
+                android:entries="@array/colour_array"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:textAppearance="@style/TextSmall" />
             
             <TextView
@@ -189,13 +188,12 @@
                 android:text="@string/details_section_sugar"
                 android:textAppearance="@style/TextTitle" />
             
-            <EditText
+            <Spinner
                 android:id="@+id/new_bottle_sugar"
+                android:entries="@array/sugar_array"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:textAppearance="@style/TextSmall" />
             
             <TextView
@@ -205,12 +203,11 @@
                 android:text="@string/details_section_effervescence"
                 android:textAppearance="@style/TextTitle" />
             
-            <EditText
+            <Spinner
                 android:id="@+id/new_bottle_effervescence"
+                android:entries="@array/effervescence_array"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:textAppearance="@style/TextSmall" />
             

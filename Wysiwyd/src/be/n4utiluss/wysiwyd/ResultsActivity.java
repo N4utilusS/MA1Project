@@ -1,5 +1,6 @@
 package be.n4utiluss.wysiwyd;
 
+import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -48,8 +49,13 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		return true;
 	}
 
-	private void showNewBottleFragment() {
+	private void showNewBottleFragment(long id) {
 		NewBottleFragment fragment = new NewBottleFragment();
+		if (id > 0) {
+			Bundle arguments = new Bundle();
+			arguments.putLong(DatabaseContract.BottleTable._ID, id);
+			fragment.setArguments(arguments);
+		}
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
 		if (this.twoPane) {
@@ -64,7 +70,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	@Override
 	public void onBottleSelected(long id) {
 		Bundle arguments = new Bundle();
-		arguments.putLong(BottleDetailsFragment.BOTTLE_ID, id);
+		arguments.putLong(DatabaseContract.BottleTable._ID, id);
 		BottleDetailsFragment fragment = new BottleDetailsFragment();
 		fragment.setArguments(arguments);
 		
@@ -86,8 +92,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	}
 
 	@Override
-	public void onNewBottleButtonPushed() {
-		this.showNewBottleFragment();
+	public void onNewBottleEvent(long id) {
+		this.showNewBottleFragment(id);
 		if (twoPane)
 			this.bottlesListFragment.setNewBottleButtonActivated(false);
 	}

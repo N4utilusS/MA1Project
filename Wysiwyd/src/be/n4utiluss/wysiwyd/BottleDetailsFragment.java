@@ -23,7 +23,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-	public static final String BOTTLE_ID = "be.n4utiluss.wysiwyd.Bottle_Id";
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int VARIETY_LOADER = 1;
@@ -41,11 +40,13 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 		View rootView = inflater.inflate(R.layout.fragment_bottle_details, container, false);
 
-		// Restart the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
+		// (Re)start the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
 		// after we popped the previous state from the stack.
 
-		getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
-		getLoaderManager().initLoader(VARIETY_LOADER, null, this);
+		if (this.getArguments().containsKey(BottleTable._ID)) {
+			getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
+			getLoaderManager().initLoader(VARIETY_LOADER, null, this);
+		}
 
 		return rootView;
 	}
@@ -69,7 +70,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int idLoader, Bundle bundle) {
-		long id = this.getArguments().getLong(BOTTLE_ID);
+		long id = this.getArguments().getLong(BottleTable._ID);
 		String idString = Long.toString(id);
 		SQLiteCursorLoader cursorLoader = null;
 
@@ -132,7 +133,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 				ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
 
 				int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
-				switch (colourValue) {
+				/*switch (colourValue) {
 				case BottleTable.WHITE:
 					colour.setText("White");
 					break;
@@ -144,10 +145,12 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 					break;
 				default:
 					colour.setText("NA");
-				}
+				}*/
+				String[] colourArray = getResources().getStringArray(R.array.colour_array);
+				colour.setText(colourArray[colourValue]);
 
 				int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
-				switch (sugarValue) {
+				/*switch (sugarValue) {
 				case BottleTable.DRY:
 					sugar.setText("Dry");				
 					break;
@@ -162,10 +165,12 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 					break;
 				default:
 					sugar.setText("NA");				
-				}
+				}*/
+				String[] sugarArray = getResources().getStringArray(R.array.sugar_array);
+				sugar.setText(sugarArray[sugarValue]);
 
 				int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
-				switch (effervescenceValue) {
+				/*switch (effervescenceValue) {
 				case BottleTable.NOT_SPARKLING:
 					effervescence.setText("Not sparkling");				
 					break;
@@ -180,8 +185,10 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 					break;
 				default:
 					effervescence.setText("NA");				
-				}
-
+				}*/
+				String[] effervescenceArray = getResources().getStringArray(R.array.effervescence_array);
+				effervescence.setText(effervescenceArray[effervescenceValue]);
+				
 				addDate.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE)));
 				apogee.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE)));
 				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));

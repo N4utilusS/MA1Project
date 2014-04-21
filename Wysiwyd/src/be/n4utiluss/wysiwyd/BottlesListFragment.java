@@ -11,13 +11,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
-public class BottlesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class BottlesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>,
+																OnItemLongClickListener {
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -35,7 +39,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
 	 */
-	private BottlesListFragmentCallbacks bottleListener;
+	private BottlesListFragmentCallbacks linkedActivity;
 	private Menu menu;
 	private boolean actionNewActivated = true;
 	
@@ -74,7 +78,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		
 		switch (id) {
 		case R.id.action_new:
-			this.bottleListener.onNewBottleButtonPushed();
+			this.linkedActivity.onNewBottleEvent(-1);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -137,6 +141,9 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
+		
+		// Set the long click listener for the new bottle event:
+	    getListView().setOnItemLongClickListener(this);
 	}
 	
 	private void setActivatedPosition(int position) {
@@ -179,7 +186,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
 		}
 
-		this.bottleListener = (BottlesListFragmentCallbacks) activity;
+		this.linkedActivity = (BottlesListFragmentCallbacks) activity;
 	}
 	
 	@Override
@@ -189,8 +196,14 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		
-		this.bottleListener.onBottleSelected(id);
+		this.linkedActivity.onBottleSelected(id);
 	}
+	
+	@Override
+    public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long id) {
+        this.linkedActivity.onNewBottleEvent(id);
+        return true;
+    }
 	
 	/**
 	 * Relaunches the cursor loader to refresh the data.
@@ -226,7 +239,8 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		public void onBottleSelected(long id);
 		/**
 		 * Called after the new bottle button is pushed.
+		 * @param id The id of the bottle we want the info from to put into the text fields, -1 if none.
 		 */
-		public void onNewBottleButtonPushed();
+		public void onNewBottleEvent(long id);
 	}
 }

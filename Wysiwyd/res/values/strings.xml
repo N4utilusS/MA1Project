@@ -31,9 +31,27 @@
     <string name="details_section_rating">Rating</string>
     <string name="details_section_varieties">Varieties</string>
     
+    <!-- New bottle arrays -->
     
+    <string-array name="colour_array">
+        <item>White</item>
+        <item>Red</item>
+        <item>Rosé</item>
+    </string-array>
     
-        
+    <string-array name="sugar_array">
+        <item>Dry</item>
+        <item>Medium dry</item>
+        <item>Medium sweet</item>
+        <item>Sweet</item>
+    </string-array>
+    
+    <string-array name="effervescence_array">
+        <item>Not sparkling</item>
+        <item>Light sparkling</item>
+        <item>Medium sparkling</item>
+        <item>High sparkling</item>
+    </string-array>
     
 	    
 </resources>
