@@ -11,6 +11,8 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -176,7 +180,14 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
 				note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
 				code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
-				Log.i("CUR", "Test");
+				
+				int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
+				if (!cursor.isNull(pictureColumnIndex)) {
+					this.setPicture(cursor.getString(pictureColumnIndex));
+				} else {
+					ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
+					scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+				}
 			}
 			break;
 
@@ -199,6 +210,31 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 
+	}
+	
+	public void setPicture(String photoPath) {
+		
+		// Get the dimension of the view
+		ImageView imageView = (ImageView) getView().findViewById(R.id.details_background_picture);
+		int targetW = imageView.getWidth();
+		
+		// Get the dimensions of the bitmap
+	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+	    bmOptions.inJustDecodeBounds = true;
+	    BitmapFactory.decodeFile(photoPath, bmOptions);
+	    int photoW = bmOptions.outWidth;
+
+	    // Determine how much to scale down the image
+	    int scaleFactor = photoW/targetW;
+	    
+	    // Decode the image file into a Bitmap sized to fill the View
+	    bmOptions.inJustDecodeBounds = false;
+	    bmOptions.inSampleSize = scaleFactor;
+	    bmOptions.inPurgeable = true;
+	    
+	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
+	    imageView.setImageBitmap(bitmap);
+	    Log.i("SETPICTURE", "End" + photoPath);
 	}
 
 	/**

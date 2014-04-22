@@ -1,21 +1,12 @@
 package be.n4utiluss.wysiwyd;
 
-import be.n4utiluss.wysiwyd.NewBottleFragment.NewBottleFragmentCallbacks;
-import be.n4utiluss.wysiwyd.database.DatabaseContract;
-import be.n4utiluss.wysiwyd.database.DatabaseHelper;
-import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
-import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
-import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
-
-import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
-
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,21 +18,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import be.n4utiluss.wysiwyd.database.DatabaseContract;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+
+import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
 public abstract class AbstractBottleInfoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int VARIETY_LOADER = 1;
-
-	private NewBottleFragmentCallbacks linkedActivity;
-
-	public NewBottleFragmentCallbacks getLinkedActivity() {
-		return linkedActivity;
+	private String photoPath = null;
+	
+	private AbstractBottleInfoFragmentCallbacks getLinkedActivity() {
+		// Activities containing this fragment must implement its callbacks.
+		if (!(getActivity() instanceof AbstractBottleInfoFragmentCallbacks)) {
+			Log.e("AbstractBottleInfoFragment", "Activity not implementing callbacks");
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
+		}
+		
+		return (AbstractBottleInfoFragmentCallbacks) getActivity();
 	}
 
 	@Override
@@ -67,20 +72,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		return rootView;
 	}
 
-
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-
-		// Activities containing this fragment must implement its callbacks.
-		if (!(activity instanceof NewBottleFragmentCallbacks)) {
-			throw new IllegalStateException("Activity must implement fragment callbacks.");
-		}
-
-		this.linkedActivity = (NewBottleFragmentCallbacks) activity;
-	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -98,6 +89,11 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			ContentValues values = getValues();
 			writeToDB(values);
 			return true;
+		
+		case R.id.action_picture:
+			getLinkedActivity().onTakePicture();
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -218,6 +214,10 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			// TODO Tell user error.
 		}
 		
+		// The picture path:
+		if (this.photoPath != null)
+			values.put(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE, this.photoPath);
+		
 		return values;
 	}
 
@@ -276,6 +276,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				EditText location = (EditText) getView().findViewById(R.id.new_bottle_location);
 				EditText note = (EditText) getView().findViewById(R.id.new_bottle_note);
 				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
+				ImageView picture = (ImageView) getView().findViewById(R.id.background_picture);
 
 				appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
 				name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
@@ -283,7 +284,13 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
 				quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))));
 				price.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
-				ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
+				
+				int markColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK);
+				if (!cursor.isNull(markColumnIndex)) {
+					ratingBar.setRating(cursor.getInt(markColumnIndex));
+				} else {
+					ratingBar.setRating(0);
+				}
 
 				int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
 				colour.setSelection(colourValue);
@@ -327,6 +334,15 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
 				note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
 				code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
+				
+				
+				int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
+				if (!cursor.isNull(pictureColumnIndex)) {
+					this.setPicture(cursor.getString(pictureColumnIndex));
+				} else {
+					ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
+					scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+				}
 			}
 			break;
 
@@ -350,5 +366,35 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 
+	}
+	
+	public interface AbstractBottleInfoFragmentCallbacks {
+		public void onTakePicture();
+	}
+
+	public void setPicture(String photoPath) {
+		this.photoPath  = photoPath;
+		
+		// Get the dimension of the view
+		ImageView imageView = (ImageView) getView().findViewById(R.id.background_picture);
+		int targetW = imageView.getWidth();
+		
+		// Get the dimensions of the bitmap
+	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+	    bmOptions.inJustDecodeBounds = true;
+	    BitmapFactory.decodeFile(photoPath, bmOptions);
+	    int photoW = bmOptions.outWidth;
+
+	    // Determine how much to scale down the image
+	    int scaleFactor = photoW/targetW;
+	    
+	    // Decode the image file into a Bitmap sized to fill the View
+	    bmOptions.inJustDecodeBounds = false;
+	    bmOptions.inSampleSize = scaleFactor;
+	    bmOptions.inPurgeable = true;
+	    
+	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
+	    imageView.setImageBitmap(bitmap);
+	    Log.i("SETPICTURE", "End" + this.photoPath);
 	}
 }

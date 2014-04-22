@@ -9,8 +9,12 @@
     <string name="nfc_code">NFC Code</string>
     <string name="title_activity_results">Matches</string>
     <string name="action_new">New Bottle</string>
-    <string name="action_add_new_bottle">Done</string>
+    <string name="action_execute">Done</string>
     <string name="action_edit">Edit</string>
+    <string name="action_picture">Picture</string>
+    <string name="background_picture">Bottle picture</string>
+    
+    
 
     <!-- Strings for the details fragment -->
 

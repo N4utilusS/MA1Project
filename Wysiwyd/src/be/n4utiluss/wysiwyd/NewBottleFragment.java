@@ -1,12 +1,24 @@
 package be.n4utiluss.wysiwyd;
 
+import be.n4utiluss.wysiwyd.AbstractBottleInfoFragment.AbstractBottleInfoFragmentCallbacks;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class NewBottleFragment extends AbstractBottleInfoFragment {
 
+	private NewBottleFragmentCallbacks getLinkedActivity() {
+		// Activities containing this fragment must implement its callbacks.
+		if (!(getActivity() instanceof NewBottleFragmentCallbacks)) {
+			Log.e("NewBottleFragment", "Activity not implementing callbacks");
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
+		}
+		
+		return (NewBottleFragmentCallbacks) getActivity();
+	}
 
 	@Override
 	protected void writeToDB(ContentValues values) {
@@ -17,6 +29,17 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 		db.close();
 		dismissFragment();
 		getLinkedActivity().onNewBottleAdded();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof NewBottleFragmentCallbacks)) {
+			Log.e("NewBottleFragment", "Activity not implementing callbacks");
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
+		}
 	}
 	
 	@Override
@@ -32,7 +55,7 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 	 * @author anthonydebruyn
 	 *
 	 */
-	public interface NewBottleFragmentCallbacks {
+	public interface NewBottleFragmentCallbacks extends AbstractBottleInfoFragmentCallbacks {
 
 		/**
 		 * Called when the new bottle has been added in the db.

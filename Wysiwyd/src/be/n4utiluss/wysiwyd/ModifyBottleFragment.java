@@ -2,11 +2,23 @@ package be.n4utiluss.wysiwyd;
 
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 
+	private ModifyBottleFragmentCallbacks getLinkedActivity() {
+		// Activities containing this fragment must implement its callbacks.
+		if (!(getActivity() instanceof ModifyBottleFragmentCallbacks)) {
+			Log.e("NewBottleFragment", "Activity not implementing callbacks");
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
+		}
+		
+		return (ModifyBottleFragmentCallbacks) getActivity();
+	}
+	
 	@Override
 	protected void writeToDB(ContentValues values) {
 		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
@@ -18,7 +30,18 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 		db.update(DatabaseContract.BottleTable.TABLE_NAME, values, selection, selectionArgs);
 		db.close();
 		dismissFragment();
-		getLinkedActivity().onNewBottleAdded();
+		getLinkedActivity().onBottleModified();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof ModifyBottleFragmentCallbacks)) {
+			Log.e("ModifyBottleFragment", "Activity not implementing callbacks");
+			throw new IllegalStateException("Activity must implement fragment callbacks.");
+		}
 	}
 
 	@Override
@@ -26,7 +49,7 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 		super.onDestroy();
 
 		// We notify the activity that this fragment is being stopped with a callback method.
-		getLinkedActivity().onNewBottleFragmentDismissed();
+		getLinkedActivity().onModifyBottleFragmentDismissed();
 	}
 
 	/**
