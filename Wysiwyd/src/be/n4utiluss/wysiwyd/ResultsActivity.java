@@ -158,6 +158,9 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		this.abstractBottleInfoFragment = fragment;
 		transaction.addToBackStack(null);
 		transaction.commit();
+		
+		if (twoPane)
+			this.bottlesListFragment.setNewBottleButtonActivated(false);
 	}
 
 	@Override

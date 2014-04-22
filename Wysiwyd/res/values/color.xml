@@ -143,4 +143,5 @@
  
  <color name="DetailsBackground">@color/Lavender</color>
  <color name="DetailsBloc">@color/White</color>
+ <color name="Transparent">#00000000</color>
 </resources>

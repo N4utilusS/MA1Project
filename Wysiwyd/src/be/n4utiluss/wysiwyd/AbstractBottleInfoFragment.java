@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -395,11 +396,12 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 	    imageView.setImageBitmap(bitmap);
+	    ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
+		scrollView.setBackgroundColor(getResources().getColor(R.color.Transparent));
 	    
 	 // Put padding to see the image:
 	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.abstract_bottle_info_linear_layout);
 	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
 	    ll.setPadding(0, top, 0, 0);
-	    Log.i("SETPICTURE", "End" + this.photoPath);
 	}
 }

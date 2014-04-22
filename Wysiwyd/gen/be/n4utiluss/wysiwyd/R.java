@@ -153,6 +153,7 @@ public final class R {
         public static final int Teal=0x7f040084;
         public static final int Thistle=0x7f04003b;
         public static final int Tomato=0x7f040019;
+        public static final int Transparent=0x7f04008e;
         public static final int Turquoise=0x7f040073;
         public static final int Violet=0x7f040030;
         public static final int Wheat=0x7f040028;
