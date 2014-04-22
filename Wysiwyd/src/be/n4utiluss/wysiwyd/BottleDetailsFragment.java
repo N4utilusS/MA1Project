@@ -227,13 +227,18 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    // Determine how much to scale down the image
 	    int scaleFactor = photoW/targetW;
 	    
-	    // Decode the image file into a Bitmap sized to fill the View
+	 // Decode the image file into a Bitmap sized to fill the View
 	    bmOptions.inJustDecodeBounds = false;
 	    bmOptions.inSampleSize = scaleFactor;
 	    bmOptions.inPurgeable = true;
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 	    imageView.setImageBitmap(bitmap);
+	    
+	 // Put padding to see the image:
+	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_linear_layout);
+	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
+	    ll.setPadding(0, top, 0, 0);
 	    Log.i("SETPICTURE", "End" + photoPath);
 	}
 

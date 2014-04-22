@@ -222,8 +222,9 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		
 		switch (requestCode) {
 		case REQUEST_TAKE_PHOTO:
-			if (this.abstractBottleInfoFragment != null)
+			if (resultCode == RESULT_OK && this.abstractBottleInfoFragment != null)
 				this.abstractBottleInfoFragment.setPicture(this.currentPhotoPath);
+			this.currentPhotoPath = null;
 			break;
 		}
 	}

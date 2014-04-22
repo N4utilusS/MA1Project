@@ -395,6 +395,11 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 	    imageView.setImageBitmap(bitmap);
+	    
+	 // Put padding to see the image:
+	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.abstract_bottle_info_linear_layout);
+	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
+	    ll.setPadding(0, top, 0, 0);
 	    Log.i("SETPICTURE", "End" + this.photoPath);
 	}
 }

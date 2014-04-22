@@ -17,10 +17,10 @@
         android:background="@android:color/transparent" >
 
         <LinearLayout
+            android:id="@+id/abstract_bottle_info_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="50dp" >
+            android:orientation="vertical" >
 
             <GridLayout
                 android:layout_width="match_parent"
