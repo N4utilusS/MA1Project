@@ -1,5 +1,7 @@
 package be.n4utiluss.wysiwyd;
 
+import java.io.File;
+
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -16,7 +18,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,12 +40,14 @@ import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
-public abstract class AbstractBottleInfoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public abstract class AbstractBottleInfoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnLongClickListener, OnClickListener {
 
 
 	private static final int MAIN_INFO_LOADER = 0;
-	private static final int VARIETY_LOADER = 1;
+	private static final int BOTTLE_VARIETIES_LOADER = 1;
+	private static final int ALL_VARIETIES_LOADER = 2;
 	private String photoPath = null;
+	public static final int AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS = 2;
 	
 	private AbstractBottleInfoFragmentCallbacks getLinkedActivity() {
 		// Activities containing this fragment must implement its callbacks.
@@ -67,9 +76,13 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		Bundle arguments = getArguments();
 		if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
 			getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
-			getLoaderManager().initLoader(VARIETY_LOADER, null, this);
+			getLoaderManager().initLoader(BOTTLE_VARIETIES_LOADER, null, this);
+			getLoaderManager().initLoader(ALL_VARIETIES_LOADER, null, this);
 		}
-
+		
+		Button addVarietyButton = (Button) rootView.findViewById(R.id.new_bottle_add_variety_button);
+		addVarietyButton.setOnClickListener(this);
+		
 		return rootView;
 	}
 
@@ -89,6 +102,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		case R.id.action_execute:
 			ContentValues values = getValues();
 			writeToDB(values);
+			writeVarietiesToDB();
 			return true;
 		
 		case R.id.action_picture:
@@ -101,6 +115,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	}
 
 	abstract protected void writeToDB(ContentValues values);
+	
+	abstract protected void writeVarietiesToDB();
 
 	protected void dismissFragment() {
 		this.getFragmentManager().popBackStack();
@@ -221,7 +237,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		
 		return values;
 	}
-
+	
 	@Override
 	public Loader<Cursor> onCreateLoader(int idLoader, Bundle bundle) {
 		
@@ -233,23 +249,38 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		case MAIN_INFO_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					new DatabaseHelper(this.getActivity()), 
+					
 					"SELECT * " +
 							" FROM " + BottleTable.TABLE_NAME +
 							" WHERE " + BottleTable._ID + " = ?", 
+							
 							new String[] { idString });
 
 			break;
-		case VARIETY_LOADER:
+			
+		case BOTTLE_VARIETIES_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					new DatabaseHelper(this.getActivity()), 
-					"SELECT DISTINCT v." + VarietyTable.COLUMN_NAME_NAME +
+					
+					"SELECT DISTINCT v." + VarietyTable.COLUMN_NAME_NAME + ", v." + VarietyTable._ID + 
 					" FROM " + BottleVarietyTable.TABLE_NAME + " bv, " + VarietyTable.TABLE_NAME + " v " +
 					" WHERE bv." + BottleVarietyTable._ID + " = ?" +
 					" AND bv." + BottleVarietyTable.COLUMN_NAME_VARIETY_ID + " = v." + VarietyTable._ID, 
+					
 					new String[] { idString });
 
 			break;
-		default:
+			
+		case ALL_VARIETIES_LOADER:
+			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
+					new DatabaseHelper(this.getActivity()), 
+					
+					"SELECT *" +
+					" FROM " + VarietyTable.TABLE_NAME, 
+					
+					null);
+			
+		
 		}
 
 
@@ -277,7 +308,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				EditText location = (EditText) getView().findViewById(R.id.new_bottle_location);
 				EditText note = (EditText) getView().findViewById(R.id.new_bottle_note);
 				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
-				ImageView picture = (ImageView) getView().findViewById(R.id.background_picture);
 
 				appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
 				name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
@@ -339,29 +369,92 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				
 				int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
 				if (!cursor.isNull(pictureColumnIndex)) {
-					this.setPicture(cursor.getString(pictureColumnIndex));
+					setPicture(cursor.getString(pictureColumnIndex));
 				} else {
-					ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
-					scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+					setBackground();
 				}
 			}
 			break;
 
-		case VARIETY_LOADER:
-			if (this.getView() == null)
-				Log.e("Details", "Null POINTER!!!!");
-			LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
-			cursor.moveToPosition(-1);
-			while (cursor.moveToNext()) {
-				TextView tv = new TextView(getActivity());
-				tv.setText(cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME)));
-
-				ll.addView(tv);
-			}
+		case BOTTLE_VARIETIES_LOADER:
+			setVarieties(cursor);
 			break;
-		default:
+		
+		case ALL_VARIETIES_LOADER:
+			
+			setAllVarieties(cursor);
 		}
 
+	}
+	
+	private void setVarieties(Cursor cursor) {
+		if (this.getView() == null)
+			Log.e("Details", "Null POINTER!!!!");
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
+		cursor.moveToPosition(-1);
+		while (cursor.moveToNext()) {
+			String text = cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME));
+			addVarietyToLayout(text, ll);
+		}
+	}
+	
+	protected void addVarietyToLayout(String text, LinearLayout ll) {
+		TextView tv = new TextView(getActivity());
+		tv.setText(text);
+		tv.setOnLongClickListener(this);
+		ll.addView(tv);
+	}
+	
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.new_bottle_add_variety_button)
+			addVariety();
+	}
+	
+	public void addVariety() {
+		AutoCompleteTextView auto = (AutoCompleteTextView) getView().findViewById(R.id.new_bottle_varieties_autocomplete);
+		String text = auto.getText().toString();
+		
+		// Check if length of text is > 0:
+		if (text.length() == 0)
+			return;
+		
+		// Check if not in the list already:
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
+		int count = ll.getChildCount();
+		boolean present = false;
+		
+		for (int i = AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS; i < count && !present; ++i) {
+			TextView tv = (TextView) ll.getChildAt(i);
+			if (text.equals(tv.getText().toString()))
+				present = true;
+		}
+		
+		if (!present) {
+			addVarietyToLayout(text, ll);
+		}
+	}
+	
+	@Override
+	public boolean onLongClick(View v) {
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
+		ll.removeView(v);
+		return true;
+	}
+	
+	private void setAllVarieties(Cursor cursor) {
+		String[] varieties = new String[cursor.getCount()];
+		int index = cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME);
+		int i = 0;
+		cursor.moveToPosition(-1);
+		while (cursor.moveToNext()) {
+			if (!cursor.isNull(index))
+				varieties[i++] = cursor.getString(index);
+		}
+		
+		final AutoCompleteTextView autocomplete = (AutoCompleteTextView) getView().findViewById(R.id.new_bottle_varieties_autocomplete);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, varieties);
+		autocomplete.setAdapter(adapter);
 	}
 
 	@Override
@@ -369,12 +462,18 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 	}
 	
-	public interface AbstractBottleInfoFragmentCallbacks {
-		public void onTakePicture();
+	private void setBackground() {
+		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
+		scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
 	}
 
 	public void setPicture(String photoPath) {
-		this.photoPath  = photoPath;
+		
+		File picture = new File(photoPath);
+		if (!picture.exists() || !picture.isFile() || !picture.canRead()) {
+			setBackground();
+			return;
+		}
 		
 		// Get the dimension of the view
 		ImageView imageView = (ImageView) getView().findViewById(R.id.background_picture);
@@ -403,5 +502,22 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.abstract_bottle_info_linear_layout);
 	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
 	    ll.setPadding(0, top, 0, 0);
+	    
+	    // Suppress the old picture to gain space:
+	    if (this.photoPath != null)
+	    	suppressPicture();
+	    this.photoPath  = photoPath;
+	}
+
+	private void suppressPicture() {
+		File picture = new File(this.photoPath);
+		if (!picture.delete())
+			Log.e("FILE_DELETE", "Previous picture not deleted.");
+
+		this.photoPath = null;
+	}
+	
+	public interface AbstractBottleInfoFragmentCallbacks {
+		public void onTakePicture();
 	}
 }

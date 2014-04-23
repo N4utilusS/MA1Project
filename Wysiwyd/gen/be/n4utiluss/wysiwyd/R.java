@@ -182,62 +182,64 @@ public final class R {
     }
     public static final class id {
         public static final int abstract_bottle_info_linear_layout=0x7f0a000d;
-        public static final int action_edit=0x7f0a0037;
-        public static final int action_execute=0x7f0a0036;
-        public static final int action_new=0x7f0a0038;
-        public static final int action_picture=0x7f0a0035;
-        public static final int action_settings=0x7f0a0039;
+        public static final int action_edit=0x7f0a0039;
+        public static final int action_execute=0x7f0a0038;
+        public static final int action_new=0x7f0a003a;
+        public static final int action_picture=0x7f0a0037;
+        public static final int action_settings=0x7f0a003b;
         public static final int background_picture=0x7f0a000b;
         public static final int bottle_detail_container=0x7f0a0001;
         public static final int bottle_list=0x7f0a0000;
         public static final int buttonNFC=0x7f0a0009;
         public static final int buttonQRCode=0x7f0a0008;
         public static final int container=0x7f0a0007;
-        public static final int details_addDate=0x7f0a002c;
-        public static final int details_apogee=0x7f0a002d;
-        public static final int details_appellation=0x7f0a0021;
-        public static final int details_background_picture=0x7f0a001e;
-        public static final int details_code=0x7f0a0030;
-        public static final int details_colour=0x7f0a0028;
-        public static final int details_effervescence=0x7f0a002a;
-        public static final int details_linear_layout=0x7f0a0020;
-        public static final int details_location=0x7f0a002e;
-        public static final int details_mark=0x7f0a0027;
-        public static final int details_name=0x7f0a0022;
-        public static final int details_note=0x7f0a002f;
-        public static final int details_price=0x7f0a0026;
-        public static final int details_quantity=0x7f0a0025;
-        public static final int details_region=0x7f0a0024;
-        public static final int details_sugar=0x7f0a0029;
-        public static final int details_varieties_layout=0x7f0a002b;
-        public static final int details_vintage=0x7f0a0023;
+        public static final int details_addDate=0x7f0a002e;
+        public static final int details_apogee=0x7f0a002f;
+        public static final int details_appellation=0x7f0a0023;
+        public static final int details_background_picture=0x7f0a0020;
+        public static final int details_code=0x7f0a0032;
+        public static final int details_colour=0x7f0a002a;
+        public static final int details_effervescence=0x7f0a002c;
+        public static final int details_linear_layout=0x7f0a0022;
+        public static final int details_location=0x7f0a0030;
+        public static final int details_mark=0x7f0a0029;
+        public static final int details_name=0x7f0a0024;
+        public static final int details_note=0x7f0a0031;
+        public static final int details_price=0x7f0a0028;
+        public static final int details_quantity=0x7f0a0027;
+        public static final int details_region=0x7f0a0026;
+        public static final int details_sugar=0x7f0a002b;
+        public static final int details_varieties_layout=0x7f0a002d;
+        public static final int details_vintage=0x7f0a0025;
         public static final int imageButtonScan=0x7f0a0002;
         public static final int imageButtonSearch=0x7f0a0003;
-        public static final int list_element_bottle_mark=0x7f0a0033;
-        public static final int list_element_bottle_name=0x7f0a0031;
-        public static final int list_element_bottle_quantity=0x7f0a0034;
-        public static final int list_element_bottle_vintage=0x7f0a0032;
-        public static final int new_bottle_addDate=0x7f0a0019;
-        public static final int new_bottle_apogee=0x7f0a001a;
+        public static final int list_element_bottle_mark=0x7f0a0035;
+        public static final int list_element_bottle_name=0x7f0a0033;
+        public static final int list_element_bottle_quantity=0x7f0a0036;
+        public static final int list_element_bottle_vintage=0x7f0a0034;
+        public static final int new_bottle_addDate=0x7f0a001b;
+        public static final int new_bottle_add_variety_button=0x7f0a001a;
+        public static final int new_bottle_apogee=0x7f0a001c;
         public static final int new_bottle_appellation=0x7f0a000e;
-        public static final int new_bottle_code=0x7f0a001d;
+        public static final int new_bottle_code=0x7f0a001f;
         public static final int new_bottle_colour=0x7f0a0015;
         public static final int new_bottle_effervescence=0x7f0a0017;
-        public static final int new_bottle_location=0x7f0a001b;
+        public static final int new_bottle_location=0x7f0a001d;
         public static final int new_bottle_mark=0x7f0a0014;
         public static final int new_bottle_name=0x7f0a000f;
-        public static final int new_bottle_note=0x7f0a001c;
+        public static final int new_bottle_note=0x7f0a001e;
         public static final int new_bottle_price=0x7f0a0013;
         public static final int new_bottle_quantity=0x7f0a0012;
         public static final int new_bottle_region=0x7f0a0011;
         public static final int new_bottle_sugar=0x7f0a0016;
+        public static final int new_bottle_varieties_autocomplete=0x7f0a0019;
         public static final int new_bottle_varieties_layout=0x7f0a0018;
         public static final int new_bottle_vintage=0x7f0a0010;
         public static final int results_details_container=0x7f0a0006;
         public static final int results_list_container=0x7f0a0005;
         public static final int results_main_container=0x7f0a0004;
         public static final int scrollView_abstract_bottle_info=0x7f0a000c;
-        public static final int scrollView_details=0x7f0a001f;
+        public static final int scrollView_details=0x7f0a0021;
         public static final int testText=0x7f0a000a;
     }
     public static final class layout {
@@ -274,13 +276,13 @@ public final class R {
         public static final int scan_choice=0x7f090005;
     }
     public static final class string {
-        public static final int action_edit=0x7f060009;
-        public static final int action_execute=0x7f060008;
-        public static final int action_new=0x7f060007;
-        public static final int action_picture=0x7f06000a;
-        public static final int action_settings=0x7f060002;
+        public static final int action_edit=0x7f060007;
+        public static final int action_execute=0x7f06000a;
+        public static final int action_new=0x7f060006;
+        public static final int action_picture=0x7f06000b;
+        public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
-        public static final int background_picture=0x7f06000b;
+        public static final int background_picture=0x7f060008;
         public static final int details_section_add_date=0x7f06000f;
         public static final int details_section_apogee=0x7f060010;
         public static final int details_section_appellation=0x7f060014;
@@ -299,11 +301,13 @@ public final class R {
         public static final int details_section_sugar=0x7f06000d;
         public static final int details_section_varieties=0x7f06001b;
         public static final int details_section_vintage=0x7f060016;
-        public static final int hello_world=0x7f060001;
-        public static final int nfc_code=0x7f060005;
-        public static final int qr_code=0x7f060004;
-        public static final int title_activity_results=0x7f060006;
-        public static final int title_activity_scan_choice=0x7f060003;
+        /**  Strings for the new bottle fragment 
+         */
+        public static final int new_bottle_add_variety=0x7f060009;
+        public static final int nfc_code=0x7f060004;
+        public static final int qr_code=0x7f060003;
+        public static final int title_activity_results=0x7f060005;
+        public static final int title_activity_scan_choice=0x7f060002;
     }
     public static final class style {
         /** 

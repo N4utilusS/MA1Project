@@ -13,6 +13,7 @@ public final class DatabaseContract {
     private static final String PRIMARY_KEY = " PRIMARY KEY";
     private static final String AUTOINCREMENT = " AUTOINCREMENT";
     private static final String NOT_NULL = " NOT NULL";
+    private static final String UNIQUE = " UNIQUE";
     
     
 	/**
@@ -90,7 +91,7 @@ public final class DatabaseContract {
 		public static final String CREATE_TABLE = "CREATE TABLE " +
 				TABLE_NAME + " (" +
 						_ID 				+ INTEGER_TYPE 	+ PRIMARY_KEY 	+ AUTOINCREMENT + COMMA_SEP +
-						COLUMN_NAME_NAME	+ TEXT_TYPE 	+ NOT_NULL +
+						COLUMN_NAME_NAME	+ TEXT_TYPE 	+ NOT_NULL + UNIQUE +
 				")";
 		
 		public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;

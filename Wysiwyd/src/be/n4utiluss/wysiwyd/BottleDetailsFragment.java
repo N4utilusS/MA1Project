@@ -1,5 +1,7 @@
 package be.n4utiluss.wysiwyd;
 
+import java.io.File;
+
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.*;
 import be.n4utiluss.wysiwyd.fonts.Fonts;
@@ -185,8 +187,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 				if (!cursor.isNull(pictureColumnIndex)) {
 					this.setPicture(cursor.getString(pictureColumnIndex));
 				} else {
-					ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
-					scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+					setBackground();
 				}
 			}
 			break;
@@ -212,7 +213,18 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	}
 	
+	private void setBackground() {
+		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
+		scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+	}
+	
 	public void setPicture(String photoPath) {
+		
+		File picture = new File(photoPath);
+		if (!picture.exists() || !picture.isFile() || !picture.canRead()) {
+			setBackground();
+			return;
+		}
 		
 		// Get the dimension of the view
 		ImageView imageView = (ImageView) getView().findViewById(R.id.details_background_picture);
