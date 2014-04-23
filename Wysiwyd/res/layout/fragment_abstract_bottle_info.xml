@@ -369,7 +369,7 @@
                     android:layout_gravity="center"
                     android:layout_row="1"
                     android:inputType="number"
-                    android:text="47"
+                    android:text="1"
                     android:textAppearance="@style/TextSmall" />
             </GridLayout>
         </LinearLayout>

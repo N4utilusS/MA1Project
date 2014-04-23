@@ -262,9 +262,9 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					new DatabaseHelper(this.getActivity()), 
 					
-					"SELECT DISTINCT v." + VarietyTable.COLUMN_NAME_NAME + ", v." + VarietyTable._ID + 
+					"SELECT v." + VarietyTable.COLUMN_NAME_NAME + ", v." + VarietyTable._ID + " AS " + VarietyTable._ID +
 					" FROM " + BottleVarietyTable.TABLE_NAME + " bv, " + VarietyTable.TABLE_NAME + " v " +
-					" WHERE bv." + BottleVarietyTable._ID + " = ?" +
+					" WHERE bv." + BottleVarietyTable.COLUMN_NAME_BOTTLE_ID + " = ?" +
 					" AND bv." + BottleVarietyTable.COLUMN_NAME_VARIETY_ID + " = v." + VarietyTable._ID, 
 					
 					new String[] { idString });
@@ -279,10 +279,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 					" FROM " + VarietyTable.TABLE_NAME, 
 					
 					null);
-			
-		
 		}
-
 
 		return cursorLoader;
 	}
@@ -291,100 +288,114 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		switch (loader.getId()){
 		case MAIN_INFO_LOADER:
-			if (cursor.moveToFirst()) {
-
-				EditText appellation = (EditText) getView().findViewById(R.id.new_bottle_appellation);
-				EditText name = (EditText) getView().findViewById(R.id.new_bottle_name);
-				EditText vintage = (EditText) getView().findViewById(R.id.new_bottle_vintage);
-				EditText region = (EditText) getView().findViewById(R.id.new_bottle_region);
-				EditText quantity = (EditText) getView().findViewById(R.id.new_bottle_quantity);
-				EditText price = (EditText) getView().findViewById(R.id.new_bottle_price);
-				RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.new_bottle_mark);
-				Spinner colour = (Spinner) getView().findViewById(R.id.new_bottle_colour);
-				Spinner sugar = (Spinner) getView().findViewById(R.id.new_bottle_sugar);
-				Spinner effervescence = (Spinner) getView().findViewById(R.id.new_bottle_effervescence);
-				DatePicker addDate = (DatePicker) getView().findViewById(R.id.new_bottle_addDate);
-				DatePicker apogee = (DatePicker) getView().findViewById(R.id.new_bottle_apogee);
-				EditText location = (EditText) getView().findViewById(R.id.new_bottle_location);
-				EditText note = (EditText) getView().findViewById(R.id.new_bottle_note);
-				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
-
-				appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
-				name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
-				vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
-				region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
-				quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))));
-				price.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
-				
-				int markColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK);
-				if (!cursor.isNull(markColumnIndex)) {
-					ratingBar.setRating(cursor.getInt(markColumnIndex));
-				} else {
-					ratingBar.setRating(0);
-				}
-
-				int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
-				colour.setSelection(colourValue);
-
-				int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
-				sugar.setSelection(sugarValue);
-
-				int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
-				effervescence.setSelection(effervescenceValue);
-				
-				// Add date setting:
-				String addDateString = cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE));
-				String[] addDateArray = addDateString.split("-");
-				
-				try {
-					int year = Integer.parseInt(addDateArray[0]);
-					int month = Integer.parseInt(addDateArray[1]);
-					int day = Integer.parseInt(addDateArray[2]);
-					
-					addDate.init(year, month, day, null);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-					Log.e("NumberFormatException", "Number provided is not correctly formatted (add date)");
-				}
-				
-				// Apogee setting;
-				String apogeeString = cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE));
-				String[] apogeeArray = apogeeString.split("-");
-				
-				try {
-					int year = Integer.parseInt(apogeeArray[0]);
-					int month = Integer.parseInt(apogeeArray[1]);
-					int day = Integer.parseInt(apogeeArray[2]);
-					
-					apogee.init(year, month, day, null);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-					Log.e("NumberFormatException", "Number provided is not correctly formatted");
-				}
-								
-				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
-				note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
-				code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
-				
-				
-				int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
-				if (!cursor.isNull(pictureColumnIndex)) {
-					setPicture(cursor.getString(pictureColumnIndex));
-				} else {
-					setBackground();
-				}
+			try{
+				setInfo(cursor);
+			} finally {
+				cursor.close();
 			}
 			break;
 
 		case BOTTLE_VARIETIES_LOADER:
-			setVarieties(cursor);
+			try{
+				setVarieties(cursor);
+			} finally {
+				cursor.close();
+			}
 			break;
 		
 		case ALL_VARIETIES_LOADER:
-			
-			setAllVarieties(cursor);
+			try{
+				setAllVarieties(cursor);
+			} finally {
+				cursor.close();
+			}
 		}
+	}
+	
+	protected void setInfo(Cursor cursor) {
+		if (cursor.moveToFirst()) {
 
+			EditText appellation = (EditText) getView().findViewById(R.id.new_bottle_appellation);
+			EditText name = (EditText) getView().findViewById(R.id.new_bottle_name);
+			EditText vintage = (EditText) getView().findViewById(R.id.new_bottle_vintage);
+			EditText region = (EditText) getView().findViewById(R.id.new_bottle_region);
+			EditText quantity = (EditText) getView().findViewById(R.id.new_bottle_quantity);
+			EditText price = (EditText) getView().findViewById(R.id.new_bottle_price);
+			RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.new_bottle_mark);
+			Spinner colour = (Spinner) getView().findViewById(R.id.new_bottle_colour);
+			Spinner sugar = (Spinner) getView().findViewById(R.id.new_bottle_sugar);
+			Spinner effervescence = (Spinner) getView().findViewById(R.id.new_bottle_effervescence);
+			DatePicker addDate = (DatePicker) getView().findViewById(R.id.new_bottle_addDate);
+			DatePicker apogee = (DatePicker) getView().findViewById(R.id.new_bottle_apogee);
+			EditText location = (EditText) getView().findViewById(R.id.new_bottle_location);
+			EditText note = (EditText) getView().findViewById(R.id.new_bottle_note);
+			EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
+
+			appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
+			name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
+			vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
+			region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
+			quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))));
+			price.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
+			
+			int markColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK);
+			if (!cursor.isNull(markColumnIndex)) {
+				ratingBar.setRating(cursor.getInt(markColumnIndex));
+			} else {
+				ratingBar.setRating(0);
+			}
+
+			int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
+			colour.setSelection(colourValue);
+
+			int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
+			sugar.setSelection(sugarValue);
+
+			int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
+			effervescence.setSelection(effervescenceValue);
+			
+			// Add date setting:
+			String addDateString = cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE));
+			String[] addDateArray = addDateString.split("-");
+			
+			try {
+				int year = Integer.parseInt(addDateArray[0]);
+				int month = Integer.parseInt(addDateArray[1]);
+				int day = Integer.parseInt(addDateArray[2]);
+				
+				addDate.init(year, month, day, null);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				Log.e("NumberFormatException", "Number provided is not correctly formatted (add date)");
+			}
+			
+			// Apogee setting;
+			String apogeeString = cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE));
+			String[] apogeeArray = apogeeString.split("-");
+			
+			try {
+				int year = Integer.parseInt(apogeeArray[0]);
+				int month = Integer.parseInt(apogeeArray[1]);
+				int day = Integer.parseInt(apogeeArray[2]);
+				
+				apogee.init(year, month, day, null);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				Log.e("NumberFormatException", "Number provided is not correctly formatted");
+			}
+							
+			location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
+			note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
+			code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
+			
+			
+			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
+			if (!cursor.isNull(pictureColumnIndex)) {
+				setPicture(cursor.getString(pictureColumnIndex));
+			} else {
+				setBackground();
+			}
+		}
 	}
 	
 	private void setVarieties(Cursor cursor) {

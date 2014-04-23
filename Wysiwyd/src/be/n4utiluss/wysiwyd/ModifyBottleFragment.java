@@ -6,8 +6,10 @@ import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,13 +65,19 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 		for (int i = AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS; i < count; ++i) {
 			TextView tv = (TextView) ll.getChildAt(i);
 			String text = tv.getText().toString();
-			Log.i("VARIETY", text);
 			
-			// Insert or ignore if already in DB:
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(VarietyTable.COLUMN_NAME_NAME, text);
-			long id = db.insertWithOnConflict(VarietyTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-			
+			// Insert or get id if already in DB:
+			String[] selectionArgs2 = {text};
+			Cursor cursor = db.query(VarietyTable.TABLE_NAME, null, VarietyTable.COLUMN_NAME_NAME + " = ?", selectionArgs2, null, null, null, "1");
+			long id;
+			if (cursor.moveToFirst()) {
+				id = cursor.getLong(cursor.getColumnIndex(VarietyTable._ID));
+			} else {	// If variety not in DB, add it.
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(VarietyTable.COLUMN_NAME_NAME, text);
+				id = db.insert(VarietyTable.TABLE_NAME, null, contentValues);
+			}
+						
 			// Insert relation in bottle variety table:
 			ContentValues varietyValues = new ContentValues();
 			varietyValues.put(BottleVarietyTable.COLUMN_NAME_BOTTLE_ID, bottleId);

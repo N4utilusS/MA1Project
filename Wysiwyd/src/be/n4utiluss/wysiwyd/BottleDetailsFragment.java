@@ -32,7 +32,7 @@ import android.widget.TextView;
 public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
 	private static final int MAIN_INFO_LOADER = 0;
-	private static final int VARIETY_LOADER = 1;
+	private static final int BOTTLE_VARIETIES_LOADER = 1;
 	private BottleDetailsFragmentCallbacks linkedActivity;
 
 	@Override
@@ -53,10 +53,8 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 		if (this.getArguments().containsKey(BottleTable._ID)) {
 			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
-			getLoaderManager().restartLoader(VARIETY_LOADER, null, this);
-			Log.i("CREATE", "Test");
+			getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
 		}
-
 		return rootView;
 	}
 
@@ -118,12 +116,12 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 							new String[] { idString });
 
 			break;
-		case VARIETY_LOADER:
+		case BOTTLE_VARIETIES_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					new DatabaseHelper(this.getActivity()), 
-					"SELECT DISTINCT v." + VarietyTable.COLUMN_NAME_NAME +
+					"SELECT v." + VarietyTable.COLUMN_NAME_NAME + ", v." + VarietyTable._ID + " AS " + VarietyTable._ID +
 					" FROM " + BottleVarietyTable.TABLE_NAME + " bv, " + VarietyTable.TABLE_NAME + " v " +
-					" WHERE bv." + BottleVarietyTable._ID + " = ?" +
+					" WHERE bv." + BottleVarietyTable.COLUMN_NAME_BOTTLE_ID + " = ?" +
 					" AND bv." + BottleVarietyTable.COLUMN_NAME_VARIETY_ID + " = v." + VarietyTable._ID, 
 					new String[] { idString });
 
@@ -139,69 +137,18 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 		switch (loader.getId()){
 		case MAIN_INFO_LOADER:
-			if (cursor.moveToFirst()) {
-
-				TextView appellation = (TextView) getView().findViewById(R.id.details_appellation);
-				TextView name = (TextView) getView().findViewById(R.id.details_name);
-				TextView vintage = (TextView) getView().findViewById(R.id.details_vintage);
-				TextView region = (TextView) getView().findViewById(R.id.details_region);
-				TextView quantity = (TextView) getView().findViewById(R.id.details_quantity);
-				TextView price = (TextView) getView().findViewById(R.id.details_price);
-				RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.details_mark);
-				TextView colour = (TextView) getView().findViewById(R.id.details_colour);
-				TextView sugar = (TextView) getView().findViewById(R.id.details_sugar);
-				TextView effervescence = (TextView) getView().findViewById(R.id.details_effervescence);
-				TextView addDate = (TextView) getView().findViewById(R.id.details_addDate);
-				TextView apogee = (TextView) getView().findViewById(R.id.details_apogee);
-				TextView location = (TextView) getView().findViewById(R.id.details_location);
-				TextView note = (TextView) getView().findViewById(R.id.details_note);
-				TextView code = (TextView) getView().findViewById(R.id.details_code);
-
-				appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
-				name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
-				vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
-				region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
-				quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))) + " bottles");
-				price.setText("Price: " + Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
-				ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
-
-				int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
-				String[] colourArray = getResources().getStringArray(R.array.colour_array);
-				colour.setText(colourArray[colourValue]);
-
-				int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
-				String[] sugarArray = getResources().getStringArray(R.array.sugar_array);
-				sugar.setText(sugarArray[sugarValue]);
-
-				int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
-				String[] effervescenceArray = getResources().getStringArray(R.array.effervescence_array);
-				effervescence.setText(effervescenceArray[effervescenceValue]);
-				
-				addDate.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE)));
-				apogee.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE)));
-				location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
-				note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
-				code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
-				
-				int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
-				if (!cursor.isNull(pictureColumnIndex)) {
-					this.setPicture(cursor.getString(pictureColumnIndex));
-				} else {
-					setBackground();
-				}
+			try{
+				setInfo(cursor);
+			} finally {
+				cursor.close();
 			}
 			break;
 
-		case VARIETY_LOADER:
-			if (this.getView() == null)
-				Log.e("Details", "Null POINTER!!!!");
-			LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
-			cursor.moveToPosition(-1);
-			while (cursor.moveToNext()) {
-				TextView tv = new TextView(getActivity());
-				tv.setText(cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME)));
-
-				ll.addView(tv);
+		case BOTTLE_VARIETIES_LOADER:
+			try{
+				setVarieties(cursor);
+			} finally {
+				cursor.close();
 			}
 			break;
 		default:
@@ -211,6 +158,77 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 
+	}
+	
+	private void setInfo(Cursor cursor) {
+		if (cursor.moveToFirst()) {
+
+			TextView appellation = (TextView) getView().findViewById(R.id.details_appellation);
+			TextView name = (TextView) getView().findViewById(R.id.details_name);
+			TextView vintage = (TextView) getView().findViewById(R.id.details_vintage);
+			TextView region = (TextView) getView().findViewById(R.id.details_region);
+			TextView quantity = (TextView) getView().findViewById(R.id.details_quantity);
+			TextView price = (TextView) getView().findViewById(R.id.details_price);
+			RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.details_mark);
+			TextView colour = (TextView) getView().findViewById(R.id.details_colour);
+			TextView sugar = (TextView) getView().findViewById(R.id.details_sugar);
+			TextView effervescence = (TextView) getView().findViewById(R.id.details_effervescence);
+			TextView addDate = (TextView) getView().findViewById(R.id.details_addDate);
+			TextView apogee = (TextView) getView().findViewById(R.id.details_apogee);
+			TextView location = (TextView) getView().findViewById(R.id.details_location);
+			TextView note = (TextView) getView().findViewById(R.id.details_note);
+			TextView code = (TextView) getView().findViewById(R.id.details_code);
+
+			appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
+			name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
+			vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
+			region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
+			quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))) + " bottles");
+			price.setText("Price: " + Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
+			ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
+
+			int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
+			String[] colourArray = getResources().getStringArray(R.array.colour_array);
+			colour.setText(colourArray[colourValue]);
+
+			int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
+			String[] sugarArray = getResources().getStringArray(R.array.sugar_array);
+			sugar.setText(sugarArray[sugarValue]);
+
+			int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
+			String[] effervescenceArray = getResources().getStringArray(R.array.effervescence_array);
+			effervescence.setText(effervescenceArray[effervescenceValue]);
+			
+			addDate.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE)));
+			apogee.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE)));
+			location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
+			note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
+			code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
+			
+			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
+			if (!cursor.isNull(pictureColumnIndex)) {
+				this.setPicture(cursor.getString(pictureColumnIndex));
+			} else {
+				setBackground();
+			}
+		}
+	}
+	
+	private void setVarieties(Cursor cursor) {
+		if (this.getView() == null)
+			Log.e("Details", "Null POINTER!!!!");
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
+		cursor.moveToPosition(-1);
+		while (cursor.moveToNext()) {
+			String text = cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME));
+			addVarietyToLayout(text, ll);
+		}
+	}
+	
+	protected void addVarietyToLayout(String text, LinearLayout ll) {
+		TextView tv = new TextView(getActivity());
+		tv.setText(text);
+		ll.addView(tv);
 	}
 	
 	private void setBackground() {
@@ -251,7 +269,6 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_linear_layout);
 	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
 	    ll.setPadding(0, top, 0, 0);
-	    Log.i("SETPICTURE", "End" + photoPath);
 	}
 
 	/**

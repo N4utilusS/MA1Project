@@ -1,18 +1,19 @@
 package be.n4utiluss.wysiwyd;
 
-import be.n4utiluss.wysiwyd.AbstractBottleInfoFragment.AbstractBottleInfoFragmentCallbacks;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class NewBottleFragment extends AbstractBottleInfoFragment {
+	private long insertedBottleId = -1;
 
 	private NewBottleFragmentCallbacks getLinkedActivity() {
 		// Activities containing this fragment must implement its callbacks.
@@ -29,7 +30,7 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-		db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
+		this.insertedBottleId = db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
 		db.close();
 		dismissFragment();
 		getLinkedActivity().onNewBottleAdded();
@@ -45,9 +46,11 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 		 * - Suppress all entries in BottleVariety table for the current bottle.
 		 * - Put new entries.
 		 */
+		if (this.insertedBottleId == -1)
+			return;
+		
 		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		long bottleId = getArguments().getLong(DatabaseContract.BottleTable._ID);
 
 		// Insert new varieties if not present, and add relations in the BottleVariety table:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
@@ -56,16 +59,22 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 		for (int i = AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS; i < count; ++i) {
 			TextView tv = (TextView) ll.getChildAt(i);
 			String text = tv.getText().toString();
-			Log.i("VARIETY", text);
 			
-			// Insert or ignore if already in DB:
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(VarietyTable.COLUMN_NAME_NAME, text);
-			long id = db.insertWithOnConflict(VarietyTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-			
+			// Insert or get id if already in DB:
+			String[] selectionArgs2 = {text};
+			Cursor cursor = db.query(VarietyTable.TABLE_NAME, null, VarietyTable.COLUMN_NAME_NAME + " = ?", selectionArgs2, null, null, null, "1");
+			long id;
+			if (cursor.moveToFirst()) {
+				id = cursor.getLong(cursor.getColumnIndex(VarietyTable._ID));
+			} else {	// If variety not in DB, add it.
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(VarietyTable.COLUMN_NAME_NAME, text);
+				id = db.insert(VarietyTable.TABLE_NAME, null, contentValues);
+			}
+						
 			// Insert relation in bottle variety table:
 			ContentValues varietyValues = new ContentValues();
-			varietyValues.put(BottleVarietyTable.COLUMN_NAME_BOTTLE_ID, bottleId);
+			varietyValues.put(BottleVarietyTable.COLUMN_NAME_BOTTLE_ID, this.insertedBottleId);
 			varietyValues.put(BottleVarietyTable.COLUMN_NAME_VARIETY_ID, id);
 			db.insert(BottleVarietyTable.TABLE_NAME, null, varietyValues);
 		}

@@ -91,7 +91,7 @@ public final class DatabaseContract {
 		public static final String CREATE_TABLE = "CREATE TABLE " +
 				TABLE_NAME + " (" +
 						_ID 				+ INTEGER_TYPE 	+ PRIMARY_KEY 	+ AUTOINCREMENT + COMMA_SEP +
-						COLUMN_NAME_NAME	+ TEXT_TYPE 	+ NOT_NULL + UNIQUE +
+						COLUMN_NAME_NAME	+ TEXT_TYPE 	+ UNIQUE 		+ NOT_NULL +
 				")";
 		
 		public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
