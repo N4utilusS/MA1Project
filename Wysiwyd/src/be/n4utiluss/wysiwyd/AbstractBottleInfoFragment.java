@@ -248,7 +248,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		switch (idLoader){
 		case MAIN_INFO_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
-					new DatabaseHelper(this.getActivity()), 
+					DatabaseHelper.getInstance(getActivity()), 
 					
 					"SELECT * " +
 							" FROM " + BottleTable.TABLE_NAME +
@@ -260,7 +260,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			
 		case BOTTLE_VARIETIES_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
-					new DatabaseHelper(this.getActivity()), 
+					DatabaseHelper.getInstance(getActivity()), 
 					
 					"SELECT v." + VarietyTable.COLUMN_NAME_NAME + ", v." + VarietyTable._ID + " AS " + VarietyTable._ID +
 					" FROM " + BottleVarietyTable.TABLE_NAME + " bv, " + VarietyTable.TABLE_NAME + " v " +
@@ -273,7 +273,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			
 		case ALL_VARIETIES_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
-					new DatabaseHelper(this.getActivity()), 
+					DatabaseHelper.getInstance(getActivity()), 
 					
 					"SELECT *" +
 					" FROM " + VarietyTable.TABLE_NAME, 

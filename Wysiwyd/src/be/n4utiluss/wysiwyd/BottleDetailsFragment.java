@@ -109,7 +109,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		switch (idLoader){
 		case MAIN_INFO_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
-					new DatabaseHelper(this.getActivity()), 
+					DatabaseHelper.getInstance(getActivity()), 
 					"SELECT * " +
 							" FROM " + BottleTable.TABLE_NAME +
 							" WHERE " + BottleTable._ID + " = ?", 
@@ -118,7 +118,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			break;
 		case BOTTLE_VARIETIES_LOADER:
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
-					new DatabaseHelper(this.getActivity()), 
+					DatabaseHelper.getInstance(getActivity()), 
 					"SELECT v." + VarietyTable.COLUMN_NAME_NAME + ", v." + VarietyTable._ID + " AS " + VarietyTable._ID +
 					" FROM " + BottleVarietyTable.TABLE_NAME + " bv, " + VarietyTable.TABLE_NAME + " v " +
 					" WHERE bv." + BottleVarietyTable.COLUMN_NAME_BOTTLE_ID + " = ?" +

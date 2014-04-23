@@ -2,18 +2,11 @@ package be.n4utiluss.wysiwyd;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import be.n4utiluss.wysiwyd.DAO.Bottle;
-import be.n4utiluss.wysiwyd.DAO.DAO;
-import be.n4utiluss.wysiwyd.DAO.DAOFactory;
-import be.n4utiluss.wysiwyd.DAO.requests.RequestBottlesByCode;
-import be.n4utiluss.wysiwyd.database.DatabaseManager;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 

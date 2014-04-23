@@ -27,7 +27,7 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 
 	@Override
 	protected void writeToDB(ContentValues values) {
-		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+		DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		this.insertedBottleId = db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
@@ -49,7 +49,7 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 		if (this.insertedBottleId == -1)
 			return;
 		
-		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+		DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		// Insert new varieties if not present, and add relations in the BottleVariety table:

@@ -27,7 +27,7 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 
 	@Override
 	protected void writeToDB(ContentValues values) {
-		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+		DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		String selection = DatabaseContract.BottleTable._ID + " = ?";
@@ -49,7 +49,7 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 		 * - Suppress all entries in BottleVariety table for the current bottle.
 		 * - Put new entries.
 		 */
-		DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+		DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		long bottleId = getArguments().getLong(DatabaseContract.BottleTable._ID);
 

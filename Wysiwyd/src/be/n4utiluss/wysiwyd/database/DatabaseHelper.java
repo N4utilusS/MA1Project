@@ -5,9 +5,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+	private final static Object o = new Object();
+	private static DatabaseHelper instance = null;
 
-	public DatabaseHelper(Context context) {
+	private DatabaseHelper(Context context) {
 		super(context, DatabaseContract.DATABASE_NAME, null, DatabaseContract.DATABASE_VERSION);
+	}
+	
+	public static DatabaseHelper getInstance(Context context) {
+		synchronized(o) {
+			if (instance == null)
+				instance = new DatabaseHelper(context.getApplicationContext());
+		}
+		
+		return instance;
 	}
 
 	@Override

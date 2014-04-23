@@ -93,7 +93,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		String codeString = Long.toString(code);
 
 		SQLiteCursorLoader cursorLoader = new SQLiteCursorLoader(this.getActivity(),
-				new DatabaseHelper(this.getActivity()), 
+				DatabaseHelper.getInstance(getActivity()), 
 				"SELECT " + BottleTable._ID + ", " + BottleTable.COLUMN_NAME_NAME + ", " + BottleTable.COLUMN_NAME_VINTAGE + ", " + BottleTable.COLUMN_NAME_MARK + ", " + BottleTable.COLUMN_NAME_QUANTITY +
 				" FROM " + BottleTable.TABLE_NAME +
 				" WHERE " + BottleTable.COLUMN_NAME_CODE + " = ?", 
