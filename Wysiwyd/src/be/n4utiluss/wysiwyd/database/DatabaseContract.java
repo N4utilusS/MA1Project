@@ -2,6 +2,11 @@ package be.n4utiluss.wysiwyd.database;
 
 import android.provider.BaseColumns;
 
+/**
+ * Class defining the database structure, and the scripts of tables creation.
+ * @author anthonydebruyn
+ *
+ */
 public final class DatabaseContract {
 	
 	public static final int DATABASE_VERSION = 1;

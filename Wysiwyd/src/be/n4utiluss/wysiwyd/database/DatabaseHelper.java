@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Manages connections with the database with a singleton
+ * @author anthonydebruyn
+ *
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private final static Object o = new Object();
 	private static DatabaseHelper instance = null;
@@ -12,6 +17,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		super(context, DatabaseContract.DATABASE_NAME, null, DatabaseContract.DATABASE_VERSION);
 	}
 	
+	/**
+	 * Returns the only instance of the class, to ensure no leaks are created.
+	 * @param context The context of the call.
+	 * @return The only instance.
+	 */
 	public static DatabaseHelper getInstance(Context context) {
 		synchronized(o) {
 			if (instance == null)

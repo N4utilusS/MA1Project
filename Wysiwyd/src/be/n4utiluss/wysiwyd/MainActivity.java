@@ -7,6 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * The main activity class, displayed when the app is launched.
+ * @author anthonydebruyn
+ *
+ */
 public class MainActivity extends Activity {
 
 	@Override

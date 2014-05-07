@@ -10,6 +10,11 @@ import android.widget.TextView;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 
+/**
+ * Activity managing the choice between all the scanning options, such as barcode/QR scanning or NFC.
+ * @author anthonydebruyn
+ *
+ */
 public class ScanChoice extends Activity {
 	public final static String BOTTLE_CODE = "be.n4utiluss.wysiwyd.BOTTLE_CODE";
 
@@ -40,18 +45,21 @@ public class ScanChoice extends Activity {
 		// TODO Remove:
 		Intent listIntent = new Intent(this, ResultsActivity.class);
 		listIntent.putExtra(BOTTLE_CODE, 1l);
-		this.startActivity(listIntent);
+		startActivity(listIntent);
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		if (scanResult != null) {
-			TextView tv = (TextView) this.findViewById(R.id.testText);
-			tv.setText(scanResult.toString());
+		if (requestCode == IntentIntegrator.REQUEST_CODE) {
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+			
+			if (scanResult != null) {
+				TextView tv = (TextView) this.findViewById(R.id.testText);
+				tv.setText(scanResult.toString());
 
-			Intent listIntent = new Intent(this, ResultsActivity.class);
-			listIntent.putExtra(BOTTLE_CODE, 1l);
-			this.startActivity(listIntent);
+				Intent listIntent = new Intent(this, ResultsActivity.class);
+				listIntent.putExtra(BOTTLE_CODE, 1l);
+				startActivity(listIntent);
+			}
 		}
 	}
 }

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -15,8 +16,13 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.ImageView;
 
+/**
+ * Activity managing the results of queries on bottles with certain properties.
+ * Manages the fragments dealing with the list of bottles, the creation and editing of bottles.
+ * @author anthonydebruyn
+ *
+ */
 public class ResultsActivity extends Activity implements BottlesListFragment.BottlesListFragmentCallbacks,
 														AbstractBottleInfoFragment.AbstractBottleInfoFragmentCallbacks,
 														NewBottleFragment.NewBottleFragmentCallbacks,
@@ -68,6 +74,11 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		return true;
 	}
 
+	/**
+	 * Creates and displays the fragment used to create a new bottle.
+	 * The id passed, if strictly positive, is used by the fragment to display the information from the associated bottle.
+	 * @param id The id of the bottle we want the information from, to pre-fill the text fields.
+	 */
 	private void showNewBottleFragment(long id) {
 		NewBottleFragment fragment = new NewBottleFragment();
 		if (id > 0) {
@@ -168,6 +179,9 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		dispatchTakePictureIntent();
 	}
 	
+	/**
+	 * Manages the picture capture by creating an intent and broadcasting it.
+	 */
 	private void dispatchTakePictureIntent() {
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	    // Ensure that there's a camera activity to handle the intent
@@ -189,6 +203,13 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	    }
 	}
 	
+	/**
+	 * Creates a new image file to receive the new picture.
+	 * The name will contain the date, plus a random number, thanks to the createTempFile() method.
+	 * @return The new file.
+	 * @throws IOException
+	 */
+	@SuppressLint("SimpleDateFormat")
 	private File createImageFile() throws IOException {
 	    // Create an image file name
 	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -210,6 +231,10 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	    return image;
 	}
 	
+	/**
+	 * Checks if the external storage is writable.
+	 * @return True if it is writable.
+	 */
 	public boolean isExternalStorageWritable() {
 	    String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state)) {

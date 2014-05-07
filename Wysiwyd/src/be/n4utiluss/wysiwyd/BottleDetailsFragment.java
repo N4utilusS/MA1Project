@@ -29,6 +29,11 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+/**
+ * Fragment displaying the details about a bottle.
+ * @author anthonydebruyn
+ *
+ */
 public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
 	private static final int MAIN_INFO_LOADER = 0;
@@ -160,6 +165,10 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	}
 	
+	/**
+	 * Puts the information received in the cursor into the text fields.
+	 * @param cursor The information about the bottle.
+	 */
 	private void setInfo(Cursor cursor) {
 		if (cursor.moveToFirst()) {
 
@@ -181,11 +190,27 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 			appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
 			name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
-			vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
-			region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
+			
+			int vintageColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE);
+			if (!cursor.isNull(vintageColumnIndex))
+				vintage.setText(Integer.toString(cursor.getInt(vintageColumnIndex)));
+			
+			int regionColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION);
+			if (!cursor.isNull(regionColumnIndex))
+				region.setText(cursor.getString(regionColumnIndex));
+			
 			quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))) + " bottles");
-			price.setText("Price: " + Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
-			ratingBar.setRating(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK)));
+			
+			int priceColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE);
+			if (!cursor.isNull(priceColumnIndex))
+				price.setText(Float.toString(cursor.getFloat(priceColumnIndex)));
+			
+			int markColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK);
+			if (!cursor.isNull(markColumnIndex)) {
+				ratingBar.setRating(cursor.getInt(markColumnIndex));
+			} else {
+				ratingBar.setRating(0);
+			}
 
 			int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
 			String[] colourArray = getResources().getStringArray(R.array.colour_array);
@@ -201,8 +226,15 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			
 			addDate.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE)));
 			apogee.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE)));
-			location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
-			note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
+			
+			int locationColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION);
+			if (!cursor.isNull(locationColumnIndex))
+				location.setText(cursor.getString(locationColumnIndex));
+			
+			int noteColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE);
+			if (!cursor.isNull(noteColumnIndex))
+				note.setText(cursor.getString(noteColumnIndex));
+			
 			code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
 			
 			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
@@ -214,6 +246,11 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		}
 	}
 	
+	/**
+	 * Puts the varieties information into the view.
+	 * Calls addVarietyToLayout() to add each variety.
+	 * @param cursor The varieties information coming from the SQLite DB.
+	 */
 	private void setVarieties(Cursor cursor) {
 		if (this.getView() == null)
 			Log.e("Details", "Null POINTER!!!!");
@@ -225,17 +262,29 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		}
 	}
 	
+	/**
+	 * Adds the passed variety to the layout and adds a long click listener on it.
+	 * @param text The variety name.
+	 * @param ll The target layout.
+	 */
 	protected void addVarietyToLayout(String text, LinearLayout ll) {
 		TextView tv = new TextView(getActivity());
 		tv.setText(text);
 		ll.addView(tv);
 	}
 	
+	/**
+	 * Sets the background of the fragment to a defined color. Used in case no picture is available.
+	 */
 	private void setBackground() {
 		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
 		scrollView.setBackgroundColor(getResources().getColor(R.color.DetailsBackground));
 	}
 	
+	/**
+	 * Sets the background picture to a given picture found at the location given by the passed path.
+	 * @param photoPath The photo path on the device.
+	 */
 	public void setPicture(String photoPath) {
 		
 		File picture = new File(photoPath);

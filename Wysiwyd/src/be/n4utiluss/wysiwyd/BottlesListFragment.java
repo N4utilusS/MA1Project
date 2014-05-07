@@ -20,6 +20,11 @@ import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
+/**
+ * Fragment displaying a list of bottles matching certain properties.
+ * @author anthonydebruyn
+ *
+ */
 public class BottlesListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>,
 																OnItemLongClickListener {
 
@@ -146,6 +151,11 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	    getListView().setOnItemLongClickListener(this);
 	}
 	
+	/**
+	 * Called when the view is recreated to reselect the bottle that was selected.
+	 * Selects the bottle with the passed position.
+	 * @param position The saved position, the index of the previously selected bottle.
+	 */
 	private void setActivatedPosition(int position) {
 		if (position == ListView.INVALID_POSITION) {
 			getListView().setItemChecked(activatedPosition, false);

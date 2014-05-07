@@ -12,6 +12,11 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * Fragment displaying all the tools needed to create a new bottle.
+ * @author anthonydebruyn
+ *
+ */
 public class NewBottleFragment extends AbstractBottleInfoFragment {
 	private long insertedBottleId = -1;
 

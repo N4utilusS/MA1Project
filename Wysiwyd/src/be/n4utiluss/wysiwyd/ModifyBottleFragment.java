@@ -9,10 +9,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * Fragment displaying the tools needed to edit a bottle information.
+ * @author anthonydebruyn
+ *
+ */
 public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 
 	private ModifyBottleFragmentCallbacks getLinkedActivity() {

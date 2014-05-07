@@ -568,7 +568,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	}
 	
 	/**
-	 * Sets the background of the fragment to a defined color in case no picture is available.
+	 * Sets the background of the fragment to a defined color. Used in case no picture is available.
 	 */
 	private void setBackground() {
 		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
