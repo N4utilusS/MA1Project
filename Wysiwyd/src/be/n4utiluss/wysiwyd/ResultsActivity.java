@@ -183,8 +183,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	        // Continue only if the File was successfully created
 	        if (photoFile != null) {
 	        	
-	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-	                    Uri.fromFile(photoFile));
+	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 	            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 	        }
 	    }

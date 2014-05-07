@@ -233,7 +233,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	
 	private void setBackground() {
 		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
-		scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+		scrollView.setBackgroundColor(getResources().getColor(R.color.DetailsBackground));
 	}
 	
 	public void setPicture(String photoPath) {
@@ -253,6 +253,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    bmOptions.inJustDecodeBounds = true;
 	    BitmapFactory.decodeFile(photoPath, bmOptions);
 	    int photoW = bmOptions.outWidth;
+	    int photoH = bmOptions.outHeight;
 
 	    // Determine how much to scale down the image
 	    int scaleFactor = photoW/targetW;
@@ -267,7 +268,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    
 	 // Put padding to see the image:
 	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_linear_layout);
-	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
+	    int top = (int) ((float) targetW/ (float) photoW * photoH);
 	    ll.setPadding(0, top, 0, 0);
 	}
 

@@ -5,11 +5,11 @@ import java.io.File;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,6 +32,7 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
@@ -40,6 +41,13 @@ import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
+/**
+ * Abstract class representing a fragment allowing to modify the properties of a bottle.
+ * It contains all the attributes and methods that inheriting classes have in common, such as the text fields.
+ * Two inheriting classes are the {@link ModifyBottleFragment} and the {@link NewBottleFragment}.
+ * @author anthonydebruyn
+ *
+ */
 public abstract class AbstractBottleInfoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnLongClickListener, OnClickListener {
 
 
@@ -49,6 +57,12 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	private String photoPath = null;
 	public static final int AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS = 2;
 	
+	/**
+	 * Returns the activity attached to this fragment.
+	 * The activity must implement the {@link AbstractBottleInfoFragmentCallbacks} interface.
+	 * This interface is used by the fragment to communicate with the activity.
+	 * @return The connected activity.
+	 */
 	private AbstractBottleInfoFragmentCallbacks getLinkedActivity() {
 		// Activities containing this fragment must implement its callbacks.
 		if (!(getActivity() instanceof AbstractBottleInfoFragmentCallbacks)) {
@@ -100,9 +114,19 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 		switch (id) {
 		case R.id.action_execute:
-			ContentValues values = getValues();
-			writeToDB(values);
-			writeVarietiesToDB();
+			try {
+				ContentValues values = getValues();
+				writeToDB(values);
+				writeVarietiesToDB();
+				dismissFragment();
+			} catch (Exception e) {
+				Context context = getActivity().getApplicationContext();
+				CharSequence text = e.getMessage();
+				int duration = Toast.LENGTH_SHORT;
+
+				Toast toast = Toast.makeText(context, text, duration);
+				toast.show();
+			}
 			return true;
 		
 		case R.id.action_picture:
@@ -114,15 +138,31 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		}
 	}
 
+	/**
+	 * Add the received information about a bottle to the SQLite DB.
+	 * The parameter passed contains all the information except the varieties.
+	 * @param values The information about the bottle except the varieties.
+	 */
 	abstract protected void writeToDB(ContentValues values);
 	
+	/**
+	 * Get the varieties information in the view of the fragment and add it to the SQLite DB.
+	 */
 	abstract protected void writeVarietiesToDB();
 
+	/**
+	 * Dismiss the fragment by popping it out of the back stack.
+	 */
 	protected void dismissFragment() {
 		this.getFragmentManager().popBackStack();
 	}
 
-	private ContentValues getValues() {
+	/**
+	 * Gets all the information about the bottle and puts it in a {@link ContentValues} object to give it later to the SQLite DB.
+	 * @return The information.
+	 * @throws Exception 
+	 */
+	private ContentValues getValues() throws Exception {
 		// TODO Add checkings on the data added.
 
 		TextView appellation = (TextView) getView().findViewById(R.id.new_bottle_appellation);
@@ -146,49 +186,58 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		String appellationValue = appellation.getText().toString();
 		if (!TextUtils.isEmpty(appellationValue))
 			values.put(DatabaseContract.BottleTable.COLUMN_NAME_APPELLATION, appellationValue);
+		else
+			throw new Exception("Appellation is mandatory!");
 
 		String nameValue = name.getText().toString();
 		if (!TextUtils.isEmpty(nameValue))
 			values.put(DatabaseContract.BottleTable.COLUMN_NAME_NAME, nameValue);
+		else
+			throw new Exception("Name is mandatory!");
 
 		String vintageStringValue = vintage.getText().toString();
 		if (!TextUtils.isEmpty(vintageStringValue)) {
 			try {
-				values.put(DatabaseContract.BottleTable.COLUMN_NAME_VINTAGE, Integer.valueOf(vintageStringValue));
+				values.put(DatabaseContract.BottleTable.COLUMN_NAME_VINTAGE, Math.abs(Integer.valueOf(vintageStringValue)));
 			}
 			catch (NumberFormatException e) {
-
+				throw new Exception("Vintage not recognized!");
 			}
+		} else if (effervescence.getSelectedItemPosition() > 0) {
+			values.putNull(DatabaseContract.BottleTable.COLUMN_NAME_VINTAGE);
 		} else {
-			// TODO Tell user error.
+			throw new Exception("Vintage is mandatory for not sparkling wines!");
 		}
 
 		String regionValue = region.getText().toString();
 		if (!TextUtils.isEmpty(regionValue))
 			values.put(DatabaseContract.BottleTable.COLUMN_NAME_REGION, regionValue);
+		else
+			values.putNull(DatabaseContract.BottleTable.COLUMN_NAME_REGION);
 
 		String quantityStringValue = quantity.getText().toString();
 		if (!TextUtils.isEmpty(quantityStringValue)) {
 			try {
-				values.put(DatabaseContract.BottleTable.COLUMN_NAME_QUANTITY, Integer.valueOf(quantityStringValue));
+				values.put(DatabaseContract.BottleTable.COLUMN_NAME_QUANTITY, Math.abs(Integer.valueOf(quantityStringValue)));
 			}
 			catch (NumberFormatException e) {
-
+				throw new Exception("Quantity not recognized!");
 			}
 		} else {
-			// TODO Tell user error.
+			throw new Exception("Quantity field empty!");
 		}
 
 		String priceStringValue = price.getText().toString();
 		if (!TextUtils.isEmpty(priceStringValue)) {
 			try {
-				values.put(DatabaseContract.BottleTable.COLUMN_NAME_PRICE, Float.valueOf(priceStringValue));
+				values.put(DatabaseContract.BottleTable.COLUMN_NAME_PRICE, Math.abs(Float.valueOf(priceStringValue)));
 			}
 			catch (NumberFormatException e) {
-
+				
+				throw new Exception("Price not recognized!");
 			}
 		} else {
-			// TODO Tell user error.
+			values.putNull(DatabaseContract.BottleTable.COLUMN_NAME_PRICE);
 		}
 
 		if (ratingBar.getRating() > 0)	// The minimum rating value is 1 star. If 0 is the value, we consider that no mark is given.
@@ -203,8 +252,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		int effervescenceValue = effervescence.getSelectedItemPosition();
 		values.put(DatabaseContract.BottleTable.COLUMN_NAME_EFFERVESCENCE, effervescenceValue);
 
-		// TODO Add the varieties.
-
 		String addDateValue = addDate.getYear() + "-" + addDate.getMonth() + "-" + addDate.getDayOfMonth();
 		values.put(DatabaseContract.BottleTable.COLUMN_NAME_ADD_DATE, addDateValue);
 
@@ -214,10 +261,14 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		String locationValue = location.getText().toString();
 		if (!TextUtils.isEmpty(locationValue))
 			values.put(DatabaseContract.BottleTable.COLUMN_NAME_LOCATION, locationValue);
+		else
+			values.putNull(DatabaseContract.BottleTable.COLUMN_NAME_LOCATION);
 
 		String noteValue = note.getText().toString();
 		if (!TextUtils.isEmpty(noteValue))
 			values.put(DatabaseContract.BottleTable.COLUMN_NAME_NOTE, noteValue);
+		else
+			values.putNull(DatabaseContract.BottleTable.COLUMN_NAME_NOTE);
 
 		String codeStringValue = code.getText().toString();
 		if (!TextUtils.isEmpty(codeStringValue)) {
@@ -225,15 +276,19 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				values.put(DatabaseContract.BottleTable.COLUMN_NAME_CODE, Integer.valueOf(codeStringValue));
 			}
 			catch (NumberFormatException e) {
-
+				throw new Exception("Code not recognized!");
 			}
 		} else {
-			// TODO Tell user error.
+			// Tell user error.
+			
+			throw new Exception("Code field empty!");
 		}
 		
 		// The picture path:
 		if (this.photoPath != null)
 			values.put(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE, this.photoPath);
+		else
+			values.putNull(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
 		
 		return values;
 	}
@@ -312,6 +367,10 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		}
 	}
 	
+	/**
+	 * Puts the information received in the cursor into the text fields for further modifications.
+	 * @param cursor The information about the bottle.
+	 */
 	protected void setInfo(Cursor cursor) {
 		if (cursor.moveToFirst()) {
 
@@ -333,10 +392,20 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 			appellation.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APPELLATION)));
 			name.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NAME)));
-			vintage.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE))));
-			region.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION)));
+			
+			int vintageColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_VINTAGE);
+			if (!cursor.isNull(vintageColumnIndex))
+				vintage.setText(Integer.toString(cursor.getInt(vintageColumnIndex)));
+			
+			int regionColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_REGION);
+			if (!cursor.isNull(regionColumnIndex))
+				region.setText(cursor.getString(regionColumnIndex));
+			
 			quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))));
-			price.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE))));
+			
+			int priceColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE);
+			if (!cursor.isNull(priceColumnIndex))
+				price.setText(Float.toString(cursor.getFloat(priceColumnIndex)));
 			
 			int markColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_MARK);
 			if (!cursor.isNull(markColumnIndex)) {
@@ -383,9 +452,15 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				e.printStackTrace();
 				Log.e("NumberFormatException", "Number provided is not correctly formatted");
 			}
-							
-			location.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION)));
-			note.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE)));
+			
+			int locationColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_LOCATION);
+			if (!cursor.isNull(locationColumnIndex))
+				location.setText(cursor.getString(locationColumnIndex));
+			
+			int noteColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_NOTE);
+			if (!cursor.isNull(noteColumnIndex))
+				note.setText(cursor.getString(noteColumnIndex));
+			
 			code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
 			
 			
@@ -398,9 +473,13 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		}
 	}
 	
+	/**
+	 * Puts the varieties information into the view.
+	 * Calls addVarietyToLayout() to add each variety.
+	 * @param cursor The varieties information coming from the SQLite DB.
+	 */
 	private void setVarieties(Cursor cursor) {
-		if (this.getView() == null)
-			Log.e("Details", "Null POINTER!!!!");
+		
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
 		cursor.moveToPosition(-1);
 		while (cursor.moveToNext()) {
@@ -409,6 +488,11 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		}
 	}
 	
+	/**
+	 * Adds the passed variety to the layout and adds a long click listener on it.
+	 * @param text The variety name.
+	 * @param ll The target layout.
+	 */
 	protected void addVarietyToLayout(String text, LinearLayout ll) {
 		TextView tv = new TextView(getActivity());
 		tv.setText(text);
@@ -422,6 +506,10 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			addVariety();
 	}
 	
+	/**
+	 * Called when the user wants to add a variety to a bottle.
+	 * Adds the typed variety to the layout.
+	 */
 	public void addVariety() {
 		AutoCompleteTextView auto = (AutoCompleteTextView) getView().findViewById(R.id.new_bottle_varieties_autocomplete);
 		String text = auto.getText().toString();
@@ -453,6 +541,12 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		return true;
 	}
 	
+	/**
+	 * Called by the loader after having searched for all the varieties in the SQLite DB.
+	 * Creates an {@link ArrayAdapter} for the auto complete variety text view.
+	 * The adapter takes all the recorded varieties.
+	 * @param cursor The cursor containing all the varieties names.
+	 */
 	private void setAllVarieties(Cursor cursor) {
 		String[] varieties = new String[cursor.getCount()];
 		int index = cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME);
@@ -473,11 +567,18 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 	}
 	
+	/**
+	 * Sets the background of the fragment to a defined color in case no picture is available.
+	 */
 	private void setBackground() {
 		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
-		scrollView.setBackgroundColor(getResources().getColor(R.color.Lavender));
+		scrollView.setBackgroundColor(getResources().getColor(R.color.DetailsBackground));
 	}
 
+	/**
+	 * Sets the background picture to a given picture found at the location given by the passed path.
+	 * @param photoPath The photo path on the device.
+	 */
 	public void setPicture(String photoPath) {
 		
 		File picture = new File(photoPath);
@@ -495,6 +596,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    bmOptions.inJustDecodeBounds = true;
 	    BitmapFactory.decodeFile(photoPath, bmOptions);
 	    int photoW = bmOptions.outWidth;
+	    int photoH = bmOptions.outHeight;
 
 	    // Determine how much to scale down the image
 	    int scaleFactor = photoW/targetW;
@@ -506,12 +608,14 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 	    imageView.setImageBitmap(bitmap);
+	    
+	    // Set the background color to transparent to see the picture.
 	    ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
 		scrollView.setBackgroundColor(getResources().getColor(R.color.Transparent));
 	    
 	 // Put padding to see the image:
 	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.abstract_bottle_info_linear_layout);
-	    int top = (int) ((float) targetW/ (float) photoW * bmOptions.outHeight);
+	    int top = (int) ((float) targetW/ (float) photoW * photoH);
 	    ll.setPadding(0, top, 0, 0);
 	    
 	    // Suppress the old picture to gain space:
@@ -520,6 +624,9 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    this.photoPath  = photoPath;
 	}
 
+	/**
+	 * Suppress the picture file currently saved for this bottle.
+	 */
 	private void suppressPicture() {
 		File picture = new File(this.photoPath);
 		if (!picture.delete())
@@ -528,7 +635,16 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		this.photoPath = null;
 	}
 	
+	/**
+	 * Callback interface that the connected activity must implement to allow this fragment to communicate with it.
+	 * @author anthonydebruyn
+	 *
+	 */
 	public interface AbstractBottleInfoFragmentCallbacks {
+		/**
+		 * Called when the user wants to take a picture, and has push the picture button.
+		 * The connected activity will take care of the intent generation and reception of the captured picture.
+		 */
 		public void onTakePicture();
 	}
 }

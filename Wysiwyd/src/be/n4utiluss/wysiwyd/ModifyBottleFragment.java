@@ -35,8 +35,6 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 
 		db.update(DatabaseContract.BottleTable.TABLE_NAME, values, selection, selectionArgs);
 		db.close();
-		dismissFragment();
-		getLinkedActivity().onBottleModified();
 	}
 
 	@Override
@@ -86,6 +84,7 @@ public class ModifyBottleFragment extends AbstractBottleInfoFragment {
 		}
 
 		db.close();
+		getLinkedActivity().onBottleModified();
 	}
 
 	@Override

@@ -32,8 +32,6 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 
 		this.insertedBottleId = db.insert(DatabaseContract.BottleTable.TABLE_NAME, null, values);
 		db.close();
-		dismissFragment();
-		getLinkedActivity().onNewBottleAdded();
 	}
 	
 	@Override
@@ -80,6 +78,7 @@ public class NewBottleFragment extends AbstractBottleInfoFragment {
 		}
 
 		db.close();
+		getLinkedActivity().onNewBottleAdded();
 	}
 	
 	@Override
