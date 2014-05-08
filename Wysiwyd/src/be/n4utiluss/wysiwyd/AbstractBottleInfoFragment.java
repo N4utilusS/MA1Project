@@ -1,6 +1,7 @@
 package be.n4utiluss.wysiwyd;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -57,6 +58,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	private String photoPath = null;
 	public static final int AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS = 2;
 	
+	private static final String VARIETIES_KEY = "be.n4utiluss.wysiwyd.varieties";
+	
 	/**
 	 * Returns the activity attached to this fragment.
 	 * The activity must implement the {@link AbstractBottleInfoFragmentCallbacks} interface.
@@ -80,12 +83,82 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		setHasOptionsMenu(true);	// So the onCreateOptionsMenu method is called, and the actions are set.
 	}
 
+	private void resetInfo(Bundle savedInstanceState) {
+		EditText appellation = (EditText) getView().findViewById(R.id.new_bottle_appellation);
+		EditText name = (EditText) getView().findViewById(R.id.new_bottle_name);
+		EditText vintage = (EditText) getView().findViewById(R.id.new_bottle_vintage);
+		EditText region = (EditText) getView().findViewById(R.id.new_bottle_region);
+		EditText quantity = (EditText) getView().findViewById(R.id.new_bottle_quantity);
+		EditText price = (EditText) getView().findViewById(R.id.new_bottle_price);
+		RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.new_bottle_mark);
+		Spinner colour = (Spinner) getView().findViewById(R.id.new_bottle_colour);
+		Spinner sugar = (Spinner) getView().findViewById(R.id.new_bottle_sugar);
+		Spinner effervescence = (Spinner) getView().findViewById(R.id.new_bottle_effervescence);
+		DatePicker addDate = (DatePicker) getView().findViewById(R.id.new_bottle_addDate);
+		DatePicker apogee = (DatePicker) getView().findViewById(R.id.new_bottle_apogee);
+		EditText location = (EditText) getView().findViewById(R.id.new_bottle_location);
+		EditText note = (EditText) getView().findViewById(R.id.new_bottle_note);
+		EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
+		
+		appellation.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_APPELLATION));
+		name.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_NAME));
+		vintage.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_VINTAGE));
+		region.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_REGION));
+		quantity.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_QUANTITY));
+		price.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_PRICE));
+		ratingBar.setRating(savedInstanceState.getInt(DatabaseContract.BottleTable.COLUMN_NAME_MARK));
+		colour.setSelection(savedInstanceState.getInt(DatabaseContract.BottleTable.COLUMN_NAME_COLOUR));
+		sugar.setSelection(savedInstanceState.getInt(DatabaseContract.BottleTable.COLUMN_NAME_SUGAR));
+		effervescence.setSelection(savedInstanceState.getInt(DatabaseContract.BottleTable.COLUMN_NAME_EFFERVESCENCE));
+		
+		String addDateString = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_ADD_DATE);
+		String[] addDateArray = addDateString.split("-");
+		
+		try {
+			int year = Integer.parseInt(addDateArray[0]);
+			int month = Integer.parseInt(addDateArray[1]);
+			int day = Integer.parseInt(addDateArray[2]);
+			
+			addDate.init(year, month, day, null);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			Log.e("NumberFormatException", "Number provided is not correctly formatted (add date)");
+		}
+		
+		String apogeeString = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_APOGEE);
+		String[] apogeeArray = apogeeString.split("-");
+		
+		try {
+			int year = Integer.parseInt(apogeeArray[0]);
+			int month = Integer.parseInt(apogeeArray[1]);
+			int day = Integer.parseInt(apogeeArray[2]);
+			
+			apogee.init(year, month, day, null);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			Log.e("NumberFormatException", "Number provided is not correctly formatted");
+		}
+		
+		location.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_LOCATION));
+		note.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_NOTE));
+		code.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_CODE));
+		
+		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE))
+			setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
+		else
+			this.setBackground();
+		
+		// The varieties:
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
+		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES_KEY);
+		for (String variety: varieties)
+			addVarietyToLayout(variety, ll);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_abstract_bottle_info, container, false);
 
-		
-		
 		return rootView;
 	}
 	
@@ -95,17 +168,24 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 		// (Re)start the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
 		// after we popped the previous state from the stack.
+		Log.i("On View Created", "View Created Abstract");
 
-		Bundle arguments = getArguments();
-		if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
-			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
-			getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
-			getLoaderManager().restartLoader(ALL_VARIETIES_LOADER, null, this);
-			Log.i("on create view", "view");
-		} else if (arguments.containsKey(ScanChoice.BOTTLE_CODE)){
-			EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
-			code.setText(Long.toString(arguments.getLong(ScanChoice.BOTTLE_CODE)));
+		if (savedInstanceState == null) {
+			Bundle arguments = getArguments();
+			if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
+				getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
+				getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
+				getLoaderManager().restartLoader(ALL_VARIETIES_LOADER, null, this);
+				Log.i("on create view", "view");
+			} else if (arguments.containsKey(ScanChoice.BOTTLE_CODE)){
+				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
+				code.setText(Long.toString(arguments.getLong(ScanChoice.BOTTLE_CODE)));
+			}
+		} else {
+			resetInfo(savedInstanceState);
 		}
+		
+		
 		Button addVarietyButton = (Button) getView().findViewById(R.id.new_bottle_add_variety_button);
 		addVarietyButton.setOnClickListener(this);
 	}
@@ -173,7 +253,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	 * @throws Exception 
 	 */
 	private ContentValues getValues() throws Exception {
-		// TODO Add checkings on the data added.
 
 		TextView appellation = (TextView) getView().findViewById(R.id.new_bottle_appellation);
 		TextView name = (TextView) getView().findViewById(R.id.new_bottle_name);
@@ -646,6 +725,60 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			Log.e("FILE_DELETE", "Previous picture not deleted.");
 
 		this.photoPath = null;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		
+		TextView appellation = (TextView) getView().findViewById(R.id.new_bottle_appellation);
+		TextView name = (TextView) getView().findViewById(R.id.new_bottle_name);
+		TextView vintage = (TextView) getView().findViewById(R.id.new_bottle_vintage);
+		TextView region = (TextView) getView().findViewById(R.id.new_bottle_region);
+		TextView quantity = (TextView) getView().findViewById(R.id.new_bottle_quantity);
+		TextView price = (TextView) getView().findViewById(R.id.new_bottle_price);
+		RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.new_bottle_mark);
+		Spinner colour = (Spinner) getView().findViewById(R.id.new_bottle_colour);
+		Spinner sugar = (Spinner) getView().findViewById(R.id.new_bottle_sugar);
+		Spinner effervescence = (Spinner) getView().findViewById(R.id.new_bottle_effervescence);
+		DatePicker addDate = (DatePicker) getView().findViewById(R.id.new_bottle_addDate);
+		DatePicker apogee = (DatePicker) getView().findViewById(R.id.new_bottle_apogee);
+		TextView location = (TextView) getView().findViewById(R.id.new_bottle_location);
+		TextView note = (TextView) getView().findViewById(R.id.new_bottle_note);
+		TextView code = (TextView) getView().findViewById(R.id.new_bottle_code);
+		
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_APPELLATION, appellation.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_NAME, name.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_VINTAGE, vintage.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_REGION, region.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_QUANTITY, quantity.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_PRICE, price.getText().toString());
+		savedInstanceState.putInt(DatabaseContract.BottleTable.COLUMN_NAME_MARK, (int) ratingBar.getRating());
+		savedInstanceState.putInt(DatabaseContract.BottleTable.COLUMN_NAME_COLOUR, colour.getSelectedItemPosition());
+		savedInstanceState.putInt(DatabaseContract.BottleTable.COLUMN_NAME_SUGAR, sugar.getSelectedItemPosition());
+		savedInstanceState.putInt(DatabaseContract.BottleTable.COLUMN_NAME_EFFERVESCENCE, effervescence.getSelectedItemPosition());
+		String addDateValue = addDate.getYear() + "-" + addDate.getMonth() + "-" + addDate.getDayOfMonth();
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_ADD_DATE, addDateValue);
+		String apogeeValue = apogee.getYear() + "-" + apogee.getMonth() + "-" + apogee.getDayOfMonth();
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_APOGEE, apogeeValue);
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_LOCATION, location.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_NOTE, note.getText().toString());
+		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_CODE, code.getText().toString());
+
+		if (this.photoPath != null)
+			savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE, this.photoPath);
+		
+		// Save the varieties:
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
+		int count = ll.getChildCount();	// There is one title view and the auto complete (so put -2).
+		ArrayList<String> varieties = new ArrayList<String>();
+		
+		for (int i = AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS; i < count; ++i) {
+			TextView tv = (TextView) ll.getChildAt(i);
+			varieties.add(tv.getText().toString());
+		}
+		
+		savedInstanceState.putStringArrayList(VARIETIES_KEY, varieties);
 	}
 	
 	/**

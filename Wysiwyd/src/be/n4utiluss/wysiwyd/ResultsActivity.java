@@ -272,10 +272,12 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 				
 		switch (requestCode) {
 		case REQUEST_TAKE_PHOTO:
-			if (resultCode == RESULT_OK && this.abstractBottleInfoFragment != null)
+			if (resultCode == RESULT_OK && this.abstractBottleInfoFragment != null) {
 				this.abstractBottleInfoFragment.setPicture(this.currentPhotoPath);
-			else
+				Log.i("OK Result", "OK");
+			} else {
 				new File(this.currentPhotoPath).delete();
+			}
 			this.currentPhotoPath = null;
 			break;
 		}
