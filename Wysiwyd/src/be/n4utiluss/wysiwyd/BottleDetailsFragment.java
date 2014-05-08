@@ -2,12 +2,6 @@ package be.n4utiluss.wysiwyd;
 
 import java.io.File;
 
-import be.n4utiluss.wysiwyd.database.DatabaseHelper;
-import be.n4utiluss.wysiwyd.database.DatabaseContract.*;
-import be.n4utiluss.wysiwyd.fonts.Fonts;
-
-import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -28,13 +22,20 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import be.n4utiluss.wysiwyd.fonts.Fonts;
+
+import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
 /**
  * Fragment displaying the details about a bottle.
  * @author anthonydebruyn
  *
  */
-public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int BOTTLE_VARIETIES_LOADER = 1;
@@ -43,7 +44,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setHasOptionsMenu(true);	// So the onCreateOptionsMenu method is called, and the actions are set.
 	}
 
@@ -52,20 +53,19 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		View rootView = inflater.inflate(R.layout.fragment_bottle_details, container, false);
-
-		// (Re)start the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
-		// after we popped the previous state from the stack.
-
-		if (this.getArguments().containsKey(BottleTable._ID)) {
-			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
-			getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
-		}
 		return rootView;
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		// (Re)start the loaders:
+
+		if (this.getArguments().containsKey(BottleTable._ID)) {
+			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
+			getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
+		}
 
 		// Fonts
 		TextView name = (TextView) getView().findViewById(R.id.details_name);
@@ -99,6 +99,9 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		switch (id) {
 		case R.id.action_edit:
 			this.linkedActivity.onEditEvent(getArguments().getLong(BottleTable._ID));
+			return true;
+		case R.id.action_details_image:
+			toggleDetails();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -239,7 +242,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			
 			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
 			if (!cursor.isNull(pictureColumnIndex)) {
-				this.setPicture(cursor.getString(pictureColumnIndex));
+				setPicture(cursor.getString(pictureColumnIndex));
 			} else {
 				setBackground();
 			}
@@ -293,32 +296,23 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			return;
 		}
 		
-		// Get the dimension of the view
 		ImageView imageView = (ImageView) getView().findViewById(R.id.details_background_picture);
-		int targetW = imageView.getWidth();
 		
-		// Get the dimensions of the bitmap
 	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-	    bmOptions.inJustDecodeBounds = true;
-	    BitmapFactory.decodeFile(photoPath, bmOptions);
-	    int photoW = bmOptions.outWidth;
-	    int photoH = bmOptions.outHeight;
-
-	    // Determine how much to scale down the image
-	    int scaleFactor = photoW/targetW;
 	    
-	 // Decode the image file into a Bitmap sized to fill the View
 	    bmOptions.inJustDecodeBounds = false;
-	    bmOptions.inSampleSize = scaleFactor;
 	    bmOptions.inPurgeable = true;
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 	    imageView.setImageBitmap(bitmap);
-	    
-	 // Put padding to see the image:
-	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_linear_layout);
-	    int top = (int) ((float) targetW/ (float) photoW * photoH);
-	    ll.setPadding(0, top, 0, 0);
+	}
+	
+	public void toggleDetails() {
+		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
+		if (scrollView.getVisibility() == View.VISIBLE)
+			scrollView.setVisibility(View.INVISIBLE);
+		else
+			scrollView.setVisibility(View.VISIBLE);
 	}
 
 	/**

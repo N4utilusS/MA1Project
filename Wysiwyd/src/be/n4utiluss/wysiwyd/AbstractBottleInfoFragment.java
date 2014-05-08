@@ -166,18 +166,16 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		// (Re)start the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
-		// after we popped the previous state from the stack.
-		Log.i("On View Created", "View Created Abstract");
+		// (Re)start the loaders here.
+		getLoaderManager().restartLoader(ALL_VARIETIES_LOADER, null, this);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = getArguments();
 			if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
 				getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
 				getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
-				getLoaderManager().restartLoader(ALL_VARIETIES_LOADER, null, this);
-				Log.i("on create view", "view");
 			} else if (arguments.containsKey(ScanChoice.BOTTLE_CODE)){
+				// Pre-fill with the scanned code:
 				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
 				code.setText(Long.toString(arguments.getLong(ScanChoice.BOTTLE_CODE)));
 			}
@@ -221,6 +219,10 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		
 		case R.id.action_picture:
 			getLinkedActivity().onTakePicture();
+			return true;
+			
+		case R.id.action_abstract_bottle_info_image:
+			toggleDetails();
 			return true;
 			
 		default:
@@ -416,7 +418,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			break;
 			
 		case ALL_VARIETIES_LOADER:
-			Log.i("On create loader", "all varieties");
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					DatabaseHelper.getInstance(getActivity()), 
 					
@@ -639,7 +640,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	 * @param cursor The cursor containing all the varieties names.
 	 */
 	private void setAllVarieties(Cursor cursor) {
-		Log.i("SetAll", "SetAll");
 		String[] varieties = new String[cursor.getCount()];
 		int index = cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME);
 		int i = 0;
@@ -679,23 +679,11 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			return;
 		}
 		
-		// Get the dimension of the view
 		ImageView imageView = (ImageView) getView().findViewById(R.id.background_picture);
-		int targetW = imageView.getWidth();
 		
-		// Get the dimensions of the bitmap
 	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-	    bmOptions.inJustDecodeBounds = true;
-	    BitmapFactory.decodeFile(photoPath, bmOptions);
-	    int photoW = bmOptions.outWidth;
-	    int photoH = bmOptions.outHeight;
-
-	    // Determine how much to scale down the image
-	    int scaleFactor = photoW/targetW;
 	    
-	    // Decode the image file into a Bitmap sized to fill the View
 	    bmOptions.inJustDecodeBounds = false;
-	    bmOptions.inSampleSize = scaleFactor;
 	    bmOptions.inPurgeable = true;
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
@@ -704,11 +692,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	    // Set the background color to transparent to see the picture.
 	    ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
 		scrollView.setBackgroundColor(getResources().getColor(R.color.Transparent));
-	    
-	 // Put padding to see the image:
-	    LinearLayout ll = (LinearLayout) getView().findViewById(R.id.abstract_bottle_info_linear_layout);
-	    int top = (int) ((float) targetW/ (float) photoW * photoH);
-	    ll.setPadding(0, top, 0, 0);
 	    
 	    // Suppress the old picture to gain space:
 	    if (this.photoPath != null)
@@ -779,6 +762,14 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		}
 		
 		savedInstanceState.putStringArrayList(VARIETIES_KEY, varieties);
+	}
+	
+	public void toggleDetails() {
+		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
+		if (scrollView.getVisibility() == View.VISIBLE)
+			scrollView.setVisibility(View.INVISIBLE);
+		else
+			scrollView.setVisibility(View.VISIBLE);
 	}
 	
 	/**

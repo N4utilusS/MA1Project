@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/Black" >
 
     <ImageView
         android:id="@+id/background_picture"
         android:contentDescription="@string/background_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitStart" />
+        android:scaleType="centerCrop"
+         />
 
     <ScrollView
         android:id="@+id/scrollView_abstract_bottle_info"

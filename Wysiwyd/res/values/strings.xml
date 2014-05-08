@@ -11,11 +11,12 @@
     <string name="action_edit">Edit</string>
     <string name="background_picture">Bottle picture</string>
 
-    <!-- Strings for the new bottle fragment -->
+    <!-- Strings for the new/edit bottle fragment -->
 
     <string name="new_bottle_add_variety">Add</string>
     <string name="action_execute">Done</string>
     <string name="action_picture">Picture</string>
+    <string name="action_abstract_bottle_info_image">Image</string>
 
     <!-- Strings for the details fragment -->
 
@@ -35,6 +36,8 @@
     <string name="details_section_price">Price</string>
     <string name="details_section_rating">Rating</string>
     <string name="details_section_varieties">Varieties</string>
+    
+    <string name="action_details_image">Image</string>
 
     <!-- New bottle arrays -->
 
