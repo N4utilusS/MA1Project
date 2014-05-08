@@ -1,12 +1,15 @@
 package be.n4utiluss.wysiwyd;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 
@@ -39,26 +42,39 @@ public class ScanChoice extends Activity {
 	}
 
 	public void QRCode(View view) {
-		//IntentIntegrator integrator = new IntentIntegrator(this);
-		//integrator.initiateScan();
-		
-		// TODO Remove:
 		Intent listIntent = new Intent(this, ResultsActivity.class);
-		listIntent.putExtra(BOTTLE_CODE, 1l);
+		listIntent.putExtra(BOTTLE_CODE, 0l);
 		startActivity(listIntent);
+		return;
+		
+		/*
+		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+			IntentIntegrator integrator = new IntentIntegrator(this);
+			integrator.initiateScan();
+
+		}*/
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == IntentIntegrator.REQUEST_CODE) {
 			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			
-			if (scanResult != null) {
-				TextView tv = (TextView) this.findViewById(R.id.testText);
-				tv.setText(scanResult.toString());
-
+			if (resultCode == RESULT_OK && scanResult != null) {
 				Intent listIntent = new Intent(this, ResultsActivity.class);
-				listIntent.putExtra(BOTTLE_CODE, 1l);
-				startActivity(listIntent);
+				
+				long code;
+				try {
+					code = Long.parseLong(scanResult.getContents());
+					listIntent.putExtra(BOTTLE_CODE, code);
+					startActivity(listIntent);
+				} catch (NumberFormatException e) {
+					Context context = getApplicationContext();
+					CharSequence text = "Not a valid number!";
+					int duration = Toast.LENGTH_SHORT;
+
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+				}
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import java.util.Date;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,8 +32,10 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 
 	private static final int REQUEST_TAKE_PHOTO = 1;
 	private static final String ALBUM_NAME = "Wysiwyd Bottles";
+	private static final String LIST_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.list_fragment_tag";
+	private static final String ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.abstract_bottle_info_tag";
+	private static final String PICTURE_PATH = "be.n4utiluss.wysiwyd.picture_path";
 	
-	private boolean twoPane = false;
 	private BottlesListFragment bottlesListFragment;
 	private String currentPhotoPath = null;
 	private AbstractBottleInfoFragment abstractBottleInfoFragment;
@@ -50,20 +53,34 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 			
 			if (findViewById(R.id.results_main_container) != null) {
+				Log.i("PO", "OnCreate main container");
 				arguments.putBoolean(BottlesListFragment.ACTIVATE_ON_ITEM_CLICK, false);
 				bottlesListFragment.setArguments(arguments);
-
-				transaction.add(R.id.results_main_container, bottlesListFragment);
+				
+				transaction.replace(R.id.results_main_container, bottlesListFragment, LIST_FRAGMENT_TAG);
 			} else {
 				arguments.putBoolean(BottlesListFragment.ACTIVATE_ON_ITEM_CLICK, true);
 				bottlesListFragment.setArguments(arguments);
 
-				transaction.add(R.id.results_list_container, bottlesListFragment);
-				this.twoPane = true;
+				transaction.replace(R.id.results_list_container, bottlesListFragment, LIST_FRAGMENT_TAG);
+			}
+
+			transaction.commit();
+		} else {
+			Log.i("Oncreate else", "Else");
+			// Retrieve the fragment pointers after configuration change.
+			this.bottlesListFragment = (BottlesListFragment) getFragmentManager().findFragmentByTag(LIST_FRAGMENT_TAG);
+			this.abstractBottleInfoFragment = (AbstractBottleInfoFragment) getFragmentManager().findFragmentByTag(ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG);
+			
+			// If an edit/new bottle panel is displayed, and we are in two pane mode, hide new bottle button of the list fragment.
+			if (findViewById(R.id.results_list_container) != null && this.abstractBottleInfoFragment != null) {
+				this.bottlesListFragment.setNewBottleButtonActivated(false);
 			}
 			
-			transaction.commit();
+			if (savedInstanceState.containsKey(PICTURE_PATH))
+				this.currentPhotoPath = savedInstanceState.getString(PICTURE_PATH);
 		}
+
 	}
 
 	@Override
@@ -81,17 +98,22 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	 */
 	private void showNewBottleFragment(long id) {
 		NewBottleFragment fragment = new NewBottleFragment();
+		Bundle arguments = new Bundle();
 		if (id > 0) {
-			Bundle arguments = new Bundle();
 			arguments.putLong(DatabaseContract.BottleTable._ID, id);
-			fragment.setArguments(arguments);
 		}
+		
+		if (this.getIntent().getExtras().containsKey(ScanChoice.BOTTLE_CODE)) {
+			arguments.putLong(ScanChoice.BOTTLE_CODE, getIntent().getExtras().getLong(ScanChoice.BOTTLE_CODE));
+		}
+		
+		fragment.setArguments(arguments);
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
-		if (this.twoPane) {
-			transaction.replace(R.id.results_details_container, fragment);
+		if (findViewById(R.id.results_main_container) == null) {
+			transaction.replace(R.id.results_details_container, fragment, ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG);
 		} else {
-			transaction.replace(R.id.results_main_container, fragment);
+			transaction.replace(R.id.results_main_container, fragment, ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG);
 		}
 		
 		this.abstractBottleInfoFragment = fragment;
@@ -108,7 +130,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
-		if (this.twoPane) {
+		if (findViewById(R.id.results_main_container) == null) {
 			transaction.replace(R.id.results_details_container, fragment);
 		} else {
 			transaction.replace(R.id.results_main_container, fragment);
@@ -126,14 +148,14 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	@Override
 	public void onNewBottleEvent(long id) {
 		this.showNewBottleFragment(id);
-		if (twoPane)
+		if (findViewById(R.id.results_details_container) != null)
 			this.bottlesListFragment.setNewBottleButtonActivated(false);
 	}
 
 	@Override
 	public void onNewBottleFragmentDismissed() {
 		// Only in two pane mode, since for the single pane the fragment is already hidden, and so is the button.
-		if (twoPane)
+		if (findViewById(R.id.results_details_container) != null)
 			this.bottlesListFragment.setNewBottleButtonActivated(true);
 		this.abstractBottleInfoFragment = null;
 	}
@@ -146,7 +168,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	@Override
 	public void onModifyBottleFragmentDismissed() {
 		// Only in two pane mode, since for the single pane the fragment is already hidden, and so is the button.
-		if (twoPane)
+		if (findViewById(R.id.results_details_container) != null)
 			this.bottlesListFragment.setNewBottleButtonActivated(true);
 		this.abstractBottleInfoFragment = null;
 	}
@@ -160,17 +182,18 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
-		if (this.twoPane) {
-			transaction.replace(R.id.results_details_container, fragment);
+		if (findViewById(R.id.results_main_container) == null) {
+			transaction.replace(R.id.results_details_container, fragment, ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG);
 		} else {
-			transaction.replace(R.id.results_main_container, fragment);
+			Log.i("onEditEvent", "One pane");
+			transaction.replace(R.id.results_main_container, fragment, ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG);
 		}
 		
 		this.abstractBottleInfoFragment = fragment;
 		transaction.addToBackStack(null);
 		transaction.commit();
 		
-		if (twoPane)
+		if (findViewById(R.id.results_details_container) != null)
 			this.bottlesListFragment.setNewBottleButtonActivated(false);
 	}
 
@@ -246,13 +269,23 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) { 
 		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-		
+				
 		switch (requestCode) {
 		case REQUEST_TAKE_PHOTO:
 			if (resultCode == RESULT_OK && this.abstractBottleInfoFragment != null)
 				this.abstractBottleInfoFragment.setPicture(this.currentPhotoPath);
+			else
+				new File(this.currentPhotoPath).delete();
 			this.currentPhotoPath = null;
 			break;
 		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		  super.onSaveInstanceState(savedInstanceState);
+		  
+		  if (this.currentPhotoPath != null)
+			  savedInstanceState.putString(PICTURE_PATH, this.currentPhotoPath);
 	}
 }

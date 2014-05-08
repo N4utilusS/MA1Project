@@ -84,20 +84,30 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_abstract_bottle_info, container, false);
 
+		
+		
+		return rootView;
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
 		// (Re)start the loaders here, since this method is the first one called after we get back from the new bottle fragment, 
 		// after we popped the previous state from the stack.
 
 		Bundle arguments = getArguments();
 		if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
-			getLoaderManager().initLoader(MAIN_INFO_LOADER, null, this);
-			getLoaderManager().initLoader(BOTTLE_VARIETIES_LOADER, null, this);
-			getLoaderManager().initLoader(ALL_VARIETIES_LOADER, null, this);
+			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
+			getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
+			getLoaderManager().restartLoader(ALL_VARIETIES_LOADER, null, this);
+			Log.i("on create view", "view");
+		} else if (arguments.containsKey(ScanChoice.BOTTLE_CODE)){
+			EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
+			code.setText(Long.toString(arguments.getLong(ScanChoice.BOTTLE_CODE)));
 		}
-		
-		Button addVarietyButton = (Button) rootView.findViewById(R.id.new_bottle_add_variety_button);
+		Button addVarietyButton = (Button) getView().findViewById(R.id.new_bottle_add_variety_button);
 		addVarietyButton.setOnClickListener(this);
-		
-		return rootView;
 	}
 
 	@Override
@@ -273,7 +283,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		String codeStringValue = code.getText().toString();
 		if (!TextUtils.isEmpty(codeStringValue)) {
 			try {
-				values.put(DatabaseContract.BottleTable.COLUMN_NAME_CODE, Integer.valueOf(codeStringValue));
+				values.put(DatabaseContract.BottleTable.COLUMN_NAME_CODE, Long.valueOf(codeStringValue));
 			}
 			catch (NumberFormatException e) {
 				throw new Exception("Code not recognized!");
@@ -327,6 +337,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			break;
 			
 		case ALL_VARIETIES_LOADER:
+			Log.i("On create loader", "all varieties");
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					DatabaseHelper.getInstance(getActivity()), 
 					
@@ -461,8 +472,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			if (!cursor.isNull(noteColumnIndex))
 				note.setText(cursor.getString(noteColumnIndex));
 			
-			code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
-			
+			code.setText(Long.toString(cursor.getLong(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
 			
 			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
 			if (!cursor.isNull(pictureColumnIndex)) {
@@ -471,6 +481,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 				setBackground();
 			}
 		}
+		
+		
 	}
 	
 	/**
@@ -548,6 +560,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	 * @param cursor The cursor containing all the varieties names.
 	 */
 	private void setAllVarieties(Cursor cursor) {
+		Log.i("SetAll", "SetAll");
 		String[] varieties = new String[cursor.getCount()];
 		int index = cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME);
 		int i = 0;

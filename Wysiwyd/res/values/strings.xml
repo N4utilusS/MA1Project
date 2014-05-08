@@ -10,20 +10,19 @@
     <string name="action_new">New Bottle</string>
     <string name="action_edit">Edit</string>
     <string name="background_picture">Bottle picture</string>
-    
+
     <!-- Strings for the new bottle fragment -->
-    
+
     <string name="new_bottle_add_variety">Add</string>
     <string name="action_execute">Done</string>
     <string name="action_picture">Picture</string>
-    
 
     <!-- Strings for the details fragment -->
 
     <string name="details_section_colour">Colour</string>
     <string name="details_section_sugar">Sweetness</string>
     <string name="details_section_effervescence">Effervescence</string>
-	<string name="details_section_add_date">Added the</string>
+    <string name="details_section_add_date">Added the</string>
     <string name="details_section_apogee">Apogee the</string>
     <string name="details_section_location">Find me there</string>
     <string name="details_section_note">About</string>
@@ -36,28 +35,28 @@
     <string name="details_section_price">Price</string>
     <string name="details_section_rating">Rating</string>
     <string name="details_section_varieties">Varieties</string>
-    
+
     <!-- New bottle arrays -->
-    
+
     <string-array name="colour_array">
         <item>White</item>
         <item>Red</item>
         <item>Rosé</item>
     </string-array>
-    
     <string-array name="sugar_array">
         <item>Dry</item>
         <item>Medium dry</item>
         <item>Medium sweet</item>
         <item>Sweet</item>
     </string-array>
-    
     <string-array name="effervescence_array">
         <item>Not sparkling</item>
         <item>Light sparkling</item>
         <item>Medium sparkling</item>
         <item>High sparkling</item>
     </string-array>
-    
-	    
+
+    <string name="title_activity_nfcscan">NFC Scan</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
