@@ -307,6 +307,9 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    imageView.setImageBitmap(bitmap);
 	}
 	
+	/**
+	 * Toggles the scrollview visibility to hide or show the details, to see the background image.
+	 */
 	public void toggleDetails() {
 		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
 		if (scrollView.getVisibility() == View.VISIBLE)

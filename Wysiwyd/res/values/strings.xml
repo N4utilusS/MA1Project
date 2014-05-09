@@ -10,6 +10,10 @@
     <string name="action_new">New Bottle</string>
     <string name="action_edit">Edit</string>
     <string name="background_picture">Bottle picture</string>
+    
+    <!-- List Fragment -->
+    
+    <string name="list_action_search">Search</string>
 
     <!-- Strings for the new/edit bottle fragment -->
 
@@ -36,7 +40,6 @@
     <string name="details_section_price">Price</string>
     <string name="details_section_rating">Rating</string>
     <string name="details_section_varieties">Varieties</string>
-    
     <string name="action_details_image">Image</string>
 
     <!-- New bottle arrays -->
@@ -59,7 +62,47 @@
         <item>High sparkling</item>
     </string-array>
 
-    <string name="title_activity_nfcscan">NFC Scan</string>
-    <string name="hello_world">Hello world!</string>
+    <!-- NFC -->
 
+    <string name="title_activity_nfcscan">NFC Scan</string>
+    <string name="nfc_logo">NFC Logo</string>
+
+    <!-- Search fragment -->
+    
+    <string-array name="search_colour_array">
+        <item>White</item>
+        <item>Red</item>
+        <item>Rosé</item>
+        <item>All</item>
+    </string-array>
+    <string-array name="search_sugar_array">
+        <item>Dry</item>
+        <item>Medium dry</item>
+        <item>Medium sweet</item>
+        <item>Sweet</item>
+        <item>All</item>
+    </string-array>
+    <string-array name="search_effervescence_array">
+        <item>Not sparkling</item>
+        <item>Light sparkling</item>
+        <item>Medium sparkling</item>
+        <item>High sparkling</item>
+        <item>All</item>
+    </string-array>
+    
+    <string name="search_add_variety">Add</string>
+    <string name="search_checkbox_vintage_from">From</string>
+    <string name="search_checkbox_vintage_to">To</string>
+    <string name="search_checkbox_quantity_min">Min</string>
+    <string name="search_checkbox_quantity_max">Max</string>
+    <string name="search_checkbox_price_min">Min</string>
+    <string name="search_checkbox_price_max">Max</string>
+    <string name="search_checkbox_mark_min">Min</string>
+    <string name="search_checkbox_mark_max">Max</string>
+    <string name="search_checkbox_addDate_from">From</string>
+    <string name="search_checkbox_addDate_to">To</string>
+    <string name="search_checkbox_apogee_from">From</string>
+    <string name="search_checkbox_apogee_to">To</string>
+    <string name="search_action_find">OK</string>
+    
 </resources>

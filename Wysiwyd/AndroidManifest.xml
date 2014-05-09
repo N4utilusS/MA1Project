@@ -50,6 +50,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.n4utiluss.wysiwyd.ScanChoice" />
         </activity>
+        
     </application>
 
 </manifest>

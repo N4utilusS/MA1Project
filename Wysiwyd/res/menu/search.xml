@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="be.n4utiluss.wysiwyd.SearchFragment" >
+
+	<item
+        android:id="@+id/search_action_find"
+        android:showAsAction="ifRoom"
+        android:title="@string/search_action_find"/>
+</menu>

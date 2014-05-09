@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc"
+                android:columnCount="2" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="0"
+                    android:text="@string/details_section_appellation"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_appellation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_row="1"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextSmall" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="2"
+                    android:text="@string/details_section_name"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_row="3"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="4"
+                    android:text="@string/details_section_vintage"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_vintage_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_row="5"
+                    android:inputType="number"
+                    android:textAppearance="@style/TextSmall" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_vintage_from"
+                    android:layout_gravity="center"
+                    android:layout_row="5"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_vintage_from" />
+                
+                <EditText
+                    android:id="@+id/search_vintage_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_row="6"
+                    android:inputType="number"
+                    android:textAppearance="@style/TextSmall" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_vintage_to"
+                    android:layout_gravity="center"
+                    android:layout_row="6"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_vintage_to" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="7"
+                    android:text="@string/details_section_region"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_row="8"
+                    android:inputType="text"                    
+                    android:textAppearance="@style/TextSmall" />
+
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc"
+                android:columnCount="2" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="0"
+                    android:text="@string/details_section_quantity"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_quantity_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="1"
+                    android:inputType="number"
+                    android:textAppearance="@style/TextSmall" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_quantity_min"
+                    android:layout_gravity="center"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_quantity_min" />
+
+                <EditText
+                    android:id="@+id/search_quantity_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="2"
+                    android:inputType="number"
+                    android:textAppearance="@style/TextSmall" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_quantity_max"
+                    android:layout_gravity="center"
+                    android:layout_row="2"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_quantity_max" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="3"
+                    android:text="@string/details_section_price"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_price_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="4"
+                    android:inputType="numberDecimal"
+                    android:textAppearance="@style/TextSmall" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_price_min"
+                    android:layout_gravity="center"
+                    android:layout_row="4"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_price_min" />
+
+                <EditText
+                    android:id="@+id/search_price_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="5"
+                    android:inputType="numberDecimal"
+                    android:textAppearance="@style/TextSmall" />
+
+                <CheckBox
+                    android:id="@+id/search_checkbox_price_max"
+                    android:layout_gravity="center"
+                    android:layout_row="5"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_price_max" />
+                
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:text="@string/details_section_rating"
+                    android:textAppearance="@style/TextTitle" />
+
+                <RatingBar
+                    android:id="@+id/search_mark_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:numStars="5"
+                    android:stepSize="1.0" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_mark_min"
+                    android:layout_gravity="center"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_mark_min" />
+                
+                <RatingBar
+                    android:id="@+id/search_mark_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_row="2"
+                    android:layout_column="0"
+                    android:numStars="5"
+                    android:stepSize="1.0" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_mark_max"
+                    android:layout_gravity="center"
+                    android:layout_row="2"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_mark_max" />
+            </GridLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="@string/details_section_colour"
+                    android:textAppearance="@style/TextTitle" />
+
+                <Spinner
+                    android:id="@+id/search_colour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:entries="@array/search_colour_array"
+                    android:textAppearance="@style/TextSmall" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="@string/details_section_sugar"
+                    android:textAppearance="@style/TextTitle" />
+
+                <Spinner
+                    android:id="@+id/search_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:entries="@array/search_sugar_array"
+                    android:textAppearance="@style/TextSmall" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="@string/details_section_effervescence"
+                    android:textAppearance="@style/TextTitle" />
+
+                <Spinner
+                    android:id="@+id/search_effervescence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:entries="@array/search_effervescence_array"
+                    android:textAppearance="@style/TextSmall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_varieties_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="@string/details_section_varieties"
+                    android:textAppearance="@style/TextTitle" />
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                	android:layout_height="wrap_content"
+                	android:orientation="horizontal" >
+                	
+                    <AutoCompleteTextView
+                        android:id="@+id/search_varieties_autocomplete"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:completionThreshold="1" />
+                    
+                    <Button
+                        android:id="@+id/search_add_variety_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/buttonStyleSmall"
+                        android:text="@string/search_add_variety" />
+                    
+                </LinearLayout>
+            </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc"
+                android:columnCount="2" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="0"
+                    android:text="@string/details_section_add_date"
+                    android:textAppearance="@style/TextTitle" />
+
+                <DatePicker
+                    android:id="@+id/search_addDate_from"
+                    android:layout_column="0"
+                    android:layout_gravity="center"
+                    android:layout_row="1"
+                    android:calendarViewShown="false" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_addDate_from"
+                    android:layout_gravity="center"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_addDate_from" />
+                
+                <DatePicker
+                    android:id="@+id/search_addDate_to"
+                    android:layout_column="0"
+                    android:layout_gravity="center"
+                    android:layout_row="2"
+                    android:calendarViewShown="false" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_addDate_to"
+                    android:layout_gravity="center"
+                    android:layout_row="2"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_addDate_to" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="3"
+                    android:text="@string/details_section_apogee"
+                    android:textAppearance="@style/TextTitle" />
+
+                <DatePicker
+                    android:id="@+id/search_apogee_from"
+                    android:layout_column="0"
+                    android:layout_gravity="center"
+                    android:layout_row="4"
+                    android:calendarViewShown="false" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_apogee_from"
+                    android:layout_gravity="center"
+                    android:layout_row="4"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_apogee_from" />
+                
+                <DatePicker
+                    android:id="@+id/search_apogee_to"
+                    android:layout_column="0"
+                    android:layout_gravity="center"
+                    android:layout_row="5"
+                    android:calendarViewShown="false" />
+                
+                <CheckBox
+                    android:id="@+id/search_checkbox_apogee_to"
+                    android:layout_gravity="center"
+                    android:layout_row="5"
+                    android:layout_column="1"
+                    android:text="@string/search_checkbox_apogee_to" />
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/details_bloc" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="0"
+                    android:text="@string/details_section_code"
+                    android:textAppearance="@style/TextTitle" />
+
+                <EditText
+                    android:id="@+id/search_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="center"
+                    android:layout_row="1"
+                    android:inputType="number"
+                    android:textAppearance="@style/TextSmall" />
+            </GridLayout>
+        </LinearLayout>
+    </ScrollView>

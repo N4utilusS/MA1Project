@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
+import be.n4utiluss.wysiwyd.nfc.NFCScanActivity;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 
@@ -53,6 +53,13 @@ public class ScanChoice extends Activity {
 			integrator.initiateScan();
 
 		}*/
+	}
+
+	public void NFCCode(View view) {
+		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC)) {
+			Intent nfcIntent = new Intent(this, NFCScanActivity.class);
+			startActivity(nfcIntent);
+		}
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {

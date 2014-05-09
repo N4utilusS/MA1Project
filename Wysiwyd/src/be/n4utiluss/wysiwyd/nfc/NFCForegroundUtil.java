@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NfcAdapter;
-import android.nfc.tech.NfcV;
+import android.nfc.tech.NfcA;
 import android.util.Log;
 
 public class NFCForegroundUtil {
@@ -36,7 +36,7 @@ public class NFCForegroundUtil {
 		}
 		intentFiltersArray = new IntentFilter[] { ndef };
 
-		techListsArray = new String[][] { new String[] { NfcV.class.getName() } };
+		techListsArray = new String[][] { new String[] { NfcA.class.getName() } };
 
 	}
 

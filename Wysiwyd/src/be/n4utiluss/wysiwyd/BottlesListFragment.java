@@ -47,6 +47,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	private BottlesListFragmentCallbacks linkedActivity;
 	private Menu menu;
 	private boolean actionNewActivated = true;
+	private boolean actionSearchActivated = true;
 	
 	
 	@Override
@@ -72,6 +73,9 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		
 		// Set the new bottle button state.
 		setNewBottleButtonActivated(this.actionNewActivated);
+		
+		// Set the search button state.
+		setSearchButtonActivated(this.actionSearchActivated);
 	}
 
 	@Override
@@ -85,6 +89,11 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		case R.id.action_new:
 			this.linkedActivity.onNewBottleEvent(-1);
 			return true;
+			
+		case R.id.list_action_search:
+			this.linkedActivity.onSearchEvent();
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -235,6 +244,18 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	}
 	
 	/**
+	 * Sets the state of the "Search" button.
+	 * @param status Hide it and disable it when set to false.
+	 */
+	public void setSearchButtonActivated(boolean status) {
+		if (this.menu != null){
+			this.menu.findItem(R.id.list_action_search).setVisible(status);
+			this.menu.findItem(R.id.list_action_search).setEnabled(status);
+		}
+		this.actionSearchActivated = status;
+	}
+	
+	/**
 	 * The interface that must be implemented by the connected activity, 
 	 * to allow this fragment to communicate with it.
 	 * @author anthonydebruyn
@@ -252,5 +273,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		 * @param id The id of the bottle we want the info from to put into the text fields, -1 if none.
 		 */
 		public void onNewBottleEvent(long id);
+		
+		public void onSearchEvent();
 	}
 }

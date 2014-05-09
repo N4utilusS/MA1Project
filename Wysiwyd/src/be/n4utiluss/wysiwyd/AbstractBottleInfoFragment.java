@@ -83,6 +83,11 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		setHasOptionsMenu(true);	// So the onCreateOptionsMenu method is called, and the actions are set.
 	}
 
+	/**
+	 * Takes a bundle with all the saved information, and restores it.
+	 * Used when a rotation of the screen occurs.
+	 * @param savedInstanceState The saved information.
+	 */
 	private void resetInfo(Bundle savedInstanceState) {
 		EditText appellation = (EditText) getView().findViewById(R.id.new_bottle_appellation);
 		EditText name = (EditText) getView().findViewById(R.id.new_bottle_name);
@@ -186,6 +191,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		
 		Button addVarietyButton = (Button) getView().findViewById(R.id.new_bottle_add_variety_button);
 		addVarietyButton.setOnClickListener(this);
+		
+		getLinkedActivity().onAbstractBottleInfoFragmentStarted();
 	}
 
 	@Override
@@ -764,6 +771,9 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		savedInstanceState.putStringArrayList(VARIETIES_KEY, varieties);
 	}
 	
+	/**
+	 * Toggles the scrollview visibility to hide or show the details, to see the background image.
+	 */
 	public void toggleDetails() {
 		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
 		if (scrollView.getVisibility() == View.VISIBLE)
@@ -783,5 +793,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		 * The connected activity will take care of the intent generation and reception of the captured picture.
 		 */
 		public void onTakePicture();
+		
+		public void onAbstractBottleInfoFragmentStarted();
 	}
 }
