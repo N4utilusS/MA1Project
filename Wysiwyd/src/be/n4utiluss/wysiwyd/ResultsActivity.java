@@ -51,6 +51,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		if (savedInstanceState == null) {
 			bottlesListFragment = new BottlesListFragment();
 			Bundle arguments = getIntent().getExtras();
+			if (arguments == null)
+				arguments = new Bundle();
 			
 			Bundle searchInfo = null;
 			
@@ -111,7 +113,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			arguments.putLong(DatabaseContract.BottleTable._ID, id);
 		}
 		
-		if (this.getIntent().getExtras().containsKey(ScanChoice.BOTTLE_CODE)) {
+		if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ScanChoice.BOTTLE_CODE)) {
 			arguments.putLong(ScanChoice.BOTTLE_CODE, getIntent().getExtras().getLong(ScanChoice.BOTTLE_CODE));
 		}
 		

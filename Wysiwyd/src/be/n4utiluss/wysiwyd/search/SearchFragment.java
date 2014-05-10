@@ -64,6 +64,7 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 	private static final int ALL_VARIETIES_LOADER = 0;
 
 	private SearchFragmentCallbacks linkedActivity;
+	private String[] varieties;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -331,7 +332,6 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 				throw new Exception("Vintage from not recognized!");
 			}
 		}
-			info.putString(VINTAGE_FROM, vintageFrom.getText().toString());
 		if(vintageToCheckBox.isChecked() && !TextUtils.isEmpty(vintageTo.getText().toString())) {
 			try {
 				info.putInt(VINTAGE_TO, Math.abs(Integer.parseInt(vintageTo.getText().toString())));
@@ -388,19 +388,31 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 			info.putInt(EFFERVESCENCE, effervescence.getSelectedItemPosition());
 		
 		if(addDateFromCheckBox.isChecked()) {
-			String addDateFromValue = addDateFrom.getYear() + "-" + addDateFrom.getMonth() + "-" + addDateFrom.getDayOfMonth();
+			String month = ((addDateFrom.getMonth()+1) < 10) ? ("0"+(addDateFrom.getMonth()+1)) : Integer.toString((addDateFrom.getMonth()+1));
+			String day = (addDateFrom.getDayOfMonth() < 10) ? ("0"+addDateFrom.getDayOfMonth()) : Integer.toString(addDateFrom.getDayOfMonth());
+			
+			String addDateFromValue = addDateFrom.getYear() + "-" + month + "-" + day;
 			info.putString(ADD_DATE_FROM, addDateFromValue);
 		}
 		if(addDateToCheckBox.isChecked()) {
-			String addDateToValue = addDateTo.getYear() + "-" + addDateTo.getMonth() + "-" + addDateTo.getDayOfMonth();
+			String month = ((addDateTo.getMonth()+1) < 10) ? ("0"+(addDateTo.getMonth()+1)) : Integer.toString((addDateTo.getMonth()+1));
+			String day = (addDateTo.getDayOfMonth() < 10) ? ("0"+addDateTo.getDayOfMonth()) : Integer.toString(addDateTo.getDayOfMonth());
+			
+			String addDateToValue = addDateTo.getYear() + "-" + month + "-" + day;
 			info.putString(ADD_DATE_TO, addDateToValue);
 		}
 		if(apogeeFromCheckBox.isChecked()) {
-			String apogeeFromValue = apogeeFrom.getYear() + "-" + apogeeFrom.getMonth() + "-" + apogeeFrom.getDayOfMonth();
+			String month = ((apogeeFrom.getMonth()+1) < 10) ? ("0"+(apogeeFrom.getMonth()+1)) : Integer.toString((apogeeFrom.getMonth()+1));
+			String day = (apogeeFrom.getDayOfMonth() < 10) ? ("0"+apogeeFrom.getDayOfMonth()) : Integer.toString(apogeeFrom.getDayOfMonth());
+			
+			String apogeeFromValue = apogeeFrom.getYear() + "-" + month + "-" + apogeeFrom.getDayOfMonth();
 			info.putString(APOGEE_FROM, apogeeFromValue);
 		}
 		if(apogeeToCheckBox.isChecked()) {
-			String apogeeToValue = apogeeTo.getYear() + "-" + apogeeTo.getMonth() + "-" + apogeeTo.getDayOfMonth();
+			String month = ((apogeeFrom.getMonth()+1) < 10) ? ("0"+(apogeeFrom.getMonth()+1)) : Integer.toString((apogeeFrom.getMonth()+1));
+			String day = (apogeeFrom.getDayOfMonth() < 10) ? ("0"+apogeeFrom.getDayOfMonth()) : Integer.toString(apogeeFrom.getDayOfMonth());
+			
+			String apogeeToValue = apogeeTo.getYear() + "-" + month + "-" + apogeeTo.getDayOfMonth();
 			info.putString(APOGEE_TO, apogeeToValue);
 		}
 		
@@ -557,6 +569,15 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 		if (text.length() == 0)
 			return;
 		
+		// Check if variety in DB:
+		boolean inDB = false;
+		for (int i = 0; i < this.varieties.length && !inDB; ++i) {
+			if (this.varieties[i].equals(text))
+				inDB = true;
+		}
+		if (!inDB)
+			return;
+		
 		// Check if not in the list already:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.search_varieties_layout);
 		int count = ll.getChildCount();
@@ -580,7 +601,7 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 	 * @param cursor The cursor containing all the varieties names.
 	 */
 	private void setAllVarieties(Cursor cursor) {
-		String[] varieties = new String[cursor.getCount()];
+		this.varieties = new String[cursor.getCount()];
 		int index = cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME);
 		int i = 0;
 		cursor.moveToPosition(-1);

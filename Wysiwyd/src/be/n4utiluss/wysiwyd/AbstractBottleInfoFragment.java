@@ -352,10 +352,14 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		int effervescenceValue = effervescence.getSelectedItemPosition();
 		values.put(DatabaseContract.BottleTable.COLUMN_NAME_EFFERVESCENCE, effervescenceValue);
 
-		String addDateValue = addDate.getYear() + "-" + addDate.getMonth() + "-" + addDate.getDayOfMonth();
+		String month = ((addDate.getMonth()+1) < 10) ? ("0"+(addDate.getMonth()+1)) : Integer.toString((addDate.getMonth()+1));
+		String day = (addDate.getDayOfMonth() < 10) ? ("0"+addDate.getDayOfMonth()) : Integer.toString(addDate.getDayOfMonth());
+		String addDateValue = addDate.getYear() + "-" + month + "-" + day;
 		values.put(DatabaseContract.BottleTable.COLUMN_NAME_ADD_DATE, addDateValue);
 
-		String apogeeValue = apogee.getYear() + "-" + apogee.getMonth() + "-" + apogee.getDayOfMonth();
+		month = ((apogee.getMonth()+1) < 10) ? ("0"+(apogee.getMonth()+1)) : Integer.toString((apogee.getMonth()+1));
+		day = (apogee.getDayOfMonth() < 10) ? ("0"+apogee.getDayOfMonth()) : Integer.toString(apogee.getDayOfMonth());
+		String apogeeValue = apogee.getYear() + "-" + month + "-" + day;
 		values.put(DatabaseContract.BottleTable.COLUMN_NAME_APOGEE, apogeeValue);
 
 		String locationValue = location.getText().toString();
@@ -532,7 +536,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			
 			try {
 				int year = Integer.parseInt(addDateArray[0]);
-				int month = Integer.parseInt(addDateArray[1]);
+				int month = Integer.parseInt(addDateArray[1])-1;
 				int day = Integer.parseInt(addDateArray[2]);
 				
 				addDate.init(year, month, day, null);
@@ -547,7 +551,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			
 			try {
 				int year = Integer.parseInt(apogeeArray[0]);
-				int month = Integer.parseInt(apogeeArray[1]);
+				int month = Integer.parseInt(apogeeArray[1])-1;
 				int day = Integer.parseInt(apogeeArray[2]);
 				
 				apogee.init(year, month, day, null);

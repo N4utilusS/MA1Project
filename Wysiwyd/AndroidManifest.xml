@@ -40,7 +40,7 @@
         <activity
             android:name="be.n4utiluss.wysiwyd.ResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName="be.n4utiluss.wysiwyd.ScanChoice" >
+            android:parentActivityName="be.n4utiluss.wysiwyd.MainActivity" >
         </activity>
         <activity
             android:name="be.n4utiluss.wysiwyd.nfc.NFCScanActivity"
