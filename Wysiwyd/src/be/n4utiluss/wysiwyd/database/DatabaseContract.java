@@ -22,7 +22,18 @@ public final class DatabaseContract {
     public static final String SELECT = "SELECT ";
     public static final String FROM = " FROM ";
     public static final String WHERE = " WHERE ";
+    public static final String AND = " AND ";
+    public static final String STRING_DELIMITER = "'";
+    public static final String LIKE = " LIKE ";
+    public static final String ANY_STRING_WILDCARD = "%";
+    public static final String BEQ = ">=";
+    public static final String LEQ = "<=";
+    public static final String EQ = "=";
+    public static final String IN = " IN ";
+    public static final String OPENING_PAR = "(";
+    public static final String CLOSING_PAR = ")";
     
+
     
 	/**
 	 * Inner class for the bottle table

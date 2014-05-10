@@ -17,7 +17,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import be.n4utiluss.wysiwyd.search.SearchFragment;
 
 import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
@@ -102,25 +105,126 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		
+	public Loader<Cursor> onCreateLoader(int idLoader, Bundle bundle) {
+
 		// Construction of the query, based on the provided search information:
 		StringBuilder query = new StringBuilder(100);
 		query.append(DatabaseContract.SELECT).append(BottleTable._ID).append(DatabaseContract.COMMA_SEP)
 		.append(BottleTable.COLUMN_NAME_NAME).append(DatabaseContract.COMMA_SEP)
 		.append(BottleTable.COLUMN_NAME_VINTAGE).append(DatabaseContract.COMMA_SEP)
 		.append(BottleTable.COLUMN_NAME_MARK).append(DatabaseContract.COMMA_SEP)
-		.append(BottleTable.COLUMN_NAME_QUANTITY);
-		
-		long code = this.getArguments().getLong(ScanChoice.BOTTLE_CODE);
-		String codeString = Long.toString(code);
+		.append(BottleTable.COLUMN_NAME_QUANTITY)
+		.append(DatabaseContract.FROM).append(BottleTable.TABLE_NAME)
+		.append(DatabaseContract.WHERE).append("1=1");
+
+		if (this.searchInfo != null) {
+
+			if (this.searchInfo.containsKey(SearchFragment.APPELLATION))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_APPELLATION).append(DatabaseContract.LIKE)
+				.append(DatabaseContract.STRING_DELIMITER).append(DatabaseContract.ANY_STRING_WILDCARD)
+				.append(this.searchInfo.getString(SearchFragment.APPELLATION))
+				.append(DatabaseContract.ANY_STRING_WILDCARD).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.NAME))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_NAME).append(DatabaseContract.LIKE)
+				.append(DatabaseContract.STRING_DELIMITER).append(DatabaseContract.ANY_STRING_WILDCARD)
+				.append(this.searchInfo.getString(SearchFragment.NAME))
+				.append(DatabaseContract.ANY_STRING_WILDCARD).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.REGION))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_REGION).append(DatabaseContract.LIKE)
+				.append(DatabaseContract.STRING_DELIMITER).append(DatabaseContract.ANY_STRING_WILDCARD)
+				.append(this.searchInfo.getString(SearchFragment.REGION))
+				.append(DatabaseContract.ANY_STRING_WILDCARD).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.VINTAGE_FROM))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_VINTAGE).append(DatabaseContract.BEQ)
+				.append(this.searchInfo.getInt(SearchFragment.VINTAGE_FROM));
+
+			if (this.searchInfo.containsKey(SearchFragment.VINTAGE_TO))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_VINTAGE).append(DatabaseContract.LEQ)
+				.append(this.searchInfo.getInt(SearchFragment.VINTAGE_TO));
+
+			if (this.searchInfo.containsKey(SearchFragment.QUANTITY_MIN))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_QUANTITY).append(DatabaseContract.BEQ)
+				.append(this.searchInfo.getInt(SearchFragment.QUANTITY_MIN));
+
+			if (this.searchInfo.containsKey(SearchFragment.QUANTITY_MAX))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_QUANTITY).append(DatabaseContract.LEQ)
+				.append(this.searchInfo.getInt(SearchFragment.QUANTITY_MAX));
+
+			if (this.searchInfo.containsKey(SearchFragment.PRICE_MIN))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_PRICE).append(DatabaseContract.BEQ)
+				.append(this.searchInfo.getFloat(SearchFragment.PRICE_MIN));
+
+			if (this.searchInfo.containsKey(SearchFragment.PRICE_MAX))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_PRICE).append(DatabaseContract.LEQ)
+				.append(this.searchInfo.getFloat(SearchFragment.PRICE_MAX));
+
+			if (this.searchInfo.containsKey(SearchFragment.RATING_MIN))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_MARK).append(DatabaseContract.BEQ)
+				.append(this.searchInfo.getInt(SearchFragment.RATING_MIN));
+
+			if (this.searchInfo.containsKey(SearchFragment.RATING_MAX))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_MARK).append(DatabaseContract.LEQ)
+				.append(this.searchInfo.getInt(SearchFragment.RATING_MAX));
+
+			if (this.searchInfo.containsKey(SearchFragment.ADD_DATE_FROM))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_ADD_DATE).append(DatabaseContract.BEQ)
+				.append(DatabaseContract.STRING_DELIMITER).append(this.searchInfo.getString(SearchFragment.ADD_DATE_FROM)).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.ADD_DATE_TO))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_ADD_DATE).append(DatabaseContract.LEQ)
+				.append(DatabaseContract.STRING_DELIMITER).append(this.searchInfo.getString(SearchFragment.ADD_DATE_TO)).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.APOGEE_FROM))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_APOGEE).append(DatabaseContract.BEQ)
+				.append(DatabaseContract.STRING_DELIMITER).append(this.searchInfo.getString(SearchFragment.APOGEE_FROM)).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.APOGEE_TO))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_APOGEE).append(DatabaseContract.LEQ)
+				.append(DatabaseContract.STRING_DELIMITER).append(this.searchInfo.getString(SearchFragment.APOGEE_TO)).append(DatabaseContract.STRING_DELIMITER);
+
+			if (this.searchInfo.containsKey(SearchFragment.COLOUR))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_COLOUR).append(DatabaseContract.EQ)
+				.append(this.searchInfo.getInt(SearchFragment.COLOUR));
+
+			if (this.searchInfo.containsKey(SearchFragment.SUGAR))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_SUGAR).append(DatabaseContract.EQ)
+				.append(this.searchInfo.getInt(SearchFragment.SUGAR));
+
+			if (this.searchInfo.containsKey(SearchFragment.EFFERVESCENCE))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_EFFERVESCENCE).append(DatabaseContract.EQ)
+				.append(this.searchInfo.getInt(SearchFragment.EFFERVESCENCE));
+			
+			if (this.searchInfo.containsKey(SearchFragment.CODE))
+				query.append(DatabaseContract.AND).append(BottleTable.COLUMN_NAME_CODE).append(DatabaseContract.EQ)
+				.append(this.searchInfo.getLong(SearchFragment.CODE));
+
+			if (this.searchInfo.containsKey(SearchFragment.VARIETIES)) {
+				query.append(DatabaseContract.AND).append(BottleTable._ID).append(DatabaseContract.IN)
+				.append(DatabaseContract.OPENING_PAR)
+				.append(DatabaseContract.SELECT).append("bv.").append(BottleVarietyTable.COLUMN_NAME_BOTTLE_ID)
+				.append(DatabaseContract.FROM).append(BottleVarietyTable.TABLE_NAME).append(" bv").append(DatabaseContract.COMMA_SEP)
+				.append(VarietyTable.TABLE_NAME).append(" v")
+				.append(DatabaseContract.WHERE).append("bv.").append(BottleVarietyTable.COLUMN_NAME_VARIETY_ID)
+				.append(DatabaseContract.EQ).append("v.").append(VarietyTable._ID)
+				.append(DatabaseContract.AND).append("v.").append(VarietyTable.COLUMN_NAME_NAME).append(DatabaseContract.IN).append(DatabaseContract.OPENING_PAR);
+
+				for (String variety : this.searchInfo.getStringArrayList(SearchFragment.VARIETIES))
+					query.append(DatabaseContract.STRING_DELIMITER).append(variety).append(DatabaseContract.STRING_DELIMITER).append(DatabaseContract.COMMA_SEP);
+
+				query.delete(query.length()-DatabaseContract.COMMA_SEP.length(), query.length());
+
+				query.append(DatabaseContract.CLOSING_PAR).append(DatabaseContract.CLOSING_PAR);
+			}
+
+		}
 
 		SQLiteCursorLoader cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 				DatabaseHelper.getInstance(getActivity()), 
-				"SELECT " + BottleTable._ID + ", " + BottleTable.COLUMN_NAME_NAME + ", " + BottleTable.COLUMN_NAME_VINTAGE + ", " + BottleTable.COLUMN_NAME_MARK + ", " + BottleTable.COLUMN_NAME_QUANTITY +
-				" FROM " + BottleTable.TABLE_NAME +
-				" WHERE " + BottleTable.COLUMN_NAME_CODE + " = ?", 
-				new String[] { codeString });
+				query.toString(), 
+				null);
 		return cursorLoader;
 	}
 

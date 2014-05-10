@@ -50,8 +50,15 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 
 		if (savedInstanceState == null) {
 			bottlesListFragment = new BottlesListFragment();
-			bottlesListFragment.setArguments(getIntent().getExtras());
 			Bundle arguments = getIntent().getExtras();
+			
+			Bundle searchInfo = null;
+			
+			if (arguments.containsKey(ScanChoice.BOTTLE_CODE)) {
+				searchInfo = new Bundle();
+				searchInfo.putLong(SearchFragment.CODE, arguments.getLong(ScanChoice.BOTTLE_CODE));
+			}
+			bottlesListFragment.setSearchBundle(searchInfo);
 			
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 			
