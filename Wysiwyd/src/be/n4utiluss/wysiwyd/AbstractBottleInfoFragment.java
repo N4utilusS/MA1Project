@@ -89,6 +89,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	 * @param savedInstanceState The saved information.
 	 */
 	private void resetInfo(Bundle savedInstanceState) {
+		/*
 		EditText appellation = (EditText) getView().findViewById(R.id.new_bottle_appellation);
 		EditText name = (EditText) getView().findViewById(R.id.new_bottle_name);
 		EditText vintage = (EditText) getView().findViewById(R.id.new_bottle_vintage);
@@ -141,18 +142,19 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			apogee.init(year, month, day, null);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			Log.e("NumberFormatException", "Number provided is not correctly formatted");
+			Log.e("NumberFormatException", "Number provided is not correctly formatted (apogee date)");
 		}
 		
 		location.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_LOCATION));
 		note.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_NOTE));
 		code.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_CODE));
-		
-		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE))
-			setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
-		else
+		*/
+		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE)) {
+			//setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
+			this.photoPath = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
+		} else {
 			this.setBackground();
-		
+		}
 		// The varieties:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
 		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES_KEY);
@@ -394,12 +396,13 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	@Override
 	public Loader<Cursor> onCreateLoader(int idLoader, Bundle bundle) {
 		
-		long id = getArguments().getLong(BottleTable._ID);
-		String idString = Long.toString(id);
+		
 		SQLiteCursorLoader cursorLoader = null;
 
 		switch (idLoader){
 		case MAIN_INFO_LOADER:
+			long id = getArguments().getLong(BottleTable._ID);
+			String idString = Long.toString(id);
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					DatabaseHelper.getInstance(getActivity()), 
 					
@@ -412,6 +415,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			break;
 			
 		case BOTTLE_VARIETIES_LOADER:
+			id = getArguments().getLong(BottleTable._ID);
+			idString = Long.toString(id);
 			cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 					DatabaseHelper.getInstance(getActivity()), 
 					
@@ -662,9 +667,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
-
-	}
+	public void onLoaderReset(Loader<Cursor> arg0) {}
 	
 	/**
 	 * Sets the background of the fragment to a defined color. Used in case no picture is available.
@@ -720,7 +723,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		
+		/*
 		TextView appellation = (TextView) getView().findViewById(R.id.new_bottle_appellation);
 		TextView name = (TextView) getView().findViewById(R.id.new_bottle_name);
 		TextView vintage = (TextView) getView().findViewById(R.id.new_bottle_vintage);
@@ -754,7 +757,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_LOCATION, location.getText().toString());
 		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_NOTE, note.getText().toString());
 		savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_CODE, code.getText().toString());
-
+		*/
 		if (this.photoPath != null)
 			savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE, this.photoPath);
 		

@@ -313,8 +313,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 
 	@Override
 	public void find(Bundle values) {
-		// TODO Auto-generated method stub
-		
+		this.bottlesListFragment.setSearchBundle(values);
+		this.bottlesListFragment.refreshList();
 	}
 
 	@Override

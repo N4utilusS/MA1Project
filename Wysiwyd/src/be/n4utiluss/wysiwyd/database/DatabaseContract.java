@@ -12,13 +12,16 @@ public final class DatabaseContract {
 	public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "database.db";
     private static final String TEXT_TYPE = " TEXT";
-    private static final String COMMA_SEP = ",";
+    public static final String COMMA_SEP = ", ";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String REAL_TYPE = " REAL";
     private static final String PRIMARY_KEY = " PRIMARY KEY";
     private static final String AUTOINCREMENT = " AUTOINCREMENT";
     private static final String NOT_NULL = " NOT NULL";
     private static final String UNIQUE = " UNIQUE";
+    public static final String SELECT = "SELECT ";
+    public static final String FROM = " FROM ";
+    public static final String WHERE = " WHERE ";
     
     
 	/**

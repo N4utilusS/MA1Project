@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 
@@ -48,6 +49,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	private Menu menu;
 	private boolean actionNewActivated = true;
 	private boolean actionSearchActivated = true;
+	private Bundle searchInfo;
 	
 	
 	@Override
@@ -59,7 +61,6 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 		// Find the bottles:
 		this.bottleCursorAdapter = new BottleCursorAdapter(this.getActivity(), null, 0);
 	    this.setListAdapter(bottleCursorAdapter);
-	    this.getLoaderManager().initLoader(0, null, this);
 	}
 	
 	@Override
@@ -103,6 +104,14 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		
+		// Construction of the query, based on the provided search information:
+		StringBuilder query = new StringBuilder(100);
+		query.append(DatabaseContract.SELECT).append(BottleTable._ID).append(DatabaseContract.COMMA_SEP)
+		.append(BottleTable.COLUMN_NAME_NAME).append(DatabaseContract.COMMA_SEP)
+		.append(BottleTable.COLUMN_NAME_VINTAGE).append(DatabaseContract.COMMA_SEP)
+		.append(BottleTable.COLUMN_NAME_MARK).append(DatabaseContract.COMMA_SEP)
+		.append(BottleTable.COLUMN_NAME_QUANTITY);
+		
 		long code = this.getArguments().getLong(ScanChoice.BOTTLE_CODE);
 		String codeString = Long.toString(code);
 
@@ -144,6 +153,8 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		getLoaderManager().initLoader(0, null, this);
+		
 		// Set the activation mode/choice mode.
 		Bundle arguments = this.getArguments();
 		boolean activate = false;
@@ -253,6 +264,10 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 			this.menu.findItem(R.id.list_action_search).setEnabled(status);
 		}
 		this.actionSearchActivated = status;
+	}
+	
+	public void setSearchBundle(Bundle info) {
+		this.searchInfo = info;
 	}
 	
 	/**
