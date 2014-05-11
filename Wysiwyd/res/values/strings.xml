@@ -14,7 +14,15 @@
     <!-- List Fragment -->
     
     <string name="list_action_search">Search</string>
-
+    <string name="list_action_sort_mark_desc">Mark desc</string>
+    <string name="list_action_sort_mark_asc">Mark asc</string>
+    <string name="list_action_sort_vintage_desc">Vintage desc</string>
+    <string name="list_action_sort_vintage_asc">Vintage asc</string>
+    <string name="list_action_sort_quantity_desc">Quantity desc</string>
+    <string name="list_action_sort_quantity_asc">Quantity asc</string>
+    <string name="list_action_sort_name_desc">Name desc</string>
+    <string name="list_action_sort_name_asc">Name asc</string>
+    
     <!-- Strings for the new/edit bottle fragment -->
 
     <string name="new_bottle_add_variety">Add</string>

@@ -12,4 +12,54 @@
         android:showAsAction="ifRoom"
         android:orderInCategory="9"
         android:title="@string/action_new"/>
+	
+	<item
+        android:id="@+id/list_action_sort_mark_desc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_mark_desc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_mark_asc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_mark_asc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_vintage_desc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_vintage_desc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_vintage_asc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_vintage_asc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_quantity_desc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_quantity_desc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_quantity_asc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_quantity_asc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_name_desc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_name_desc"/>
+	
+	<item
+        android:id="@+id/list_action_sort_name_asc"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/list_action_sort_name_asc"/>
+	
+	
 </menu>

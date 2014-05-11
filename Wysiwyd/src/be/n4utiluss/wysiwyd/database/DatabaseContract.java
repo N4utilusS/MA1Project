@@ -32,7 +32,9 @@ public final class DatabaseContract {
     public static final String IN = " IN ";
     public static final String OPENING_PAR = "(";
     public static final String CLOSING_PAR = ")";
-    
+    public static final String ORDER_BY = " ORDER BY ";
+    public static final String ASC = " ASC ";
+    public static final String DESC = " DESC ";
 
     
 	/**

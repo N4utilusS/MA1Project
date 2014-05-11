@@ -38,7 +38,19 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	 */
 	private static final String STATE_ACTIVATED_POSITION = "be.n4utiluss.wysiwyd.Activated_Position";
 	public final static String ACTIVATE_ON_ITEM_CLICK = "be.n4utiluss.wysiwyd.Activate_On_Item_Clicked";
-
+	private final static String SORT_TYPE = "be.n4utiluss.wysiwyd.sort_type";
+	
+	// Sort types:
+	public final static int NONE = 0;
+	public final static int MARK_DESC = 1;
+	public final static int MARK_ASC = 2;
+	public final static int VINTAGE_DESC = 3;
+	public final static int VINTAGE_ASC = 4;
+	public final static int QUANTITY_DESC = 5;
+	public final static int QUANTITY_ASC = 6;
+	public final static int NAME_DESC = 7;
+	public final static int NAME_ASC = 8;
+		
 	private BottleCursorAdapter bottleCursorAdapter;
 	/**
 	 * The current activated item position. Only used on tablets.
@@ -53,7 +65,7 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	private boolean actionNewActivated = true;
 	private boolean actionSearchActivated = true;
 	private Bundle searchInfo;
-	
+	private int sortType = NONE;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +108,46 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 			
 		case R.id.list_action_search:
 			this.linkedActivity.onSearchEvent();
+			return true;
+			
+		case R.id.list_action_sort_mark_desc:
+			this.sortType = MARK_DESC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_mark_asc:
+			this.sortType = MARK_ASC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_vintage_desc:
+			this.sortType = VINTAGE_DESC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_vintage_asc:
+			this.sortType = VINTAGE_ASC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_quantity_desc:
+			this.sortType = QUANTITY_DESC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_quantity_asc:
+			this.sortType = QUANTITY_ASC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_name_desc:
+			this.sortType = NAME_DESC;
+			this.refreshList();
+			return true;
+			
+		case R.id.list_action_sort_name_asc:
+			this.sortType = NAME_ASC;
+			this.refreshList();
 			return true;
 			
 		default:
@@ -220,6 +272,43 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 			}
 
 		}
+		
+		if (this.sortType != NONE)
+			query.append(DatabaseContract.ORDER_BY);
+		
+		switch (this.sortType) {
+		case MARK_DESC:
+			query.append(BottleTable.COLUMN_NAME_MARK).append(DatabaseContract.DESC);
+			break;
+			
+		case MARK_ASC:
+			query.append(BottleTable.COLUMN_NAME_MARK).append(DatabaseContract.ASC);
+			break;
+			
+		case VINTAGE_DESC:
+			query.append(BottleTable.COLUMN_NAME_VINTAGE).append(DatabaseContract.DESC);
+			break;
+			
+		case VINTAGE_ASC:
+			query.append(BottleTable.COLUMN_NAME_VINTAGE).append(DatabaseContract.ASC);
+			break;
+			
+		case QUANTITY_DESC:
+			query.append(BottleTable.COLUMN_NAME_QUANTITY).append(DatabaseContract.DESC);
+			break;
+			
+		case QUANTITY_ASC:
+			query.append(BottleTable.COLUMN_NAME_QUANTITY).append(DatabaseContract.ASC);
+			break;
+			
+		case NAME_DESC:
+			query.append(BottleTable.COLUMN_NAME_NAME).append(DatabaseContract.DESC);
+			break;
+			
+		case NAME_ASC:
+			query.append(BottleTable.COLUMN_NAME_NAME).append(DatabaseContract.ASC);
+			break;
+		}
 
 		SQLiteCursorLoader cursorLoader = new SQLiteCursorLoader(this.getActivity(),
 				DatabaseHelper.getInstance(getActivity()), 
@@ -257,6 +346,9 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		if (savedInstanceState != null && savedInstanceState.containsKey(SORT_TYPE))
+			this.sortType = savedInstanceState.getInt(SORT_TYPE);
+		
 		getLoaderManager().initLoader(0, null, this);
 		
 		// Set the activation mode/choice mode.
@@ -309,6 +401,8 @@ public class BottlesListFragment extends ListFragment implements LoaderManager.L
 			// Serialize and persist the activated item position.
 			outState.putInt(STATE_ACTIVATED_POSITION, activatedPosition);
 		}
+		
+		outState.putInt(SORT_TYPE, this.sortType);
 	}
 	
 	@Override
