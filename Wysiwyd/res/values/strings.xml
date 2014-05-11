@@ -19,8 +19,8 @@
 
     <string name="new_bottle_add_variety">Add</string>
     <string name="action_execute">Done</string>
-    <string name="action_picture">Picture</string>
-    <string name="action_abstract_bottle_info_image">Image</string>
+    <string name="action_abstract_bottle_info_picture">Get Picture</string>
+    <string name="action_abstract_bottle_info_image">See</string>
 
     <!-- Strings for the details fragment -->
 

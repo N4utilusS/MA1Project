@@ -244,6 +244,7 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES);
 		for (String variety: varieties)
 			addVarietyToLayout(variety, ll);
+		Log.i("RESET", "Reset");
 	}
 	
 	/**

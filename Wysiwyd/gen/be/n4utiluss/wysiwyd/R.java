@@ -189,11 +189,11 @@ public final class R {
     public static final class id {
         public static final int abstract_bottle_info_linear_layout=0x7f0a000a;
         public static final int action_abstract_bottle_info_image=0x7f0a0058;
+        public static final int action_abstract_bottle_info_picture=0x7f0a0057;
         public static final int action_details_image=0x7f0a005a;
         public static final int action_edit=0x7f0a005b;
         public static final int action_execute=0x7f0a0059;
         public static final int action_new=0x7f0a005d;
-        public static final int action_picture=0x7f0a0057;
         public static final int action_settings=0x7f0a005e;
         public static final int background_picture=0x7f0a0008;
         public static final int buttonNFC=0x7f0a0007;
@@ -306,11 +306,11 @@ public final class R {
     }
     public static final class string {
         public static final int action_abstract_bottle_info_image=0x7f06000d;
+        public static final int action_abstract_bottle_info_picture=0x7f06000c;
         public static final int action_details_image=0x7f06001e;
         public static final int action_edit=0x7f060007;
         public static final int action_execute=0x7f06000b;
         public static final int action_new=0x7f060006;
-        public static final int action_picture=0x7f06000c;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int background_picture=0x7f060008;

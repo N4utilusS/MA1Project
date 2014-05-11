@@ -10,6 +10,8 @@ import be.n4utiluss.wysiwyd.search.SearchFragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.Fragment.SavedState;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,11 +39,13 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	private static final String LIST_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.list_fragment_tag";
 	private static final String ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.abstract_bottle_info_fragment_tag";
 	private static final String SEARCH_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.search_fragment_tag";
+	private static final String DETAILS_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.details_fragment_tag";
 	private static final String PICTURE_PATH = "be.n4utiluss.wysiwyd.picture_path";
 	
 	private BottlesListFragment bottlesListFragment;
 	private String currentPhotoPath = null;
 	private AbstractBottleInfoFragment abstractBottleInfoFragment;
+	private SavedState searchFragmentSavedState;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +129,11 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		} else {
 			transaction.replace(R.id.results_main_container, fragment, ABSTRACT_BOTTLE_INFO_FRAGMENT_TAG);
 		}
-		
+
 		this.abstractBottleInfoFragment = fragment;
-		transaction.addToBackStack(null);
+		// Names the current state with the details tag, since we can only arrive here by viewing details or nothing (in the 2pane mode).
+		// We'll need this tag to suppress all the states above this one and this one in the backstack, to avoid the formation of chains of details fragments.
+		transaction.addToBackStack(DETAILS_FRAGMENT_TAG);
 		transaction.commit();
 	}
 
@@ -138,16 +144,18 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		BottleDetailsFragment fragment = new BottleDetailsFragment();
 		fragment.setArguments(arguments);
 		
+		getFragmentManager().popBackStack(DETAILS_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
 		if (findViewById(R.id.results_main_container) == null) {
 			transaction.replace(R.id.results_details_container, fragment);
+			
 		} else {
 			transaction.replace(R.id.results_main_container, fragment);
+			transaction.addToBackStack(null);
 		}
 		
-		if (getFragmentManager().findFragmentById(R.id.results_details_container) instanceof SearchFragment)
-			transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
@@ -202,7 +210,9 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		}
 		
 		this.abstractBottleInfoFragment = fragment;
-		transaction.addToBackStack(null);
+		// Names the current state with the details tag, since we can only arrive here by viewing details (in the 2pane mode).
+		// We'll need this tag to suppress all the states above this one and this one in the backstack, to avoid the formation of chains of details fragments.
+		transaction.addToBackStack(DETAILS_FRAGMENT_TAG);
 		transaction.commit();
 		
 	}
@@ -307,7 +317,7 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		
 		if (this.getFragmentManager().findFragmentByTag(SEARCH_FRAGMENT_TAG) == null)
 			searchFragment = new SearchFragment();
-		
+		searchFragment.setInitialSavedState(searchFragmentSavedState);
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		
 		if (findViewById(R.id.results_main_container) == null) {
@@ -315,8 +325,10 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		} else {
 			transaction.replace(R.id.results_main_container, searchFragment, SEARCH_FRAGMENT_TAG);
 		}
-		
-		transaction.addToBackStack(null);
+
+		// Names the current state with the details tag, since we can only arrive here by viewing details or nothing (in the 2pane mode).
+		// We'll need this tag to suppress all the states above this one and this one in the backstack, to avoid the formation of chains of details fragments.
+		transaction.addToBackStack(DETAILS_FRAGMENT_TAG);
 		transaction.commit();
 	}
 
@@ -324,6 +336,15 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	public void find(Bundle values) {
 		this.bottlesListFragment.setSearchBundle(values);
 		this.bottlesListFragment.refreshList();
+		
+		// Save the state of the fragment, so we don't have to re-type everything:
+		SearchFragment searchFragment = (SearchFragment) getFragmentManager().findFragmentByTag(SEARCH_FRAGMENT_TAG);
+		searchFragmentSavedState = getFragmentManager().saveFragmentInstanceState(searchFragment);
+		
+		// Remove the search fragment if we are in single pane mode:
+		if (findViewById(R.id.results_main_container) != null) {
+			getFragmentManager().popBackStack();
+		}
 	}
 
 	@Override

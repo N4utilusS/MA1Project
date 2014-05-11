@@ -226,7 +226,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			}
 			return true;
 		
-		case R.id.action_picture:
+		case R.id.action_abstract_bottle_info_picture:
 			getLinkedActivity().onTakePicture();
 			return true;
 			

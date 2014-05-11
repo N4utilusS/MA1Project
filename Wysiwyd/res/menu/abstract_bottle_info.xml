@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item
-        android:id="@+id/action_picture"
+        android:id="@+id/action_abstract_bottle_info_picture"
         android:showAsAction="ifRoom"
         android:orderInCategory="9"
-        android:title="@string/action_picture" />
+        android:title="@string/action_abstract_bottle_info_picture" />
     
     <item
         android:id="@+id/action_abstract_bottle_info_image"
