@@ -20,7 +20,6 @@
         android:background="@android:color/transparent" >
 
         <LinearLayout
-            android:id="@+id/details_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -286,5 +285,5 @@
             </GridLayout>
         </LinearLayout>
     </ScrollView>
-	
+
 </FrameLayout>

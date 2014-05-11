@@ -42,17 +42,11 @@ public class ScanChoice extends Activity {
 	}
 
 	public void QRCode(View view) {
-		Intent listIntent = new Intent(this, ResultsActivity.class);
-		listIntent.putExtra(BOTTLE_CODE, 0l);
-		startActivity(listIntent);
-		return;
-		
-		/*
 		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
 			IntentIntegrator integrator = new IntentIntegrator(this);
 			integrator.initiateScan();
 
-		}*/
+		}
 	}
 
 	public void NFCCode(View view) {
