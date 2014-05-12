@@ -41,7 +41,7 @@ public class ScanChoice extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void QRCode(View view) {
+	public void QRorBarCode(View view) {
 		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
 			IntentIntegrator integrator = new IntentIntegrator(this);
 			integrator.initiateScan();

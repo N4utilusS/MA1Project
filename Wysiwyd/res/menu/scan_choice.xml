@@ -2,10 +2,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="be.n4utiluss.wysiwyd.ScanChoice" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
 
 </menu>

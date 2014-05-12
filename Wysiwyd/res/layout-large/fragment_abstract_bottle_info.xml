@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/details_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Transparent" >
+    android:background="@color/Black" >
 
     <ImageView
-        android:id="@+id/details_background_picture"
+        android:id="@+id/background_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
         android:contentDescription="@string/background_picture"
-        android:scaleType="centerCrop"
-        android:background="@color/Transparent" />
+        android:scaleType="centerCrop" />
 
     <ScrollView
-        android:id="@+id/scrollView_details"
+        android:id="@+id/scrollView_abstract_bottle_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Transparent" >
+        android:background="@android:color/transparent" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,8 +25,8 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical" >
 
                 <GridLayout
@@ -39,35 +36,76 @@
                     android:columnCount="1" >
 
                     <TextView
-                        android:id="@+id/details_appellation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_gravity="left"
                         android:layout_row="0"
-                        android:textAppearance="@style/TextSmall" />
+                        android:text="@string/details_section_appellation"
+                        android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_name"
+                    <EditText
+                        android:id="@+id/new_bottle_appellation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_row="1"
-                        android:textAppearance="@style/TextName" />
-
-                    <TextView
-                        android:id="@+id/details_vintage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_row="2"
+                        android:text="Appellation"
                         android:textAppearance="@style/TextSmall" />
 
                     <TextView
-                        android:id="@+id/details_region"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="left"
+                        android:layout_row="2"
+                        android:text="@string/details_section_name"
+                        android:textAppearance="@style/TextTitle" />
+
+                    <EditText
+                        android:id="@+id/new_bottle_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_row="3"
+                        android:text="Name"
+                        android:textAppearance="@style/TextName" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="left"
+                        android:layout_row="4"
+                        android:text="@string/details_section_vintage"
+                        android:textAppearance="@style/TextTitle" />
+
+                    <EditText
+                        android:id="@+id/new_bottle_vintage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_row="5"
+                        android:inputType="number"
+                        android:text="1992"
+                        android:textAppearance="@style/TextSmall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="left"
+                        android:layout_row="6"
+                        android:text="@string/details_section_region"
+                        android:textAppearance="@style/TextTitle" />
+
+                    <EditText
+                        android:id="@+id/new_bottle_region"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_row="7"
+                        android:text="Disneyland"
                         android:textAppearance="@style/TextSmall" />
                 </GridLayout>
 
@@ -77,20 +115,42 @@
                     android:background="@drawable/details_bloc" >
 
                     <TextView
-                        android:id="@+id/details_quantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_gravity="left"
                         android:layout_row="0"
+                        android:text="@string/details_section_quantity"
+                        android:textAppearance="@style/TextTitle" />
+
+                    <EditText
+                        android:id="@+id/new_bottle_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_row="1"
+                        android:inputType="number"
+                        android:text="4"
                         android:textAppearance="@style/TextSmall" />
 
                     <TextView
-                        android:id="@+id/details_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="right"
-                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:layout_gravity="left"
+                        android:layout_row="2"
+                        android:text="@string/details_section_price"
+                        android:textAppearance="@style/TextTitle" />
+
+                    <EditText
+                        android:id="@+id/new_bottle_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="left"
+                        android:layout_row="3"
+                        android:inputType="numberDecimal"
+                        android:text="21"
                         android:textAppearance="@style/TextSmall" />
                 </GridLayout>
 
@@ -100,13 +160,18 @@
                     android:background="@drawable/details_bloc"
                     android:orientation="vertical" >
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/details_section_rating"
+                        android:textAppearance="@style/TextTitle" />
+
                     <RatingBar
-                        android:id="@+id/details_mark"
-                        style="?android:attr/ratingBarStyleIndicator"
+                        android:id="@+id/new_bottle_mark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:isIndicator="true"
                         android:numStars="5"
                         android:stepSize="1.0" />
                 </LinearLayout>
@@ -120,58 +185,58 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_gravity="left"
                         android:text="@string/details_section_colour"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_colour"
+                    <Spinner
+                        android:id="@+id/new_bottle_colour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
+                        android:entries="@array/colour_array"
                         android:textAppearance="@style/TextSmall" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_gravity="left"
                         android:text="@string/details_section_sugar"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_sugar"
+                    <Spinner
+                        android:id="@+id/new_bottle_sugar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
+                        android:entries="@array/sugar_array"
                         android:textAppearance="@style/TextSmall" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_gravity="left"
                         android:text="@string/details_section_effervescence"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_effervescence"
+                    <Spinner
+                        android:id="@+id/new_bottle_effervescence"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
+                        android:entries="@array/effervescence_array"
                         android:textAppearance="@style/TextSmall" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical" >
 
                 <LinearLayout
-                    android:id="@+id/details_varieties_layout"
+                    android:id="@+id/new_bottle_varieties_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/details_bloc"
@@ -183,12 +248,33 @@
                         android:layout_gravity="left"
                         android:text="@string/details_section_varieties"
                         android:textAppearance="@style/TextTitle" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <AutoCompleteTextView
+                            android:id="@+id/new_bottle_varieties_autocomplete"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:completionThreshold="1" />
+
+                        <Button
+                            android:id="@+id/new_bottle_add_variety_button"
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/new_bottle_add_variety" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/details_bloc" >
+                    android:background="@drawable/details_bloc"
+                    android:columnCount="1" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -199,32 +285,28 @@
                         android:text="@string/details_section_add_date"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="right"
-                        android:layout_row="0"
-                        android:text="@string/details_section_apogee"
-                        android:textAppearance="@style/TextTitle" />
+                    <DatePicker
+                        android:id="@+id/new_bottle_addDate"
+                        android:layout_column="0"
+                        android:layout_gravity="center"
+                        android:layout_row="1"
+                        android:calendarViewShown="false" />
 
                     <TextView
-                        android:id="@+id/details_addDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:layout_gravity="right"
-                        android:layout_row="1"
-                        android:textAppearance="@style/TextSmall" />
+                        android:layout_gravity="left"
+                        android:layout_row="2"
+                        android:text="@string/details_section_apogee"
+                        android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_apogee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="right"
-                        android:layout_row="1"
-                        android:textAppearance="@style/TextSmall" />
+                    <DatePicker
+                        android:id="@+id/new_bottle_apogee"
+                        android:layout_column="0"
+                        android:layout_gravity="center"
+                        android:layout_row="3"
+                        android:calendarViewShown="false" />
                 </GridLayout>
 
                 <GridLayout
@@ -241,13 +323,14 @@
                         android:text="@string/details_section_location"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_location"
+                    <EditText
+                        android:id="@+id/new_bottle_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_gravity="center"
                         android:layout_row="1"
+                        android:text="C&apos;est dans la zone 51."
                         android:textAppearance="@style/TextSmall" />
                 </GridLayout>
 
@@ -265,13 +348,14 @@
                         android:text="@string/details_section_note"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_note"
+                    <EditText
+                        android:id="@+id/new_bottle_note"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_gravity="center"
                         android:layout_row="1"
+                        android:text="Hello Wine!"
                         android:textAppearance="@style/TextSmall" />
                 </GridLayout>
 
@@ -289,13 +373,14 @@
                         android:text="@string/details_section_code"
                         android:textAppearance="@style/TextTitle" />
 
-                    <TextView
-                        android:id="@+id/details_code"
+                    <EditText
+                        android:id="@+id/new_bottle_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
                         android:layout_gravity="center"
                         android:layout_row="1"
+                        android:inputType="number"
                         android:textAppearance="@style/TextSmall" />
                 </GridLayout>
             </LinearLayout>

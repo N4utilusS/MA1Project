@@ -150,6 +150,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 		
 		if (findViewById(R.id.results_main_container) == null) {
 			transaction.replace(R.id.results_details_container, fragment);
+			if (getFragmentManager().findFragmentById(R.id.results_details_container) == null)
+				transaction.addToBackStack("Empty");
 			
 		} else {
 			transaction.replace(R.id.results_main_container, fragment);
@@ -369,5 +371,14 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			this.bottlesListFragment.setNewBottleButtonActivated(false);
 			this.bottlesListFragment.setSearchButtonActivated(false);
 		}
+	}
+
+	@Override
+	public void onDeleteEvent() {		
+		if (findViewById(R.id.results_details_container) != null)
+			getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.results_details_container)).commit();
+		else
+			getFragmentManager().popBackStack();
+		this.bottlesListFragment.refreshList();
 	}
 }

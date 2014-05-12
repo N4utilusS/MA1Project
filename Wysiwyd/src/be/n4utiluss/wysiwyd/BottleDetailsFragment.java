@@ -3,12 +3,16 @@ package be.n4utiluss.wysiwyd;
 import java.io.File;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -25,6 +31,7 @@ import android.widget.TextView;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.fonts.Fonts;
 
@@ -40,6 +47,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int BOTTLE_VARIETIES_LOADER = 1;
 	private BottleDetailsFragmentCallbacks linkedActivity;
+	private String photoPath;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,12 +108,55 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		case R.id.action_edit:
 			this.linkedActivity.onEditEvent(getArguments().getLong(BottleTable._ID));
 			return true;
+			
 		case R.id.action_details_image:
 			toggleDetails();
+			return true;
+			
+		case R.id.details_action_delete:
+			delete();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void delete() {
+		AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+		
+		adb.setMessage(R.string.details_delete_popup_message);
+		
+		adb.setNegativeButton("Cancel", null);
+		
+		adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
+	    		SQLiteDatabase db = dbHelper.getWritableDatabase();
+	    		
+	    		// First delete the bottle information in the main bottle table:
+	    		String whereClause = BottleTable._ID + " = ?";
+	    		String[] whereArgs = {Long.toString(getArguments().getLong(BottleTable._ID))};
+	    		
+	    		db.delete(BottleTable.TABLE_NAME, whereClause, whereArgs);
+
+	    		// Then remove entries in the Bottle Varieties table:
+	    		whereClause = BottleVarietyTable.COLUMN_NAME_BOTTLE_ID + " = ?";
+	    		
+	    		db.delete(BottleVarietyTable.TABLE_NAME, whereClause, whereArgs);
+	    		
+	    		// Suppress the picture file if no bottle uses it anymore:
+	    		whereArgs[0] = photoPath;
+	    		Cursor cursor = db.query(BottleTable.TABLE_NAME, null, BottleTable.COLUMN_NAME_IMAGE + " = ?", whereArgs, null, null, null, "1");
+	    		
+	    		if (cursor.isAfterLast()) {
+	    			suppressPicture();
+	    		}
+	    		cursor.close();
+	    		
+	    		linkedActivity.onDeleteEvent();
+	      } });
+		
+		adb.show();
 	}
 
 	@Override
@@ -305,6 +356,8 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    
 	    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 	    imageView.setImageBitmap(bitmap);
+	    
+	    this.photoPath = photoPath;
 	}
 	
 	/**
@@ -316,6 +369,17 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			scrollView.setVisibility(View.INVISIBLE);
 		else
 			scrollView.setVisibility(View.VISIBLE);
+	}
+	
+	/**
+	 * Suppress the picture file currently saved for this bottle.
+	 */
+	private void suppressPicture() {
+		File picture = new File(this.photoPath);
+		if (!picture.delete())
+			Log.e("FILE_DELETE", "Previous picture not deleted.");
+
+		this.photoPath = null;
 	}
 
 	/**
@@ -329,5 +393,10 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		 * Called after the edit action button has been pushed.
 		 */
 		public void onEditEvent(long id);
+		
+		/**
+		 * Called after a bottle has been deleted through the details fragment.
+		 */
+		public void onDeleteEvent();
 	}
 }

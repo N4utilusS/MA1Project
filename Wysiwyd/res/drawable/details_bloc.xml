@@ -41,7 +41,7 @@
     <!-- Background -->
     <item>
 	<shape>
-        <solid android:color="@color/White" />
+        <solid android:color="@color/DetailsBloc" />
 	    <corners android:radius="3dp" />
 	    <padding android:left="6dp" android:right="6dp" android:top="4dp" android:bottom="4dp"/>
 	</shape>

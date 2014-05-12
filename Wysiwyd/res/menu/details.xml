@@ -13,4 +13,10 @@
         android:showAsAction="ifRoom"
         android:orderInCategory="9"
         android:title="@string/action_edit"/>
+	
+	<item
+        android:id="@+id/details_action_delete"
+        android:showAsAction="never"
+        android:orderInCategory="5"
+        android:title="@string/details_action_delete"/>
 </menu>

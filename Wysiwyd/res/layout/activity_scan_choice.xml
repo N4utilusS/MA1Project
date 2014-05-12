@@ -11,7 +11,7 @@
         android:id="@+id/buttonQRCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="QRCode"
+        android:onClick="QRorBarCode"
         android:text="@string/qr_code" />
 
     <Button

@@ -48,7 +48,11 @@
     <string name="details_section_price">Price</string>
     <string name="details_section_rating">Rating</string>
     <string name="details_section_varieties">Varieties</string>
-    <string name="action_details_image">Image</string>
+    <string name="action_details_image">See</string>
+    
+    <string name="details_action_delete">Delete bottle</string>
+    <string name="details_delete_popup_message">Are you sure?</string>
+   
 
     <!-- New bottle arrays -->
 

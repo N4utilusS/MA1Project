@@ -5,7 +5,8 @@
     tools:context="be.n4utiluss.wysiwyd.ResultsActivity"
     tools:ignore="MergeRootFrame"
     android:orientation="horizontal"
-    android:baselineAligned="false" >
+    android:baselineAligned="false"
+    android:background="@color/Transparent" >
 
     <FrameLayout
         android:id="@+id/results_list_container"

@@ -193,12 +193,12 @@ public final class R {
         public static final int action_details_image=0x7f0a0059;
         public static final int action_edit=0x7f0a005a;
         public static final int action_execute=0x7f0a0058;
-        public static final int action_new=0x7f0a005c;
-        public static final int action_settings=0x7f0a0065;
+        public static final int action_new=0x7f0a005d;
         public static final int background_picture=0x7f0a0008;
         public static final int buttonNFC=0x7f0a0007;
         public static final int buttonQRCode=0x7f0a0006;
         public static final int container=0x7f0a0002;
+        public static final int details_action_delete=0x7f0a005b;
         public static final int details_addDate=0x7f0a002b;
         public static final int details_apogee=0x7f0a002c;
         public static final int details_appellation=0x7f0a0020;
@@ -219,15 +219,15 @@ public final class R {
         public static final int details_vintage=0x7f0a0022;
         public static final int imageButtonScan=0x7f0a0000;
         public static final int imageButtonSearch=0x7f0a0001;
-        public static final int list_action_search=0x7f0a005b;
-        public static final int list_action_sort_mark_asc=0x7f0a005e;
-        public static final int list_action_sort_mark_desc=0x7f0a005d;
-        public static final int list_action_sort_name_asc=0x7f0a0064;
-        public static final int list_action_sort_name_desc=0x7f0a0063;
-        public static final int list_action_sort_quantity_asc=0x7f0a0062;
-        public static final int list_action_sort_quantity_desc=0x7f0a0061;
-        public static final int list_action_sort_vintage_asc=0x7f0a0060;
-        public static final int list_action_sort_vintage_desc=0x7f0a005f;
+        public static final int list_action_search=0x7f0a005c;
+        public static final int list_action_sort_mark_asc=0x7f0a005f;
+        public static final int list_action_sort_mark_desc=0x7f0a005e;
+        public static final int list_action_sort_name_asc=0x7f0a0065;
+        public static final int list_action_sort_name_desc=0x7f0a0064;
+        public static final int list_action_sort_quantity_asc=0x7f0a0063;
+        public static final int list_action_sort_quantity_desc=0x7f0a0062;
+        public static final int list_action_sort_vintage_asc=0x7f0a0061;
+        public static final int list_action_sort_vintage_desc=0x7f0a0060;
         public static final int list_element_bottle_mark=0x7f0a0054;
         public static final int list_element_bottle_name=0x7f0a0052;
         public static final int list_element_bottle_quantity=0x7f0a0055;
@@ -321,6 +321,8 @@ public final class R {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int background_picture=0x7f060008;
+        public static final int details_action_delete=0x7f060027;
+        public static final int details_delete_popup_message=0x7f060028;
         public static final int details_section_add_date=0x7f060019;
         public static final int details_section_apogee=0x7f06001a;
         public static final int details_section_appellation=0x7f06001e;
@@ -354,25 +356,25 @@ public final class R {
          */
         public static final int new_bottle_add_variety=0x7f060012;
         public static final int nfc_code=0x7f060004;
-        public static final int nfc_logo=0x7f060028;
+        public static final int nfc_logo=0x7f06002a;
         public static final int qr_code=0x7f060003;
-        public static final int search_action_find=0x7f060036;
-        public static final int search_add_variety=0x7f060029;
-        public static final int search_checkbox_addDate_from=0x7f060032;
-        public static final int search_checkbox_addDate_to=0x7f060033;
-        public static final int search_checkbox_apogee_from=0x7f060034;
-        public static final int search_checkbox_apogee_to=0x7f060035;
-        public static final int search_checkbox_mark_max=0x7f060031;
-        public static final int search_checkbox_mark_min=0x7f060030;
-        public static final int search_checkbox_price_max=0x7f06002f;
-        public static final int search_checkbox_price_min=0x7f06002e;
-        public static final int search_checkbox_quantity_max=0x7f06002d;
-        public static final int search_checkbox_quantity_min=0x7f06002c;
-        public static final int search_checkbox_vintage_from=0x7f06002a;
-        public static final int search_checkbox_vintage_to=0x7f06002b;
+        public static final int search_action_find=0x7f060038;
+        public static final int search_add_variety=0x7f06002b;
+        public static final int search_checkbox_addDate_from=0x7f060034;
+        public static final int search_checkbox_addDate_to=0x7f060035;
+        public static final int search_checkbox_apogee_from=0x7f060036;
+        public static final int search_checkbox_apogee_to=0x7f060037;
+        public static final int search_checkbox_mark_max=0x7f060033;
+        public static final int search_checkbox_mark_min=0x7f060032;
+        public static final int search_checkbox_price_max=0x7f060031;
+        public static final int search_checkbox_price_min=0x7f060030;
+        public static final int search_checkbox_quantity_max=0x7f06002f;
+        public static final int search_checkbox_quantity_min=0x7f06002e;
+        public static final int search_checkbox_vintage_from=0x7f06002c;
+        public static final int search_checkbox_vintage_to=0x7f06002d;
         /**  NFC 
          */
-        public static final int title_activity_nfcscan=0x7f060027;
+        public static final int title_activity_nfcscan=0x7f060029;
         public static final int title_activity_results=0x7f060005;
         public static final int title_activity_scan_choice=0x7f060002;
     }
@@ -397,6 +399,12 @@ public final class R {
         res/values-v11/styles.xml on API 14+ devices.
     
  API 14 theme customizations can go here. 
+
+        Base application theme for API 17+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 17+ devices.
+    
+ API 17 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
