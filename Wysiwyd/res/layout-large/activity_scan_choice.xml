@@ -28,7 +28,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="@string/scanchoice_title"
-            android:textSize="20sp" />
+            android:textSize="40sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                 android:layout_gravity="bottom|center"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:maxHeight="300dp"
+                android:maxHeight="450dp"
                 android:onClick="QRorBarCode"
                 android:paddingRight="5dp"
                 android:scaleType="fitEnd"
@@ -58,7 +58,7 @@
                 android:layout_gravity="bottom|center"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:maxHeight="300dp"
+                android:maxHeight="450dp"
                 android:onClick="NFCCode"
                 android:paddingLeft="5dp"
                 android:scaleType="fitEnd"
@@ -81,7 +81,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="@string/scanchoice_barcode_text"
-                android:textSize="12sp"
+                android:textSize="25sp"
                  />
 
             <TextView
@@ -93,7 +93,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="@string/scanchoice_nfc_text"
-                android:textSize="12sp" />
+                android:textSize="25sp" />
         </LinearLayout>
     </LinearLayout>
 

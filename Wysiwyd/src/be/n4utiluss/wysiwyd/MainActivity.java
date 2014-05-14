@@ -7,6 +7,7 @@ import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
+import be.n4utiluss.wysiwyd.fonts.Fonts;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -16,11 +17,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * The main activity class, displayed when the app is launched.
@@ -28,14 +29,22 @@ import android.widget.ImageView;
  *
  */
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>{
-	private static final float BITMAP_SCALE = 0.1f;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		getLoaderManager().initLoader(0, null, this);
+
+		// Fonts
+		TextView wysiwyd = (TextView) findViewById(R.id.main_wysiwyd);
+		TextView scan = (TextView) findViewById(R.id.main_scan_text);
+		TextView search = (TextView) findViewById(R.id.main_search_text);
+		
+		wysiwyd.setTypeface(Fonts.getFonts(this).chopinScript);
+		scan.setTypeface(Fonts.getFonts(this).chopinScript);
+		search.setTypeface(Fonts.getFonts(this).chopinScript);
 	}
 
 	@Override
@@ -81,7 +90,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		return cursorLoader;
 	}
 
-	@SuppressLint("NewApi")
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		String photoPath = null;
@@ -103,29 +111,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		bmOptions.inPurgeable = true;
 		Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 		
-		
-		
 		ImageView imageView = (ImageView) findViewById(R.id.main_image_background);
-		Bitmap finalBitmap;
-		
-		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-			finalBitmap = BlurBuilder.blur(this, bitmap);
-			
-		} else{
-			int width = Math.round(bitmap.getWidth() * BITMAP_SCALE);
-	        int height = Math.round(bitmap.getHeight() * BITMAP_SCALE);
-			
-			Bitmap temp = Bitmap.createScaledBitmap(bitmap, width, height, true);
-			finalBitmap = Bitmap.createScaledBitmap(temp, bitmap.getWidth(), bitmap.getHeight(), true);
-		}
-		
+		Bitmap finalBitmap = BlurBuilder.blur(this, bitmap);
 		imageView.setImageBitmap(finalBitmap);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
-		
-	}
+	public void onLoaderReset(Loader<Cursor> arg0) {}
 
 }

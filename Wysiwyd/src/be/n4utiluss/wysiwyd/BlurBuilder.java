@@ -9,27 +9,39 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
 public class BlurBuilder {
-    private static final float BITMAP_SCALE = 0.2f;
-    private static final float BLUR_RADIUS = 7.5f;
+	private static final float BITMAP_SCALE = 0.2f;
+	private static final float BLUR_RADIUS = 7.5f;
 
-    @SuppressLint("NewApi")
+	@SuppressLint("NewApi")
 	public static Bitmap blur(Context ctx, Bitmap image) {
-        int width = Math.round(image.getWidth() * BITMAP_SCALE);
-        int height = Math.round(image.getHeight() * BITMAP_SCALE);
+		
+		Bitmap outputBitmap;
+		
+		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+			int width = Math.round(image.getWidth() * BITMAP_SCALE);
+			int height = Math.round(image.getHeight() * BITMAP_SCALE);
 
-        Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
-        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+			Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+			outputBitmap = Bitmap.createBitmap(inputBitmap);
 
-        RenderScript rs = RenderScript.create(ctx);
-        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-        Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
-        Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
-        theIntrinsic.setRadius(BLUR_RADIUS);
-        theIntrinsic.setInput(tmpIn);
-        theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(outputBitmap);
+			RenderScript rs = RenderScript.create(ctx);
+			ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+			Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+			Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+			theIntrinsic.setRadius(BLUR_RADIUS);
+			theIntrinsic.setInput(tmpIn);
+			theIntrinsic.forEach(tmpOut);
+			tmpOut.copyTo(outputBitmap);
+		} else {
+			int width = Math.round(image.getWidth() * BITMAP_SCALE);
+			int height = Math.round(image.getHeight() * BITMAP_SCALE);
 
-        return outputBitmap;
-    }
+			Bitmap temp = Bitmap.createScaledBitmap(image, width, height, true);
+			outputBitmap = Bitmap.createScaledBitmap(temp, image.getWidth(), image.getHeight(), true);
+		}
+
+		return outputBitmap;
+	}
 
 }

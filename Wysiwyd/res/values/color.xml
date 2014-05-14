@@ -145,4 +145,5 @@
  <color name="DetailsBloc">#F0FFFFFF</color>
  <color name="Transparent">#00000000</color>
  <color name="Main_selection_color">#50FFFFFF</color>
+ <color name="Scanchoice_selection_color">#50FFFFFF</color>
 </resources>

@@ -4,8 +4,6 @@
     <string name="app_name">Wysiwyd</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_scan_choice">Scan Type</string>
-    <string name="qr_code">QR Code</string>
-    <string name="nfc_code">NFC Code</string>
     <string name="title_activity_results">Matches</string>
     <string name="action_new">New Bottle</string>
     <string name="action_edit">Edit</string>
@@ -13,7 +11,16 @@
     
     <!-- Main activity -->
     
-    <string name="main_scan_image">Scan bottle</string>
+    <string name="main_scan">Scan</string>
+    <string name="main_search">Search</string>
+    <string name="wysiwyd">Wysiwyd</string>
+    
+    <!-- Scan Choice -->
+    
+    <string name="scanchoice_title">Barcode and QR Code, or NFC</string>
+    <string name="scanchoice_barcode_text">Barcode and QR Code</string>
+    <string name="scanchoice_nfc_text">NFC</string>
+    
     
     <!-- List Fragment -->
     
