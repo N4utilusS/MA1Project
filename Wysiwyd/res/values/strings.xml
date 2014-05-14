@@ -11,6 +11,10 @@
     <string name="action_edit">Edit</string>
     <string name="background_picture">Bottle picture</string>
     
+    <!-- Main activity -->
+    
+    <string name="main_scan_image">Scan bottle</string>
+    
     <!-- List Fragment -->
     
     <string name="list_action_search">Search</string>
