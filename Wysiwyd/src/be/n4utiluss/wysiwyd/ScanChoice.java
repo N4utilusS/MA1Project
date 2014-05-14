@@ -48,9 +48,9 @@ public class ScanChoice extends Activity implements LoaderManager.LoaderCallback
 		TextView barcode = (TextView) findViewById(R.id.scanchoice_barcode_text);
 		TextView nfc = (TextView) findViewById(R.id.scanchoice_nfc_text);
 
-		title.setTypeface(Fonts.getFonts(this).chopinScript);
-		barcode.setTypeface(Fonts.getFonts(this).chopinScript);
-		nfc.setTypeface(Fonts.getFonts(this).chopinScript);
+		title.setTypeface(Fonts.getFonts(this).robotoThin);
+		barcode.setTypeface(Fonts.getFonts(this).robotoThin);
+		nfc.setTypeface(Fonts.getFonts(this).robotoThin);
 	}
 
 	@Override

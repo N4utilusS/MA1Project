@@ -17,6 +17,7 @@ public class Fonts {
 	 * Handwritten font used for the bottle names.
 	 */
 	final public Typeface chopinScript;
+	final public Typeface robotoThin;
 	
 	/**
 	 * Returns the only instance of the class.
@@ -41,5 +42,6 @@ public class Fonts {
 		super();
 		
 		this.chopinScript = Typeface.createFromAsset(context.getAssets(), "fonts/ChopinScript.otf");
+		this.robotoThin = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Thin.ttf");
 	}
 }

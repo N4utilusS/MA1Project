@@ -42,9 +42,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		TextView scan = (TextView) findViewById(R.id.main_scan_text);
 		TextView search = (TextView) findViewById(R.id.main_search_text);
 		
-		wysiwyd.setTypeface(Fonts.getFonts(this).chopinScript);
-		scan.setTypeface(Fonts.getFonts(this).chopinScript);
-		search.setTypeface(Fonts.getFonts(this).chopinScript);
+		wysiwyd.setTypeface(Fonts.getFonts(this).robotoThin);
+		scan.setTypeface(Fonts.getFonts(this).robotoThin);
+		search.setTypeface(Fonts.getFonts(this).robotoThin);
 	}
 
 	@Override
