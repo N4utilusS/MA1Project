@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -31,7 +28,6 @@ import android.widget.TextView;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
-import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.fonts.Fonts;
 
@@ -294,8 +290,6 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
 			if (!cursor.isNull(pictureColumnIndex)) {
 				setPicture(cursor.getString(pictureColumnIndex));
-			} else {
-				setBackground();
 			}
 		}
 	}
@@ -328,14 +322,6 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	}
 	
 	/**
-	 * Sets the background of the fragment to a defined color. Used in case no picture is available.
-	 */
-	private void setBackground() {
-		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_details);
-		scrollView.setBackgroundColor(getResources().getColor(R.color.DetailsBackground));
-	}
-	
-	/**
 	 * Sets the background picture to a given picture found at the location given by the passed path.
 	 * @param photoPath The photo path on the device.
 	 */
@@ -343,7 +329,6 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		
 		File picture = new File(photoPath);
 		if (!picture.exists() || !picture.isFile() || !picture.canRead()) {
-			setBackground();
 			return;
 		}
 		

@@ -4,9 +4,7 @@
     android:layout_height="match_parent"
     android:columnCount="2"
     android:rowCount="3"
-    android:background="@drawable/list_selector"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp" >
+    android:background="@drawable/list_selector" >
 
     <TextView
         android:id="@+id/list_element_bottle_name"

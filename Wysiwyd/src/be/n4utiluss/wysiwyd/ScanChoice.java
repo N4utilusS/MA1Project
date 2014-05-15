@@ -41,6 +41,7 @@ public class ScanChoice extends Activity implements LoaderManager.LoaderCallback
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scan_choice);
 		
+		// The loader for the background image:
 		getLoaderManager().initLoader(0, null, this);
 
 		// Fonts

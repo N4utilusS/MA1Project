@@ -152,9 +152,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE)) {
 			//setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
 			this.photoPath = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
-		} else {
-			this.setBackground();
 		}
+		
 		// The varieties:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.new_bottle_varieties_layout);
 		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES_KEY);
@@ -573,8 +572,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
 			if (!cursor.isNull(pictureColumnIndex)) {
 				setPicture(cursor.getString(pictureColumnIndex));
-			} else {
-				setBackground();
 			}
 		}
 		
@@ -672,14 +669,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {}
-	
-	/**
-	 * Sets the background of the fragment to a defined color. Used in case no picture is available.
-	 */
-	private void setBackground() {
-		ScrollView scrollView = (ScrollView) getView().findViewById(R.id.scrollView_abstract_bottle_info);
-		scrollView.setBackgroundColor(getResources().getColor(R.color.DetailsBackground));
-	}
 
 	/**
 	 * Sets the background picture to a given picture found at the location given by the passed path.
@@ -689,7 +678,6 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		
 		File picture = new File(photoPath);
 		if (!picture.exists() || !picture.isFile() || !picture.canRead()) {
-			setBackground();
 			return;
 		}
 		

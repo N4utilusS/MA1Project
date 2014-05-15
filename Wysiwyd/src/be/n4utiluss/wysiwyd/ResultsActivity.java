@@ -5,21 +5,31 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
+
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
+import be.n4utiluss.wysiwyd.database.DatabaseHelper;
+import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.search.SearchFragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.app.Fragment.SavedState;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.ImageView;
 
 /**
  * Activity managing the results of queries on bottles with certain properties.
@@ -32,7 +42,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 														NewBottleFragment.NewBottleFragmentCallbacks,
 														ModifyBottleFragment.ModifyBottleFragmentCallbacks,
 														BottleDetailsFragment.BottleDetailsFragmentCallbacks,
-														SearchFragment.SearchFragmentCallbacks {
+														SearchFragment.SearchFragmentCallbacks,
+														LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final int REQUEST_TAKE_PHOTO = 1;
 	private static final String ALBUM_NAME = "Wysiwyd Bottles";
@@ -94,7 +105,9 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			if (savedInstanceState.containsKey(PICTURE_PATH))
 				this.currentPhotoPath = savedInstanceState.getString(PICTURE_PATH);
 		}
-
+		
+		// The loader for the background image:
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
@@ -381,4 +394,47 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			getFragmentManager().popBackStack();
 		this.bottlesListFragment.refreshList();
 	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		SQLiteCursorLoader cursorLoader = new SQLiteCursorLoader(this,
+				DatabaseHelper.getInstance(this), 
+				DatabaseContract.SELECT + BottleTable._ID + DatabaseContract.COMMA_SEP + BottleTable.COLUMN_NAME_IMAGE +
+				DatabaseContract.FROM + BottleTable.TABLE_NAME +
+				DatabaseContract.WHERE + BottleTable.COLUMN_NAME_IMAGE + DatabaseContract.NOT + DatabaseContract.NULL +
+				DatabaseContract.ORDER_BY + DatabaseContract.RANDOM +
+				DatabaseContract.LIMIT + "1", 
+				null);
+
+		return cursorLoader;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		String photoPath = null;
+
+		if (cursor.moveToFirst()) {
+			photoPath = cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE));
+		} else {
+			return;
+		}
+
+		// Check if file exists and is readable:
+		File picture = new File(photoPath);
+		if (!picture.exists() || !picture.isFile() || !picture.canRead()) {
+			return;
+		}
+
+		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+		bmOptions.inJustDecodeBounds = false;
+		bmOptions.inPurgeable = true;
+		Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
+		
+		ImageView imageView = (ImageView) findViewById(R.id.results_background_image);
+		Bitmap finalBitmap = BlurBuilder.blur(this, bitmap);
+		imageView.setImageBitmap(finalBitmap);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {}
 }

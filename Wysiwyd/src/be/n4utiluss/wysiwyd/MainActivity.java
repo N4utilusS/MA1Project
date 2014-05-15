@@ -35,6 +35,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// The loader for the background image:
 		getLoaderManager().initLoader(0, null, this);
 
 		// Fonts
