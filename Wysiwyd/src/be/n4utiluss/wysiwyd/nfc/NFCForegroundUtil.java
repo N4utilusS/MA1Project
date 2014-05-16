@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NfcAdapter;
-import android.nfc.tech.NfcA;
+import android.nfc.tech.NdefFormatable;
 import android.util.Log;
 
 public class NFCForegroundUtil {
@@ -30,13 +30,13 @@ public class NFCForegroundUtil {
 		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
 
 		try {
-			ndef.addDataType("*/*");
+			ndef.addDataType("text/plain");
 		} catch (MalformedMimeTypeException e) {
-			throw new RuntimeException("Unable to speciy */* Mime Type", e);
+			throw new RuntimeException("Unable to speciy text/plain Mime Type", e);
 		}
 		intentFiltersArray = new IntentFilter[] { ndef };
 
-		techListsArray = new String[][] { new String[] { NfcA.class.getName() } };
+		techListsArray = new String[][] { new String[] { NdefFormatable.class.getName() } };
 
 	}
 

@@ -50,7 +50,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.n4utiluss.wysiwyd.ScanChoice" />
         </activity>
-        
+        <activity
+            android:name="be.n4utiluss.wysiwyd.GenerationChooserActivity"
+            android:label="@string/title_activity_generation_chooser"
+            android:parentActivityName="be.n4utiluss.wysiwyd.ResultsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.n4utiluss.wysiwyd.ResultsActivity" />
+        </activity>
+        <activity
+            android:name="be.n4utiluss.wysiwyd.nfc.NFCWriterActivity"
+            android:label="@string/title_activity_nfcwriter"
+            android:parentActivityName="be.n4utiluss.wysiwyd.GenerationChooserActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.n4utiluss.wysiwyd.GenerationChooserActivity" />
+        </activity>
     </application>
 
 </manifest>

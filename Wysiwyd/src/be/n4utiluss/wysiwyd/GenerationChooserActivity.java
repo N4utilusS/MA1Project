@@ -2,11 +2,8 @@ package be.n4utiluss.wysiwyd;
 
 import java.io.File;
 
-import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
-
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
@@ -14,39 +11,36 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import be.n4utiluss.wysiwyd.database.DatabaseContract;
-import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
+import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.fonts.Fonts;
-import be.n4utiluss.wysiwyd.nfc.NFCScanActivity;
+import be.n4utiluss.wysiwyd.nfc.NFCWriterActivity;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentIntegrator;
 import be.n4utiluss.wysiwyd.zxing.integration.android.IntentResult;
 
-/**
- * Activity managing the choice between all the scanning options, such as barcode/QR scanning or NFC.
- * @author anthonydebruyn
- *
- */
-public class ScanChoice extends Activity implements LoaderManager.LoaderCallbacks<Cursor>{
+import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
 
+public class GenerationChooserActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_scan_choice);
+		setContentView(R.layout.activity_generation_chooser);
 		
 		// The loader for the background image:
 		getLoaderManager().initLoader(0, null, this);
 
 		// Fonts
-		TextView title = (TextView) findViewById(R.id.scanchoice_title);
-		TextView barcode = (TextView) findViewById(R.id.scanchoice_barcode_text);
-		TextView nfc = (TextView) findViewById(R.id.scanchoice_nfc_text);
+		TextView title = (TextView) findViewById(R.id.generation_chooser_title);
+		TextView barcode = (TextView) findViewById(R.id.generation_chooser_barcode_text);
+		TextView nfc = (TextView) findViewById(R.id.generation_chooser_nfc_text);
 
 		title.setTypeface(Fonts.getFonts(this).robotoThin);
 		barcode.setTypeface(Fonts.getFonts(this).robotoThin);
@@ -68,16 +62,15 @@ public class ScanChoice extends Activity implements LoaderManager.LoaderCallback
 	}
 
 	public void QRorBarCode(View view) {
-		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-			IntentIntegrator integrator = new IntentIntegrator(this);
-			integrator.initiateScan();
+		
 
-		}
 	}
 
 	public void NFCCode(View view) {
 		if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC)) {
-			Intent nfcIntent = new Intent(this, NFCScanActivity.class);
+			Intent nfcIntent = new Intent(this, NFCWriterActivity.class);
+			long code = getIntent().getExtras().getLong(ResultsActivity.BOTTLE_CODE);
+			nfcIntent.putExtra(ResultsActivity.BOTTLE_CODE, code);
 			startActivity(nfcIntent);
 		}
 	}
@@ -87,21 +80,7 @@ public class ScanChoice extends Activity implements LoaderManager.LoaderCallback
 			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			
 			if (resultCode == RESULT_OK && scanResult != null) {
-				Intent listIntent = new Intent(this, ResultsActivity.class);
 				
-				long code;
-				try {
-					code = Long.parseLong(scanResult.getContents());
-					listIntent.putExtra(ResultsActivity.BOTTLE_CODE, code);
-					startActivity(listIntent);
-				} catch (NumberFormatException e) {
-					Context context = getApplicationContext();
-					CharSequence text = "Not a valid number!";
-					int duration = Toast.LENGTH_LONG;
-
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
-				}
 			}
 		}
 	}
@@ -142,7 +121,7 @@ public class ScanChoice extends Activity implements LoaderManager.LoaderCallback
 		bmOptions.inPurgeable = true;
 		Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
 		
-		ImageView imageView = (ImageView) findViewById(R.id.scanchoice_image_background);
+		ImageView imageView = (ImageView) findViewById(R.id.generation_chooser_image_background);
 		Bitmap finalBitmap = BlurBuilder.blur(this, bitmap);
 		imageView.setImageBitmap(finalBitmap);
 	}

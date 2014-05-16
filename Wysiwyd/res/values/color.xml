@@ -148,5 +148,7 @@
  <color name="Scanchoice_selection_color">#50FFFFFF</color>
  <color name="Results_list_not_selected">#50FFFFFF</color>
  <color name="Results_list_selected">@color/Aquamarine</color>
+ <color name="Generation_chooser_selection_color">#50FFFFFF</color>
+ 
  
 </resources>

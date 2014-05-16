@@ -180,10 +180,10 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
 				getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
 				getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
-			} else if (arguments.containsKey(ScanChoice.BOTTLE_CODE)){
+			} else if (arguments.containsKey(ResultsActivity.BOTTLE_CODE)){
 				// Pre-fill with the scanned code:
 				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
-				code.setText(Long.toString(arguments.getLong(ScanChoice.BOTTLE_CODE)));
+				code.setText(Long.toString(arguments.getLong(ResultsActivity.BOTTLE_CODE)));
 			}
 		} else {
 			resetInfo(savedInstanceState);

@@ -1,114 +1,84 @@
 package be.n4utiluss.wysiwyd.nfc;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 
-import android.app.Activity;
+import org.ndeftools.Message;
+import org.ndeftools.MimeRecord;
+import org.ndeftools.util.activity.NfcReaderActivity;
+
+import android.content.Context;
 import android.content.Intent;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.MifareUltralight;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.Toast;
 import be.n4utiluss.wysiwyd.R;
+import be.n4utiluss.wysiwyd.ResultsActivity;
 
-public class NFCScanActivity extends Activity {
 
-	NFCForegroundUtil nfcForegroundUtil = null;
-	
+public class NFCScanActivity extends NfcReaderActivity {
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nfcscan);
 
-		// Creates the foreground NFC dispatch system:
-		nfcForegroundUtil = new NFCForegroundUtil(this);
+		// Enable detecting mode:
+		setDetecting(true);
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.nfcscan, menu);
-		return true;
-	}
-
-	public void onPause() {
-	    super.onPause();
-	    nfcForegroundUtil.disableForeground();
-	}   
-
-	public void onResume() {
-	    super.onResume();
-	    nfcForegroundUtil.enableForeground();
-
-	    if (!nfcForegroundUtil.getNfcAdapter().isEnabled())
-	    {
-	        Toast.makeText(getApplicationContext(), 
-                    "Please activate NFC and press Back to return to the application!", 
-                    Toast.LENGTH_LONG).show();
-	        startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-	    }
-
-	}
-	
-	public void onNewIntent(Intent intent) {
-		Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-	    /*StringBuilder sb = new StringBuilder();
-	    for(int i = 0; i < tag.getId().length; i++){
-	    	sb.append(new Integer(tag.getId()[i]) + " ");
-	    }*/
+	protected void readEmptyNdefMessage() {
+		Log.i("READ","empty");
 		
-		Toast.makeText(getApplicationContext(), 
-				"TagID: " + bytesToHex(tag.getId()), 
-                Toast.LENGTH_LONG).show();
 	}
-	
-	/**
-     *  Convenience method to convert a byte array to a hex string.
-     *
-     * @param  data  the byte[] to convert
-     * @return String the converted byte[]
-     */
 
-    public static String bytesToHex(byte[] data) {
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < data.length; i++) {
-            buf.append(byteToHex(data[i]).toUpperCase());
-            buf.append(" ");
-        }
-        return (buf.toString());
-    }
+	@Override
+	protected void readNdefMessage(Message message) {
+		Log.i("READ","read");
+		MimeRecord record = (MimeRecord) message.get(0);
+		
+		byte[] data = record.getData();
+		String str = new String(data, Charset.forName("UTF-8"));
 
-    /**
-     *  method to convert a byte to a hex string.
-     *
-     * @param  data  the byte to convert
-     * @return String the converted byte
-     */
-    public static String byteToHex(byte data) {
-        StringBuffer buf = new StringBuffer();
-        buf.append(toHexChar((data >>> 4) & 0x0F));
-        buf.append(toHexChar(data & 0x0F));
-        return buf.toString();
-    }
+		try {
+			long code = Long.parseLong(str);
+			Intent listIntent = new Intent(this, ResultsActivity.class);
+			listIntent.putExtra(ResultsActivity.BOTTLE_CODE, code);
+			startActivity(listIntent);
+		} catch (NumberFormatException e) {
+			Context context = getApplicationContext();
+			CharSequence text = "Not a valid number!";
+			int duration = Toast.LENGTH_LONG;
 
-    /**
-     *  Convenience method to convert an int to a hex char.
-     *
-     * @param  i  the int to convert
-     * @return char the converted char
-     */
-    public static char toHexChar(int i) {
-        if ((0 <= i) && (i <= 9)) {
-            return (char) ('0' + i);
-        } else {
-            return (char) ('a' + (i - 10));
-        }
-    }
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		
+	}
+
+	@Override
+	protected void readNonNdefMessage() {
+		Log.i("READ","non");		
+	}
+
+	@Override
+	protected void onNfcFeatureNotFound() {
+		Log.i("READ","not");
+	}
+
+	@Override
+	protected void onNfcStateChange(boolean arg0) {
+		Log.i("READ","state");		
+	}
+
+	@Override
+	protected void onNfcStateDisabled() {
+		Log.i("READ","dis");		
+	}
+
+	@Override
+	protected void onNfcStateEnabled() {
+		Log.i("READ","en");
+	}
 
 }

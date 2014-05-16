@@ -8,22 +8,27 @@
     <string name="action_new">New Bottle</string>
     <string name="action_edit">Edit</string>
     <string name="background_picture">Bottle picture</string>
-    
+
     <!-- Main activity -->
-    
+
     <string name="main_scan">Scan</string>
     <string name="main_search">Search</string>
     <string name="wysiwyd">Wysiwyd</string>
-    
+
     <!-- Scan Choice -->
-    
+
     <string name="scanchoice_title">Barcode and QR Code, or NFC</string>
     <string name="scanchoice_barcode_text">Barcode and QR Code</string>
     <string name="scanchoice_nfc_text">NFC</string>
-    
-    
+
+    <!-- Generation Chooser -->
+
+    <string name="generation_chooser_title">Barcode and QR Code, or NFC</string>
+    <string name="generation_chooser_barcode_text">QR Code</string>
+    <string name="generation_chooser_nfc_text">NFC</string>
+
     <!-- List Fragment -->
-    
+
     <string name="list_action_search">Search</string>
     <string name="list_action_sort_mark_desc">Mark desc</string>
     <string name="list_action_sort_mark_asc">Mark asc</string>
@@ -33,7 +38,7 @@
     <string name="list_action_sort_quantity_asc">Quantity asc</string>
     <string name="list_action_sort_name_desc">Name desc</string>
     <string name="list_action_sort_name_asc">Name asc</string>
-    
+
     <!-- Strings for the new/edit bottle fragment -->
 
     <string name="new_bottle_add_variety">Add</string>
@@ -60,10 +65,8 @@
     <string name="details_section_rating">Rating</string>
     <string name="details_section_varieties">Varieties</string>
     <string name="action_details_image">See</string>
-    
     <string name="details_action_delete">Delete bottle</string>
     <string name="details_delete_popup_message">Are you sure?</string>
-   
 
     <!-- New bottle arrays -->
 
@@ -91,7 +94,7 @@
     <string name="nfc_logo">NFC Logo</string>
 
     <!-- Search fragment -->
-    
+
     <string-array name="search_colour_array">
         <item>White</item>
         <item>Red</item>
@@ -112,7 +115,7 @@
         <item>High sparkling</item>
         <item>All</item>
     </string-array>
-    
+
     <string name="search_add_variety">Add</string>
     <string name="search_checkbox_vintage_from">From</string>
     <string name="search_checkbox_vintage_to">To</string>
@@ -127,5 +130,8 @@
     <string name="search_checkbox_apogee_from">From</string>
     <string name="search_checkbox_apogee_to">To</string>
     <string name="search_action_find">OK</string>
-    
+    <string name="title_activity_generation_chooser">Type of Generation</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_nfcwriter">NFCWriterActivity</string>
+
 </resources>

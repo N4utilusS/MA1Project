@@ -13,21 +13,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.BottleVarietyTable;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
+import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.fonts.Fonts;
 
@@ -38,7 +43,7 @@ import com.commonsware.cwac.loaderex.SQLiteCursorLoader;
  * @author anthonydebruyn
  *
  */
-public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class BottleDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnLongClickListener {
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int BOTTLE_VARIETIES_LOADER = 1;
@@ -74,6 +79,10 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		// Fonts
 		TextView name = (TextView) getView().findViewById(R.id.details_name);
 		name.setTypeface(Fonts.getFonts(getActivity()).chopinScript);
+		
+		// Set long click listener on code view:
+		GridLayout gl = (GridLayout) getView().findViewById(R.id.details_code_layout);
+		gl.setOnLongClickListener(this);
 	}
 	
 	@Override
@@ -366,6 +375,23 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 		this.photoPath = null;
 	}
+	
+
+	@Override
+	public boolean onLongClick(View view) {
+		TextView code = (TextView) getView().findViewById(R.id.details_code);
+		String codeStringValue = code.getText().toString();
+		if (!TextUtils.isEmpty(codeStringValue)) {
+			try {
+				long codeValue = Long.parseLong(codeStringValue);
+				this.linkedActivity.onWriteCodeEvent(codeValue);
+			}
+			catch (NumberFormatException e) {
+				Toast.makeText(this.getActivity(), "Code not recognized.", Toast.LENGTH_LONG).show();
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * The interface that must be implemented by the connected activity, 
@@ -383,5 +409,10 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		 * Called after a bottle has been deleted through the details fragment.
 		 */
 		public void onDeleteEvent();
+		
+		/**
+		 * Called after the user long clicked the code layout in the details fragment, to launch the code generation (writer).
+		 */
+		public void onWriteCodeEvent(long code);
 	}
 }

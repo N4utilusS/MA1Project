@@ -53,6 +53,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 	private static final String DETAILS_FRAGMENT_TAG = "be.n4utiluss.wysiwyd.details_fragment_tag";
 	private static final String PICTURE_PATH = "be.n4utiluss.wysiwyd.picture_path";
 	
+	public final static String BOTTLE_CODE = "be.n4utiluss.wysiwyd.BOTTLE_CODE";
+	
 	private BottlesListFragment bottlesListFragment;
 	private String currentPhotoPath = null;
 	private AbstractBottleInfoFragment abstractBottleInfoFragment;
@@ -71,9 +73,9 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			
 			Bundle searchInfo = null;
 			
-			if (arguments.containsKey(ScanChoice.BOTTLE_CODE)) {
+			if (arguments.containsKey(BOTTLE_CODE)) {
 				searchInfo = new Bundle();
-				searchInfo.putLong(SearchFragment.CODE, arguments.getLong(ScanChoice.BOTTLE_CODE));
+				searchInfo.putLong(SearchFragment.CODE, arguments.getLong(BOTTLE_CODE));
 			}
 			bottlesListFragment.setSearchBundle(searchInfo);
 			
@@ -130,8 +132,8 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 			arguments.putLong(DatabaseContract.BottleTable._ID, id);
 		}
 		
-		if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ScanChoice.BOTTLE_CODE)) {
-			arguments.putLong(ScanChoice.BOTTLE_CODE, getIntent().getExtras().getLong(ScanChoice.BOTTLE_CODE));
+		if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(BOTTLE_CODE)) {
+			arguments.putLong(BOTTLE_CODE, getIntent().getExtras().getLong(BOTTLE_CODE));
 		}
 		
 		fragment.setArguments(arguments);
@@ -437,4 +439,11 @@ public class ResultsActivity extends Activity implements BottlesListFragment.Bot
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {}
+
+	@Override
+	public void onWriteCodeEvent(long code) {
+		Intent codeGenerationIntent = new Intent(this, GenerationChooserActivity.class);
+		codeGenerationIntent.putExtra(BOTTLE_CODE, code);
+		startActivity(codeGenerationIntent);
+	}
 }
