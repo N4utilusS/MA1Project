@@ -9,11 +9,11 @@
         android:id="@+id/details_background_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/background_picture"
-        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:background="@color/Transparent"
-        android:adjustViewBounds="true" />
-        
+        android:contentDescription="@string/background_picture"
+        android:scaleType="centerCrop" />
+
     <ScrollView
         android:id="@+id/scrollView_details"
         android:layout_width="match_parent"
@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_row="0"
+                    android:freezesText="true"
                     android:textAppearance="@style/TextSmall" />
 
                 <TextView
@@ -45,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_row="1"
+                    android:freezesText="true"
                     android:textAppearance="@style/TextName" />
 
                 <TextView
@@ -53,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_row="2"
+                    android:freezesText="true"
                     android:textAppearance="@style/TextSmall" />
 
                 <TextView
@@ -61,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_row="3"
+                    android:freezesText="true"
                     android:textAppearance="@style/TextSmall" />
             </GridLayout>
 
@@ -70,12 +74,31 @@
                 android:background="@drawable/details_bloc" >
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:layout_row="0"
+                    android:text="@string/details_section_quantity"
+                    android:textAppearance="@style/TextTitle" />
+
+                <TextView
                     android:id="@+id/details_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
-                    android:layout_row="0"
+                    android:layout_row="1"
+                    android:freezesText="true"
                     android:textAppearance="@style/TextSmall" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_row="0"
+                    android:text="@string/details_section_price"
+                    android:textAppearance="@style/TextTitle" />
 
                 <TextView
                     android:id="@+id/details_price"
@@ -83,7 +106,8 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_gravity="right"
-                    android:layout_row="0"
+                    android:layout_row="1"
+                    android:freezesText="true"
                     android:textAppearance="@style/TextSmall" />
             </GridLayout>
 
@@ -92,6 +116,13 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/details_bloc"
                 android:orientation="vertical" >
+                
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/details_section_rating"
+                        android:textAppearance="@style/TextTitle" />
 
                 <RatingBar
                     android:id="@+id/details_mark"
@@ -123,7 +154,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -138,7 +170,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -153,7 +186,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -201,7 +235,8 @@
                     android:layout_column="0"
                     android:layout_gravity="right"
                     android:layout_row="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
 
                 <TextView
                     android:id="@+id/details_apogee"
@@ -210,7 +245,8 @@
                     android:layout_column="1"
                     android:layout_gravity="right"
                     android:layout_row="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
             </GridLayout>
 
             <GridLayout
@@ -234,7 +270,8 @@
                     android:layout_column="0"
                     android:layout_gravity="center"
                     android:layout_row="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
             </GridLayout>
 
             <GridLayout
@@ -258,7 +295,8 @@
                     android:layout_column="0"
                     android:layout_gravity="center"
                     android:layout_row="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
             </GridLayout>
 
             <GridLayout
@@ -282,7 +320,8 @@
                     android:layout_column="0"
                     android:layout_gravity="center"
                     android:layout_row="1"
-                    android:textAppearance="@style/TextSmall" />
+                    android:textAppearance="@style/TextSmall"
+                    android:freezesText="true" />
             </GridLayout>
         </LinearLayout>
     </ScrollView>

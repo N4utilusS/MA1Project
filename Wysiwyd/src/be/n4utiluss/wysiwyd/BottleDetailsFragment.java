@@ -1,6 +1,7 @@
 package be.n4utiluss.wysiwyd;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,6 +48,8 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int BOTTLE_VARIETIES_LOADER = 1;
+	private static final int AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS = 1;
+	private static final String VARIETIES_KEY = "be.n4utiluss.wysiwyd.varieties";
 	private BottleDetailsFragmentCallbacks linkedActivity;
 	private String photoPath;
 
@@ -71,9 +74,11 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 		// (Re)start the loaders:
 
-		if (this.getArguments().containsKey(BottleTable._ID)) {
+		if (savedInstanceState == null && this.getArguments().containsKey(BottleTable._ID)) {
 			getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
 			getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
+		} else {
+			resetInfo(savedInstanceState);
 		}
 
 		// Fonts
@@ -83,6 +88,25 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		// Set long click listener on code view:
 		GridLayout gl = (GridLayout) getView().findViewById(R.id.details_code_layout);
 		gl.setOnLongClickListener(this);
+	}
+	
+	/**
+	 * Takes a bundle with all the saved information, and restores it.
+	 * Used when a rotation of the screen occurs and other occasions.
+	 * @param savedInstanceState The saved information.
+	 */
+	private void resetInfo(Bundle savedInstanceState) {
+		
+		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE)) {
+			setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
+			//this.photoPath = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
+		}
+		
+		// The varieties:
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
+		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES_KEY);
+		for (String variety: varieties)
+			addVarietyToLayout(variety, ll);
 	}
 	
 	@Override
@@ -126,6 +150,11 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		}
 	}
 
+	/**
+	 * Called after the user has pushed the delete button to delete a bottle.
+	 * Displays a dialog asking confirmation, and deletes the current bottle if confirmed.
+	 * Deletes the picture file if this is the only bottle using it.
+	 */
 	private void delete() {
 		AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
 		
@@ -258,7 +287,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			if (!cursor.isNull(regionColumnIndex))
 				region.setText(cursor.getString(regionColumnIndex));
 			
-			quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))) + " bottles");
+			quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_QUANTITY))) + " bottle(s)");
 			
 			int priceColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_PRICE);
 			if (!cursor.isNull(priceColumnIndex))
@@ -391,6 +420,26 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+
+		if (this.photoPath != null)
+			savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE, this.photoPath);
+
+		// Save the varieties:
+		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
+		int count = ll.getChildCount();	// There is one title view and the auto complete (so put -2).
+		ArrayList<String> varieties = new ArrayList<String>();
+
+		for (int i = AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS; i < count; ++i) {
+			TextView tv = (TextView) ll.getChildAt(i);
+			varieties.add(tv.getText().toString());
+		}
+
+		savedInstanceState.putStringArrayList(VARIETIES_KEY, varieties);
 	}
 
 	/**

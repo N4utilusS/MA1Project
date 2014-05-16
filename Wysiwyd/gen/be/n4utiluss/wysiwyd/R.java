@@ -245,10 +245,10 @@ public final class R {
         public static final int list_action_sort_quantity_desc=0x7f0a0070;
         public static final int list_action_sort_vintage_asc=0x7f0a006f;
         public static final int list_action_sort_vintage_desc=0x7f0a006e;
-        public static final int list_element_bottle_mark=0x7f0a0061;
-        public static final int list_element_bottle_name=0x7f0a005f;
-        public static final int list_element_bottle_quantity=0x7f0a0062;
-        public static final int list_element_bottle_vintage=0x7f0a0060;
+        public static final int list_element_mark=0x7f0a0062;
+        public static final int list_element_name=0x7f0a005f;
+        public static final int list_element_quantity=0x7f0a0061;
+        public static final int list_element_vintage=0x7f0a0060;
         public static final int main_image_background=0x7f0a0006;
         public static final int main_scan_text=0x7f0a0008;
         public static final int main_search_text=0x7f0a0009;

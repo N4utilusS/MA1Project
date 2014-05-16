@@ -85,7 +85,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 
 	/**
 	 * Takes a bundle with all the saved information, and restores it.
-	 * Used when a rotation of the screen occurs.
+	 * Used when a rotation of the screen occurs and other occasions.
 	 * @param savedInstanceState The saved information.
 	 */
 	private void resetInfo(Bundle savedInstanceState) {
@@ -150,8 +150,8 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		code.setText(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_CODE));
 		*/
 		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE)) {
-			//setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
-			this.photoPath = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
+			setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
+			//this.photoPath = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
 		}
 		
 		// The varieties:
@@ -180,7 +180,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 			if (arguments != null && arguments.containsKey(BottleTable._ID) && (arguments.getLong(BottleTable._ID) > 0)) {
 				getLoaderManager().restartLoader(MAIN_INFO_LOADER, null, this);
 				getLoaderManager().restartLoader(BOTTLE_VARIETIES_LOADER, null, this);
-			} else if (arguments.containsKey(ResultsActivity.BOTTLE_CODE)){
+			} else if (arguments != null && arguments.containsKey(ResultsActivity.BOTTLE_CODE)){
 				// Pre-fill with the scanned code:
 				EditText code = (EditText) getView().findViewById(R.id.new_bottle_code);
 				code.setText(Long.toString(arguments.getLong(ResultsActivity.BOTTLE_CODE)));

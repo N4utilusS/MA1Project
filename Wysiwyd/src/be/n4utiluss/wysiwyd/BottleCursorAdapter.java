@@ -27,20 +27,20 @@ public class BottleCursorAdapter extends CursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		
 		// Set the name of the bottle.
-		TextView name = (TextView) view.findViewById(R.id.list_element_bottle_name);
+		TextView name = (TextView) view.findViewById(R.id.list_element_name);
 		name.setText(cursor.getString(cursor.getColumnIndex(DatabaseContract.BottleTable.COLUMN_NAME_NAME)));
 		name.setTypeface(Fonts.getFonts(context).chopinScript);
 		
 		// Set the vintage of the bottle.
-		TextView vintage = (TextView) view.findViewById(R.id.list_element_bottle_vintage);
+		TextView vintage = (TextView) view.findViewById(R.id.list_element_vintage);
 		vintage.setText(cursor.getString(cursor.getColumnIndex(DatabaseContract.BottleTable.COLUMN_NAME_VINTAGE)));
 		
 		// Set the mark of the bottle.
-		RatingBar rating = (RatingBar) view.findViewById(R.id.list_element_bottle_mark);
+		RatingBar rating = (RatingBar) view.findViewById(R.id.list_element_mark);
 		rating.setRating(cursor.getInt(cursor.getColumnIndex(DatabaseContract.BottleTable.COLUMN_NAME_MARK)));
 		
 		// Set the quantity of the bottle.
-		TextView quantity = (TextView) view.findViewById(R.id.list_element_bottle_quantity);
+		TextView quantity = (TextView) view.findViewById(R.id.list_element_quantity);
 		quantity.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(DatabaseContract.BottleTable.COLUMN_NAME_QUANTITY))));
 	}
 
