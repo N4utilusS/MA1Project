@@ -34,8 +34,13 @@ public class NFCScanActivity extends NfcReaderActivity {
 
 	@Override
 	protected void readNdefMessage(Message message) {
-		Log.i("READ","read");
+		if (!(message.get(0) instanceof MimeRecord))
+			return;
+		
 		MimeRecord record = (MimeRecord) message.get(0);
+		
+		if (!"text/plain".equals(record.getMimeType()))
+			return;
 		
 		byte[] data = record.getData();
 		String str = new String(data, Charset.forName("UTF-8"));
