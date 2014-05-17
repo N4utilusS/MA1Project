@@ -48,10 +48,13 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 
 	private static final int MAIN_INFO_LOADER = 0;
 	private static final int BOTTLE_VARIETIES_LOADER = 1;
-	private static final int AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS = 1;
 	private static final String VARIETIES_KEY = "be.n4utiluss.wysiwyd.varieties";
 	private BottleDetailsFragmentCallbacks linkedActivity;
 	private String photoPath;
+	private int colourValue;
+	private int sugarValue;
+	private int effervescenceValue;
+	private ArrayList<String> varieties;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,53 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	 */
 	private void resetInfo(Bundle savedInstanceState) {
 		
+		ImageView colourImage = (ImageView) getView().findViewById(R.id.details_colour_image);
+		ImageView sugarImage = (ImageView) getView().findViewById(R.id.details_sugar_image);
+		ImageView effervescenceImage = (ImageView) getView().findViewById(R.id.details_effervescence_image);
+		
+		colourValue = savedInstanceState.getInt(BottleTable.COLUMN_NAME_COLOUR);
+		sugarValue = savedInstanceState.getInt(BottleTable.COLUMN_NAME_SUGAR);
+		effervescenceValue = savedInstanceState.getInt(BottleTable.COLUMN_NAME_EFFERVESCENCE);		
+		
+		switch (colourValue) {
+		case 0:
+			colourImage.setImageResource(R.drawable.wine_white);
+			break;
+		case 1:
+			colourImage.setImageResource(R.drawable.wine_red);
+			break;
+		case 2:
+			colourImage.setImageResource(R.drawable.wine_rose);
+		}
+
+		switch (sugarValue) {
+		case 0:
+			sugarImage.setImageResource(R.drawable.sugar0);
+			break;
+		case 1:
+			sugarImage.setImageResource(R.drawable.sugar1);
+			break;
+		case 2:
+			sugarImage.setImageResource(R.drawable.sugar2);
+			break;
+		case 3:
+			sugarImage.setImageResource(R.drawable.sugar3);
+		}
+
+		switch (effervescenceValue) {
+		case 0:
+			effervescenceImage.setImageResource(R.drawable.effervescence0);
+			break;
+		case 1:
+			effervescenceImage.setImageResource(R.drawable.effervescence1);
+			break;
+		case 2:
+			effervescenceImage.setImageResource(R.drawable.effervescence2);
+			break;
+		case 3:
+			effervescenceImage.setImageResource(R.drawable.effervescence3);
+		}
+		
 		if (savedInstanceState.containsKey(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE)) {
 			setPicture(savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE));
 			//this.photoPath = savedInstanceState.getString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE);
@@ -104,7 +154,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 		
 		// The varieties:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
-		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES_KEY);
+		varieties = savedInstanceState.getStringArrayList(VARIETIES_KEY);
 		for (String variety: varieties)
 			addVarietyToLayout(variety, ll);
 	}
@@ -268,8 +318,11 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			TextView price = (TextView) getView().findViewById(R.id.details_price);
 			RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.details_mark);
 			TextView colour = (TextView) getView().findViewById(R.id.details_colour);
+			ImageView colourImage = (ImageView) getView().findViewById(R.id.details_colour_image);
 			TextView sugar = (TextView) getView().findViewById(R.id.details_sugar);
+			ImageView sugarImage = (ImageView) getView().findViewById(R.id.details_sugar_image);
 			TextView effervescence = (TextView) getView().findViewById(R.id.details_effervescence);
+			ImageView effervescenceImage = (ImageView) getView().findViewById(R.id.details_effervescence_image);
 			TextView addDate = (TextView) getView().findViewById(R.id.details_addDate);
 			TextView apogee = (TextView) getView().findViewById(R.id.details_apogee);
 			TextView location = (TextView) getView().findViewById(R.id.details_location);
@@ -303,14 +356,53 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			int colourValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_COLOUR));
 			String[] colourArray = getResources().getStringArray(R.array.colour_array);
 			colour.setText(colourArray[colourValue]);
+			switch (colourValue) {
+			case 0:
+				colourImage.setImageResource(R.drawable.wine_white);
+				break;
+			case 1:
+				colourImage.setImageResource(R.drawable.wine_red);
+				break;
+			case 2:
+				colourImage.setImageResource(R.drawable.wine_rose);
+			}
+			this.colourValue = colourValue;
 
 			int sugarValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_SUGAR));
 			String[] sugarArray = getResources().getStringArray(R.array.sugar_array);
 			sugar.setText(sugarArray[sugarValue]);
+			switch (sugarValue) {
+			case 0:
+				sugarImage.setImageResource(R.drawable.sugar0);
+				break;
+			case 1:
+				sugarImage.setImageResource(R.drawable.sugar1);
+				break;
+			case 2:
+				sugarImage.setImageResource(R.drawable.sugar2);
+				break;
+			case 3:
+				sugarImage.setImageResource(R.drawable.sugar3);
+			}
+			this.sugarValue = sugarValue;
 
 			int effervescenceValue = cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_EFFERVESCENCE));
 			String[] effervescenceArray = getResources().getStringArray(R.array.effervescence_array);
 			effervescence.setText(effervescenceArray[effervescenceValue]);
+			switch (effervescenceValue) {
+			case 0:
+				effervescenceImage.setImageResource(R.drawable.effervescence0);
+				break;
+			case 1:
+				effervescenceImage.setImageResource(R.drawable.effervescence1);
+				break;
+			case 2:
+				effervescenceImage.setImageResource(R.drawable.effervescence2);
+				break;
+			case 3:
+				effervescenceImage.setImageResource(R.drawable.effervescence3);
+			}
+			this.effervescenceValue = effervescenceValue;
 			
 			addDate.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_ADD_DATE)));
 			apogee.setText(cursor.getString(cursor.getColumnIndex(BottleTable.COLUMN_NAME_APOGEE)));
@@ -342,9 +434,11 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			Log.e("Details", "Null POINTER!!!!");
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
 		cursor.moveToPosition(-1);
+		this.varieties = new ArrayList<String>();
 		while (cursor.moveToNext()) {
 			String text = cursor.getString(cursor.getColumnIndex(VarietyTable.COLUMN_NAME_NAME));
 			addVarietyToLayout(text, ll);
+			this.varieties.add(text);
 		}
 	}
 	
@@ -425,20 +519,16 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
+		
+		// Save the bottle info:
+		savedInstanceState.putInt(BottleTable.COLUMN_NAME_COLOUR, this.colourValue);
+		savedInstanceState.putInt(BottleTable.COLUMN_NAME_SUGAR, this.sugarValue);
+		savedInstanceState.putInt(BottleTable.COLUMN_NAME_EFFERVESCENCE, this.effervescenceValue);
 
 		if (this.photoPath != null)
 			savedInstanceState.putString(DatabaseContract.BottleTable.COLUMN_NAME_IMAGE, this.photoPath);
 
 		// Save the varieties:
-		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.details_varieties_layout);
-		int count = ll.getChildCount();	// There is one title view and the auto complete (so put -2).
-		ArrayList<String> varieties = new ArrayList<String>();
-
-		for (int i = AMOUNT_OF_VIEWS_IN_VARIETIES_LINEAR_LAYOUT_TO_PASS; i < count; ++i) {
-			TextView tv = (TextView) ll.getChildAt(i);
-			varieties.add(tv.getText().toString());
-		}
-
 		savedInstanceState.putStringArrayList(VARIETIES_KEY, varieties);
 	}
 
