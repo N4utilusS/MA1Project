@@ -108,15 +108,13 @@ footnotesep=50mm
 \paragraph{Constraints}
 
 \begin{itemize}
-	\item If the type is "Champagne", then the Year attribute is not mandatory.
-	\item The AddDate must be $\leq$ the current date.
-	\item Id, Code, Quantity, Vintage, Apogee are a natural numbers.
+	\item If the effervescence is 0, then the vintage attribute is mandatory.
+	\item Id, Code, Quantity, Vintage are a natural numbers.
 	\item Price is a positive real number.
 	\item Colour is a natural number in $\{ 0, 1, 2\}$.
 	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
 	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
 	\item Mark is a natural number in $\{1, 2, 3, 4, 5\}$.
-	\item Vintage is mandatory if the Effervescence attribute is set to "0".
 	
 \end{itemize}
 
@@ -140,13 +138,12 @@ The translation of the ENR into the relational model:
 \begin{itemize}
 	\item If the type is "Champagne", then the Year attribute is not mandatory.
 	\item The AddDate must be $\leq$ the current date.
-	\item Id, Code, Quantity, Vintage, Apogee are a natural numbers.
+	\item Id, Code, Quantity, Vintage are a natural numbers.
 	\item Price is a positive real number.
 	\item Colour is a natural number in $\{ 0, 1, 2\}$.
 	\item Sugar is a natural number in $\{0, 1, 2, 3\}$.
 	\item Effervescence is a natural number in $\{0, 1, 2, 3\}$.
 	\item Mark is a natural number in $\{1, 2, 3, 4, 5\}$.
-	\item Vintage is mandatory if the Effervescence attribute is set to "0".
 	\item For each Bottle Id in BottleVariety, there exists an Id in Bottle.
 	\item For each Variety Id in BottleVariety, there exists an Id in Variety.
 \end{itemize}
