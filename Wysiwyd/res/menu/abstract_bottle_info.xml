@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_abstract_bottle_info_picture"
         android:showAsAction="ifRoom"
-        android:orderInCategory="9"
+        android:orderInCategory="11"
         android:title="@string/action_abstract_bottle_info_picture" />
     
     <item
@@ -17,6 +17,6 @@
 	<item
         android:id="@+id/action_execute"
         android:showAsAction="ifRoom"
-        android:orderInCategory="11"
+        android:orderInCategory="9"
         android:title="@string/action_execute"/>
 </menu>

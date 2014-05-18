@@ -54,7 +54,7 @@ footnotesep=50mm
 
 \newlength\longest
 
-\newcommand*{\course}{\fbox{PROJ-H-400}} % Generic publisher logo
+\newcommand*{\course}{\fbox{PROJ-H-402}} % Generic publisher logo
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -118,9 +118,70 @@ Wysiwyd takes advantages of the new technologies available on the market, such a
 
 \subsection{Functionalities}
 
+\subsubsection{App Tour}
+
+Once the app is loaded, the user has to choose between 2 actions. To \emph{scan a tag or a visual code}, or to \emph{list directly all the bottles}. Those 2 actions are symbolised by 2 bottles on the screen (see fig \ref{main_screen}).
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width=\textwidth]{Images/MainActivity.png}
+	\caption{The Main Screen.}
+	\label{main_screen}
+\end{center}
+\end{figure}
+
+If the user touches the first bottle, a new choice pops up: \emph{visual code}, or \emph{NFC tag} scan. This time, it is represented by glasses. The first one opens another app\footnote{Barcode Scanner, by ZXing Team} to scan a bottle bar code, or QR code\footnote{This visual code is the traduction of the number just below the bar code on wine bottles.}. If the user does not have this separate application, he can download it on the playstore for free. This app is not mandatory for this one to work. However, it is highly recommended, as it leads to easier management of the cellar.\\
+
+Behind the glasses, and if the app has at least one image of a bottle, is a blurred picture of a bottle. This picture is one that the user took to illustrate his mobile database.
+
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width=\textwidth]{Images/ScanChoice.png}
+	\caption{Visual Code, or NFC Tag ?}
+	\label{scan_choice}
+\end{center}
+\end{figure}
+
+By choosing the second glass, the user arrives in a third screen, only if NFC is available on the device (see fig. \ref{nfc_scan}). The NFC is in foreground mode as long as the user stays in this view. This means that no other app can intercept the NFC tag scan. Of course, if the user is not viewing this screen, the system still can intercept the tag if he places a bottle NFC tag near the NFC ship of the device. Then the system launches the app and directly lists the bottles with the corresponding code.
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width=\textwidth]{Images/NFCReaderActivity.png}
+	\caption{NFC Tag Scan.}
+	\label{nfc_scan}
+\end{center}
+\end{figure}
+
+When the code has been captured, one way or another, the app shows a list of the corresponding bottles (fig. \ref{list_results}). If the user decides to add a bottle, the code will be copied in the corresponding text field automatically.
+
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width=\textwidth]{Images/ResultsActivity.png}
+	\caption{List of results.}
+	\label{list_results}
+\end{center}
+\end{figure}
+
+On this figure, one can see all the details about a bottle. This is the view shown on a large screen device. On smaller devices, only one view is displayed at a time, either the details or the list.\\
+
+Several buttons are aligned at the top right of the screen:
+\begin{description}
+\item[New Bottle:] To create a new bottle. Fill all the necessary text fields and other information, and click on \emph{Done}.
+\item[Edit:] To edit an existing bottle. Click on \emph{Done} when finished.
+\item[Search:] To search for bottles. Write down the desired properties, and click on \emph{Ok}. The list will refresh to display only the matching bottles.
+\item[See:] To see the captured image of the bottle lying behind the view. This hides the details to show the background.
+\end{description}
+
 \subsubsection{Adding a Bottle}
 
-To add a bottle, several methods are available: the user 
+
+
+To add a bottle, several methods are available:
+
+\begin{enumerate}
+\item Add the new bottle directly by goin
+\end{enumerate}
 
 \section{The Database}
 
