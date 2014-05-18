@@ -54,7 +54,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	private int colourValue;
 	private int sugarValue;
 	private int effervescenceValue;
-	private ArrayList<String> varieties;
+	private ArrayList<String> varieties = new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -229,13 +229,15 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 	    		db.delete(BottleVarietyTable.TABLE_NAME, whereClause, whereArgs);
 	    		
 	    		// Suppress the picture file if no bottle uses it anymore:
-	    		whereArgs[0] = photoPath;
-	    		Cursor cursor = db.query(BottleTable.TABLE_NAME, null, BottleTable.COLUMN_NAME_IMAGE + " = ?", whereArgs, null, null, null, "1");
-	    		
-	    		if (cursor.isAfterLast()) {
-	    			suppressPicture();
+	    		if (photoPath != null) {
+	    			whereArgs[0] = photoPath;
+		    		Cursor cursor = db.query(BottleTable.TABLE_NAME, null, BottleTable.COLUMN_NAME_IMAGE + " = ?", whereArgs, null, null, null, "1");
+		    		
+		    		if (cursor.isAfterLast()) {
+		    			suppressPicture();
+		    		}
+		    		cursor.close();
 	    		}
-	    		cursor.close();
 	    		
 	    		linkedActivity.onDeleteEvent();
 	      } });
@@ -415,7 +417,7 @@ public class BottleDetailsFragment extends Fragment implements LoaderManager.Loa
 			if (!cursor.isNull(noteColumnIndex))
 				note.setText(cursor.getString(noteColumnIndex));
 			
-			code.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
+			code.setText(Long.toString(cursor.getLong(cursor.getColumnIndex(BottleTable.COLUMN_NAME_CODE))));
 			
 			int pictureColumnIndex = cursor.getColumnIndex(BottleTable.COLUMN_NAME_IMAGE);
 			if (!cursor.isNull(pictureColumnIndex)) {

@@ -376,7 +376,7 @@ public abstract class AbstractBottleInfoFragment extends Fragment implements Loa
 		String codeStringValue = code.getText().toString();
 		if (!TextUtils.isEmpty(codeStringValue)) {
 			try {
-				values.put(DatabaseContract.BottleTable.COLUMN_NAME_CODE, Long.valueOf(codeStringValue));
+				values.put(DatabaseContract.BottleTable.COLUMN_NAME_CODE, Long.parseLong(codeStringValue));
 			}
 			catch (NumberFormatException e) {
 				throw new Exception("Code not recognized!");
