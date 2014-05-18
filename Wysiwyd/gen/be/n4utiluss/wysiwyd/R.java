@@ -226,8 +226,8 @@ public final class R {
         public static final int details_apogee=0x7f0a003b;
         public static final int details_appellation=0x7f0a002c;
         public static final int details_background_picture=0x7f0a002a;
-        public static final int details_code=0x7f0a003e;
-        public static final int details_code_layout=0x7f0a003f;
+        public static final int details_code=0x7f0a003f;
+        public static final int details_code_layout=0x7f0a003e;
         public static final int details_colour=0x7f0a0033;
         public static final int details_colour_image=0x7f0a0034;
         public static final int details_effervescence=0x7f0a0037;
