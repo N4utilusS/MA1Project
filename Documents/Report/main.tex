@@ -70,7 +70,7 @@ footnotesep=50mm
 
 {\textcolor{Purple}{\Huge Wysiwyd}}\\[\baselineskip] % Main title which draws the focus of the reader
 
-{\Large \textit{The mobile wine cellar manager!}}\par % Tagline or further description
+{\Large \textit{Wine cellar management,~~~~~~~~~~ \\almost without management}}\par % Tagline or further description
 
 \vfill % Whitespace between the title block and the publisher
 
@@ -153,7 +153,7 @@ By choosing the second glass, the user arrives in a third screen, only if NFC is
 \end{center}
 \end{figure}
 
-When the code has been captured, one way or another, the app shows a list of the corresponding bottles (fig. \ref{list_results}). If the user decides to add a bottle, the code will be copied in the corresponding text field automatically.
+When the code has been captured, one way or another, the app shows a list of the corresponding bottles (fig. \ref{list_results}). If the user decides to add a bottle, the code will be copied in the corresponding text field automatically. If on figure \ref{main_screen} the user selected the second bottle, the screen on figure \ref{list_results} opens directly, displaying all the bottles in the order they were added to the database.
 
 \begin{figure}[H]
 \begin{center}
@@ -172,6 +172,8 @@ Several buttons are aligned at the top right of the screen:
 \item[Search:] To search for bottles. Write down the desired properties, and click on \emph{Ok}. The list will refresh to display only the matching bottles.
 \item[See:] To see the captured image of the bottle lying behind the view. This hides the details to show the background.
 \end{description}
+
+A long touch on the code section in the details will open the code exportation functionality. It will allow you to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass". After generating the QR code, one can send it to a web service like Drive from Google, or email it.
 
 \subsubsection{Adding a Bottle}
 
