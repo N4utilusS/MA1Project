@@ -96,6 +96,10 @@ footnotesep=50mm
 
 \newpage
 
+\tableofcontents
+
+\newpage
+
 %----------------------------------------------------------------------------------------
 %	Introduction
 %----------------------------------------------------------------------------------------
@@ -173,26 +177,42 @@ Several buttons are aligned at the top right of the screen:
 \item[See:] To see the captured image of the bottle lying behind the view. This hides the details to show the background.
 \end{description}
 
-A long touch on the code section in the details will open the code exportation functionality. It will allow you to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass". After generating the QR code, one can send it to a web service like Drive from Google, or email it.
+A \emph{long touch on the code section} in the details will open the code exportation functionality. It will allow you to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass". After generating the QR code, one can send it to a web service like Drive from Google, or email it.
 
 \subsubsection{Adding a Bottle}
 
-
-
-To add a bottle, several methods are available:
+There are several ways to add a bottle in the database:
 
 \begin{enumerate}
-\item Add the new bottle directly by goin
+\item The user \emph{can touch the "search bottle"} on the main screen (fig. \ref{main_screen}), then \emph{touch New Bottle}. This is the preferred method if no visual code is on the bottle, like a bar code or a QR code. If the user wants to add a bottle that has a lot in common with another saved bottle in the database, he can just \emph{keep his finger on that bottle} for a while. After a short time, the new bottle view will appear with all the fields already completed with the information from the previous bottle.
+
+\item If the bottle has a bar/QR code, then the user is advised to go with the scan solution. After the "scan bottle" has been touched, he then chooses the QR/bar code scan. The scan app will open, or a pop up will offer to download it on the Playstore if it is not on the phone. He can now \emph{aim at the printed code} on the bottle with the camera of the device, and wait for the code to be recognised. If the device has no camera, this feature will not be accessible.
 \end{enumerate}
 
-\section{The Database}
+\subsubsection{Finding a bottle}
 
-\subsection{The Entity Relationship Diagram}
+To retrieve a bottle in the database, one can choose between different methods:
+
+\begin{enumerate}
+\item If the code of the bottle has been correctly entered in the database, and a NFC tag and/or a bar/QR code is on the bottle, the best option is to \emph{choose the first action} on figure \ref{main_screen}. Then another choice is available to the user to choose between the 2 technologies offered with the app.
+
+\item If no code/tag is on the bottle, or if the user wants to retrieve a bigger amount of bottles matching certain properties, the second action of figure \ref{main_screen} is the best. In the list screen, one can open the search view by \emph{touching Search}.
+\end{enumerate}
+
+\section{The Architecture}
+
+\subsection{The Database}
+
+The database used in this project is made with SQLite. The global architecture of the database is simple, as we can see on the entity relationship diagram.
+
+\subsubsection{The Entity Relationship Diagram}
+
+Here is the ERD. The diagram contains 2 entities, linked with a relation. All attributes characterising one bottle are in the Bottle entity, they are not represented by separate entities. This would result in more tables in the database, and more resource consuming queries. Having more tables for these attributes would have been useful if these attributes were changed a lot by the user and if a lot of bottles shared same values for them. Here we supposed that the user will not change these values a lot after entering the bottle information, as the information associated to a bottle of wine rarely change in the market.
 
 \begin{figure}[H]
 \begin{center}
 	\includegraphics[scale=0.7]{../Entity Relationship DB diagram.png}
-	\caption{The ERD.}
+	\caption{The ERD. Key is underlined, and optional attributes are together with a (0,1).}
 \end{center}
 \end{figure}
 
@@ -209,12 +229,12 @@ To add a bottle, several methods are available:
 	
 \end{itemize}
 
-\subsection{The Relational Model}
+\subsubsection{The Relational Model}
 
 The translation of the ENR into the relational model:
 
 \begin{description}
-	\item[Bottle](\underline{Id}, Code, Name, Colour, Sugar, Effervescence, Appellation, Region, Vintage, Quantity, AddDate, \textit{Apogee}, \textit{Price}, \textit{Location}, \textit{Mark}, \textit{Image}, \textit{Note})
+	\item[Bottle](\underline{Id}, Code, Name, Colour, Sugar, Effervescence, Appellation, Quantity, AddDate, \textit{Apogee}, \textit{Image}, \textit{Location}, \textit{Mark}, \textit{Note}, \textit{Price}, \textit{Region}, \textit{Vintage})
 	
 	\item[Variety](\underline{Id}, \underline{Name})
 	
@@ -240,10 +260,20 @@ The translation of the ENR into the relational model:
 \end{itemize}
 
 \paragraph{Remark}
-Number are given to colours, varieties, etc. to allow the use of different string resources for different languages.
+Numbers are given to colours, varieties, etc. to allow the use of string resources. This is recommended by the Android best practices, and allows to create multiple versions of the string resources for multiple languages.
 
-\subsection{Normalisation}
+\subsubsection{Normalisation}
 
 No normalisation was necessary.
+
+\subsection{The Code}
+
+The implementation of the app was made by trying to respect the best practices in Android application development. All information concerning the UI was stored in xml files (layout files). The hole architecture was thought in an optimisation and object oriented perspective, by taking advantages of the given Android callbacks and life cycle methods.\\
+
+The code is split in several packages. Each package providing a functionality. These packages are described after.
+
+\subsubsection{Root package (wysiwyd)}
+
+The root package (by root we mean inside the highest level of the packages hierarchy) 
 
 \end{document}
