@@ -274,6 +274,27 @@ The code is split in several packages. Each package providing a functionality. T
 
 \subsubsection{Root package (wysiwyd)}
 
-The root package (by root we mean inside the highest level of the packages hierarchy) 
+The root package (root means the highest level of the src packages hierarchy) contains the main navigation Android activities, from the welcome screen activity to the export chooser for the code exportation. Each situation in the app is associated with another activity in the code.\\
+
+The results activity, the one that shows the list of bottles is special in the sense that it uses fragments. This allows a better modularisation of the code, and easier management of the view. Indeed, 2 modes are currently available in the app, depending on what type of device the app is running on. If the app is run on a large screen device, then the app will use a different layout to take advantage of the screen. 2 fragments will be displayed at the same time: the list and the details/modification/new bottle/search fragment.\\
+
+To be able to communicate with their parent activities, each fragment defines an interface. This interface must be implement by the interface, and this is checked by the fragment each time the fragment is attached to the activity, in the life cycle callback \emph{onAttach}. This interface contains the callbacks methods that are needed by the fragment when it needs to send a message to the activity. As an example, the search fragment has a callback method to give the activity a Bundle object containing all the information needed to build the search query. That way the activity can contact the list fragment, so this latter can build and execute the query.\\
+
+All the information displaying fragment, like the modifying bottle fragment, use callbacks method to save their current state when it is destroyed (not explicitly by the user). This helps reduce resources consumption. It is useful in cases like screen rotation.
+
+\subsubsection{Database Package}
+
+The database package contains 2 classes:
+
+\begin{description}
+\item[The Contract Class] This class contains the structure of the database, the constants used in other places in the project to build queries, and the strings for the scripts to create the tables.
+
+\item[The Database Helper Class] This class inherits from SQLiteOpenHelper from the Android framework, and is used to get access to the database. A singleton pattern is used in the class to only have one instance of this class created the hole time. This guaranties that no leaks will occur if the access is asked several times. This class also deals with the creation of the database and its upgrade.
+\end{description}
+
+Since the use of loaders was encouraged by the Android best practices, searches were made in that direction. Apparently, the use of loaders with SQLite queries was depreciated, and only their use with content providers was possible. Content providers are useful when it comes to data interaction between applications, and seemed a bit overkill in this app. So 
+
+\subsection{Used Libraries}
+\label{used_libraries}
 
 \end{document}
