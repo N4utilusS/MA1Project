@@ -51,8 +51,7 @@ footnotesep=50mm
 \usepackage{float}
 \usepackage{color}
 \usepackage{amssymb}
-
-\newlength\longest
+\usepackage{hyperref}
 
 \newcommand*{\course}{\fbox{PROJ-H-402}} % Generic publisher logo
 
@@ -270,8 +269,15 @@ No normalisation was necessary.
 
 The implementation of the app was made by trying to respect the best practices in Android application development. All information concerning the UI was stored in xml files (layout files). The hole architecture was thought in an optimisation and object oriented perspective, by taking advantages of the given Android callbacks and life cycle methods.\\
 
-The code is split in several packages. Each package providing a functionality. These packages are described after.
-
+The code is split in several packages. Each package providing a functionality. These packages are described after. Here is the class diagram of the code:
+\begin{landscape}
+\begin{figure}[H]
+\begin{center}
+	\includegraphics[width=\textwidth]{Images/ClassDiagram.png}
+	\caption{The Class Diagram of the code architecture.}
+\end{center}
+\end{figure}
+\end{landscape}
 \subsubsection{Root package (wysiwyd)}
 
 The root package (root means the highest level of the src packages hierarchy) contains the main navigation Android activities, from the welcome screen activity to the export chooser for the code exportation. Each situation in the app is associated with another activity in the code.\\
@@ -280,9 +286,11 @@ The results activity, the one that shows the list of bottles is special in the s
 
 To be able to communicate with their parent activities, each fragment defines an interface. This interface must be implement by the interface, and this is checked by the fragment each time the fragment is attached to the activity, in the life cycle callback \emph{onAttach}. This interface contains the callbacks methods that are needed by the fragment when it needs to send a message to the activity. As an example, the search fragment has a callback method to give the activity a Bundle object containing all the information needed to build the search query. That way the activity can contact the list fragment, so this latter can build and execute the query.\\
 
-All the information displaying fragment, like the modifying bottle fragment, use callbacks method to save their current state when it is destroyed (not explicitly by the user). This helps reduce resources consumption. It is useful in cases like screen rotation.
+All the information displaying fragment, like the modifying bottle fragment, use callbacks method to save their current state when it is destroyed (not explicitly by the user). This helps reduce resources consumption. It is useful in cases like screen rotation.\\
 
-\subsubsection{Database Package}
+The use of an abstract class, AbstractBottleInfoFragment, was decided to factorise the code, and take advantage of the polymorphism. This class is inherited by NewBottleFragment and ModifyBottleFragment. These 2 classes have a lot in common, since they both offer tools to specify information on a bottle.
+
+\subsubsection{Database Package (wysiwyd.database)}
 
 The database package contains 2 classes:
 
@@ -292,9 +300,17 @@ The database package contains 2 classes:
 \item[The Database Helper Class] This class inherits from SQLiteOpenHelper from the Android framework, and is used to get access to the database. A singleton pattern is used in the class to only have one instance of this class created the hole time. This guaranties that no leaks will occur if the access is asked several times. This class also deals with the creation of the database and its upgrade.
 \end{description}
 
-Since the use of loaders was encouraged by the Android best practices, searches were made in that direction. Apparently, the use of loaders with SQLite queries was depreciated, and only their use with content providers was possible. Content providers are useful when it comes to data interaction between applications, and seemed a bit overkill in this app. So 
+\subsubsection{Fonts Package (wysiwyd.fonts}
+
+Only one class is in this package, and it is used to get access to fonts that are not in the Android framework. A singleton pattern is used for the class, to guarantee that only a single instance will be made.
 
 \subsection{Used Libraries}
 \label{used_libraries}
+
+\begin{description}
+\item[CWAC LoaderEx (commonsguy)] Loaders are a way to load information in a separate thread, and not in the UI thread to avoid lag in the interface. Since the use of loaders was encouraged by the Android best practices, searches were made in that direction. Apparently, the use of loaders with SQLite queries was depreciated, and only their use with content providers was possible. Content providers are useful when it comes to data interaction between applications, and seemed a bit overkill in this app. So an external library was used to compensate this: CWAC LoaderEx from commonsguy. See \url{https://github.com/commonsguy/cwac-loaderex}.
+
+
+\end{description}
 
 \end{document}
