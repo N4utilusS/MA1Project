@@ -304,13 +304,31 @@ The database package contains 2 classes:
 
 Only one class is in this package, and it is used to get access to fonts that are not in the Android framework. A singleton pattern is used for the class, to guarantee that only a single instance will be made.
 
+\subsubsection{NFC Package (wysiwyd.nfc)}
+
+It contains the classes needed to communicate with NFC tags. One class to read and one to write, 2 Android activities. They inherit from classes in an external library (NDEF Tools for Android, see \ref{used_libraries}).
+
+\subsubsection{QR Code Package (wysiwyd.qr\_code)}
+
+Two classes from an external library populate this package (ZXing, see \ref{used_libraries}). These classes are used to communicate with the ZXing library to generate QR codes.
+
+\subsubsection{Search Package (wysiwyd.search)}
+
+Only one class: the search fragment, displayed when the user wants to find a bottle with some properties.
+
+\subsubsection{ZXing Integrator Package}
+
+Rather than importing all the code needed to scan visual codes, like QR/bar codes, these 2 classes look for an external application, made by the ZXing developers. This external application is launched each time a scan is needed, and return the result to the calling activity. This way of implementing the code was chosen over the hole importation, since it is easier, and guarantees the last version of the scanning functionality code at all times.
+
 \subsection{Used Libraries}
 \label{used_libraries}
 
 \begin{description}
 \item[CWAC LoaderEx (commonsguy)] Loaders are a way to load information in a separate thread, and not in the UI thread to avoid lag in the interface. Since the use of loaders was encouraged by the Android best practices, searches were made in that direction. Apparently, the use of loaders with SQLite queries was depreciated, and only their use with content providers was possible. Content providers are useful when it comes to data interaction between applications, and seemed a bit overkill in this app. So an external library was used to compensate this: CWAC LoaderEx from commonsguy. See \url{https://github.com/commonsguy/cwac-loaderex}.
 
+\item[NDEF Tools for Android] This library offers high level programming for NFC communications, as the Android framework does not provide it. This made the implementation of the NFC communication easier, and faster. See \url{https://code.google.com/p/ndef-tools-for-android/}.
 
+\item[ZXing] This is an open-source, multi-format barcode image processing library. Barcodes can also be generated. It was used for the bar code scanning and generating functionalities. See \url{https://github.com/zxing/zxing/}.
 \end{description}
 
 \end{document}
