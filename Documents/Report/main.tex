@@ -198,6 +198,11 @@ To retrieve a bottle in the database, one can choose between different methods:
 \item If no code/tag is on the bottle, or if the user wants to retrieve a bigger amount of bottles matching certain properties, the second action of figure \ref{main_screen} is the best. In the list screen, one can open the search view by \emph{touching Search}.
 \end{enumerate}
 
+%----------------------------------------------------------------------------------------
+%	The Architecture
+%----------------------------------------------------------------------------------------
+
+
 \section{The Architecture}
 
 \subsection{The Database}
@@ -316,7 +321,7 @@ Two classes from an external library populate this package (ZXing, see \ref{used
 
 Only one class: the search fragment, displayed when the user wants to find a bottle with some properties.
 
-\subsubsection{ZXing Integrator Package}
+\subsubsection{ZXing Integrator Package (zxing.integration)}
 
 Rather than importing all the code needed to scan visual codes, like QR/bar codes, these 2 classes look for an external application, made by the ZXing developers. This external application is launched each time a scan is needed, and return the result to the calling activity. This way of implementing the code was chosen over the hole importation, since it is easier, and guarantees the last version of the scanning functionality code at all times.
 
@@ -330,5 +335,39 @@ Rather than importing all the code needed to scan visual codes, like QR/bar code
 
 \item[ZXing] This is an open-source, multi-format barcode image processing library. Barcodes can also be generated. It was used for the bar code scanning and generating functionalities. See \url{https://github.com/zxing/zxing/}.
 \end{description}
+
+
+%----------------------------------------------------------------------------------------
+%	Difficulties
+%----------------------------------------------------------------------------------------
+
+\section{Difficulties}
+
+Here are explained the main difficulties met during the implementation of the app.
+
+\begin{description}
+
+	\item[Layout Creation] One of the biggest difficulties encountered was to find the good adjustments for the layout parameters. These parameters, like the weight of a view, the scaling type for an image, the size of views, have to be correctly defined to obtain the desired layout. In xml layout files, like the one for the scan choice activity, the bottle details fragment, this definition of values was made through a process of trial and errors, trying values that theoretically would lead to success. In these files, the nesting of layout made the job more complicated.
+	
+	\item[Use of 2 Different Screen Sizes] The use of 2 different screen sizes led to addition of code in the results activity. Tests to know in what size it was were added to behave differently. Indeed, different layout files have to be loaded and, in large screen size, some buttons have to be hidden manually. In single pane mode (small screens), these buttons are hidden because the fragment associated to them is hidden. This dual mode also caused problems with the rotation of the screen, since an activity is re-created each time the device configuration changes. This was discovered after some research on the problem, and solutions like using the state saving callback method were exploited.
+	
+	\item[Finding Help] A lot of search was made to find solutions to the problems found while coding. Some of them did not take long, but others did. Sometimes some solutions had to be mixed to create an adapted solution. See section \ref{references}.
+	
+	\item[Android] The constant evolution of the mobile OS framework causes some implementations to become depreciated. Alternatives had to be found. External libraries were used, like CWAC LoaderEx, to compensate.
+\end{description}
+
+%----------------------------------------------------------------------------------------
+%	Some Ideas for the Future
+%----------------------------------------------------------------------------------------
+
+\section{Some Ideas for the Future}
+
+%----------------------------------------------------------------------------------------
+%	References
+%----------------------------------------------------------------------------------------
+
+
+\section{References}
+\label{references}
 
 \end{document}
