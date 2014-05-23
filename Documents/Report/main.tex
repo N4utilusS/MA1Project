@@ -51,6 +51,7 @@ footnotesep=50mm
 \usepackage{float}
 \usepackage{color}
 \usepackage{amssymb}
+\usepackage[hyphens]{url}
 \usepackage{hyperref}
 
 \newcommand*{\course}{\fbox{PROJ-H-402}} % Generic publisher logo
@@ -105,14 +106,31 @@ footnotesep=50mm
 
 \section{Introduction}
 
-Managing something composed of a large number of element can be tedious and complicated, event when you love doing it. This applies to oenologists as well when it comes to organising their wine cellar. This is where Wysiwyd enters in the game. The goal of Wysiwyd is to simplify the management of a wine cellar, to allow the oenologists and others to get the most of it.\\
+Managing something composed of a large number of element can be tedious and complicated, even when you love doing it. This applies to oenologists as well when it comes to organising their wine cellar. This is where Wysiwyd enters the game. The goal of Wysiwyd is to simplify the management of a wine cellar, to allow the oenologists and others to get the most of it.\\
 
-Wysiwyd takes advantages of the new technologies available on the market, such as QR Code scanning and generating, NFC tags, to sort bottles. Photos of the bottles can be captured, so the user can see them right in the app as well. A search can be made on a lot of bottle properties to retrieve a desired bottle. The target OS is Android, leader on the smartphone market. The combination of the discovery of those technologies, the world of Android, the experience gained in mobile programming and design, is what makes this project fascinating.
+Wysiwyd takes advantages of the new technologies available on the market, such as QR Code scanning and generating, NFC tags, to sort bottles. Photos of the bottles can be captured, so the user can see them right in the app as well. A search can be made on a lot of bottle properties to retrieve a desired bottle. The target OS is Android, leader on the smartphone market. The combination of the discovery of those technologies, the world of Android, the experience gained in mobile programming and design, is what makes this project interesting.\\
+
+These technologies are also what differentiate this app from other wine cellar management apps already available on the market. QR and NFC allow quick retrieval of bottles.
+
+\section{Comparing to other solutions}
+
+What differentiate Wysiwyd from the other applications? In this section this app will be compared to other apps.
+
+\begin{description}
+	\item[Vivino] The app Vivino requires an internet connection to work, to recognise a bottle. On the other side, Wysiwyd only uses the local database to get the corresponding bottle and does not work with image recognition, but with QR/bar code or NFC.
+	
+	\item[Eurocave] Does not offer quick bottle recognition, and presents a lot of bugs, as reported on the Playstore.
+	
+	\item[Wine Cellar] Does not offer NFC tag functionality. Less properties are editable for a bottle.
+	
+\end{description}
+
+	Wysiwyd tries answer the needs of oenologists in an ergonomic and aesthetic way.
 
 %----------------------------------------------------------------------------------------
 %	The App
 %----------------------------------------------------------------------------------------
-
+\newpage
 \section{The App}
 
 \begin{quotation}
@@ -176,7 +194,7 @@ Several buttons are aligned at the top right of the screen:
 \item[See:] To see the captured image of the bottle lying behind the view. This hides the details to show the background.
 \end{description}
 
-A \emph{long touch on the code section} in the details will open the code exportation functionality. It will allow you to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass". After generating the QR code, one can send it to a web service like Drive from Google, or email it.
+A \emph{long touch on the code section} in the details will open the code exportation functionality. It will allow you to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass" and bring a tag close to the device NFC ship. After generating the QR code, one can send it to a web service like Drive from Google, or email it.
 
 \subsubsection{Adding a Bottle}
 
@@ -305,7 +323,7 @@ The database package contains 2 classes:
 \item[The Database Helper Class] This class inherits from SQLiteOpenHelper from the Android framework, and is used to get access to the database. A singleton pattern is used in the class to only have one instance of this class created the hole time. This guaranties that no leaks will occur if the access is asked several times. This class also deals with the creation of the database and its upgrade.
 \end{description}
 
-\subsubsection{Fonts Package (wysiwyd.fonts}
+\subsubsection{Fonts Package (wysiwyd.fonts)}
 
 Only one class is in this package, and it is used to get access to fonts that are not in the Android framework. A singleton pattern is used for the class, to guarantee that only a single instance will be made.
 
@@ -354,6 +372,8 @@ Here are explained the main difficulties met during the implementation of the ap
 	\item[Finding Help] A lot of search was made to find solutions to the problems found while coding. Some of them did not take long, but others did. Sometimes some solutions had to be mixed to create an adapted solution. See section \ref{references}.
 	
 	\item[Android] The constant evolution of the mobile OS framework causes some implementations to become depreciated. Alternatives had to be found. External libraries were used, like CWAC LoaderEx, to compensate.
+	
+	\item[Android Layout Loading System] The view layout of a fragment or activity takes some time to be computed and drawn. In the documentation, it is said that the onViewCreated method is called after its creation, as the method name would suggest. However, it is sometimes not the case, as ImageView's layout are not computed. Their width and height were not computed, and were equal to 0 each time the fragment called this callback method. This prevented the implementation of a bitmap size reducing algorithm to use less resources while drawing bitmaps of the bottles in the background, since these values were needed to get the scale factor.
 \end{description}
 
 %----------------------------------------------------------------------------------------
@@ -363,9 +383,13 @@ Here are explained the main difficulties met during the implementation of the ap
 \section{Some Ideas for the Future}
 
 \begin{description}
-	\item[Cloud Database] The current database is local, on the device itself. Putting the database in the cloud would allow the user to use different devices to manage his wine cellar, these devices being synchronised. The user could also share its cellar content with other people. This could be used by shops to offer another view on their stock.
+	\item[Cloud Database] The current database is local, on the device itself. Putting a copy of the database in the cloud would allow the user to use different devices to manage his wine cellar, these devices being synchronised. The user could also share its cellar content with other people. This could be used by shops to offer another view of their stock.
 	
 	\item[Notification System] A notification system would alert the user that some bottles are going to enter apogee. Another filter could also be based on the apogee criterion in the sorting preference for the results list.
+	
+	\item[Exportation of the database] The database could be exported to specified file type for consultation on another device. This file could be printed to make a human readable "book" of the content of a wine cellar.
+	
+	\item[Advanced Find Me There Functionality] The information of the location of a bottle could be enhanced. The user could as an example take a picture of the location of the bottle, with a crosshair on the picture denoting the location of the bottle on the picture itself.
 \end{description}
 
 %----------------------------------------------------------------------------------------
@@ -375,7 +399,7 @@ Here are explained the main difficulties met during the implementation of the ap
 \section{References}
 \label{references}
 
-Here are some links that helped implementing the app by offering solutions:
+Here are the links that helped implementing the app by offering solutions:
 
 \subsection{General}
 
@@ -387,6 +411,7 @@ Here are some links that helped implementing the app by offering solutions:
 	\item \url{http://www.mkyong.com/android/android-date-picker-example/} \\Date pickers.
 	\item \url{http://stackoverflow.com/questions/14445070/difference-between-initloader-and-restartloader-in-loadermanager} \\Difference between initloader and restartloader.
 	\item \url{http://stackoverflow.com/questions/18147354/sqlite-connection-leaked-although-everything-closed/18148718#18148718} \\Singleton on the database helper.
+	\item \url{http://stackoverflow.com/questions/6750069/get-the-current-fragment-object} \\Retrieve a fragment instance.
 \end{itemize}
 
 \subsection{Layout}
@@ -397,6 +422,58 @@ Here are some links that helped implementing the app by offering solutions:
 	\item \url{https://www.grokkingandroid.com/adding-action-items-from-within-fragments/} \\Managing action items programmatically.
 	\item \url{http://stackoverflow.com/questions/5179686/restoring-state-of-textview-after-screen-rotation} \\Retaining textview text during configuration change (not activated by default like EditText).
 	\item \url{http://www.giantflyingsaucer.com/blog/?p=1342} \\Autocomplete textview powered from SQLite query.
+	\item \url{http://etcodehome.blogspot.co.at/2011/05/android-imageview-scaletype-samples.html} Scale type for images in ImageView's.
 \end{itemize}
 
+\subsection{Taking Photos}
+
+\begin{itemize}
+	\item \url{http://developer.android.com/training/camera/photobasics.html}\\Android guide to capture pictures.
+\end{itemize}
+
+\subsection{QR Code}
+
+\begin{itemize}
+	\item \url{http://stackoverflow.com/questions/4782543/integration-zxing-library-directly-into-my-android-application/15510698#15510698} \\How to use the QR code generation library.
+\end{itemize}
+
+\subsection{Send}
+
+\begin{itemize}
+	\item \url{http://stackoverflow.com/questions/4775141/send-email-with-bitmap-object-as-an-attachment-in-android} \\Send a picture.
+	\item \url{http://stackoverflow.com/questions/11428189/android-send-an-email-with-an-image-from-an-imageview} \\Send a picture.
+\end{itemize}
+
+\subsection{Icons}
+
+Here are references associated to the icons I used to create mine (Gimp).
+
+\begin{itemize}
+	\item Bottle, magnifier, bar code, glasses: icons made by Freepik from Flaticon.com.
+	\item \url{http://www.psd100.com/nfc-sign-icon/#.U3-1Eh-K-kA} \\NFC tag icon.
+\end{itemize}
+
+\subsection{Report}
+
+\begin{itemize}
+	\item \url{http://tex.stackexchange.com/questions/49788/hyperref-url-long-url-with-dashes-wont-break} \\To help putting a line break at the right places in the references URLs.
+\end{itemize}
+
+\newpage
+\section{Special Thanks}
+\vfill
+\begin{center}
+To Gaëtan Podevijn, for providing me with advice, and knowledge on the wine world, throughout the period of the project.\\ ~\\
+
+To my family, for the support, the advices, and the wine bottles used in the tests.\\ ~\\
+
+To Robin Dooreman, for letting me use his smartphone as test device.\\ ~\\
+
+To Quentin Delhaye, for the name of the app.
+\end{center}
+
+\vfill
+\center \includegraphics{Images/icon.png}
+
+\vfill
 \end{document}
