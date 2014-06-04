@@ -106,22 +106,28 @@ footnotesep=50mm
 
 \section{Introduction}
 
-Managing something composed of a large number of element can be tedious and complicated, even when you love doing it. This applies to oenologists as well when it comes to organising their wine cellar. This is where Wysiwyd enters the game. The goal of Wysiwyd is to simplify the management of a wine cellar, to allow the oenologists and others to get the most of it.\\
+\begin{quotation}
+\center \emph{"What you scan is what you drink."\\ "Wysiwyd"}
+\end{quotation}
 
-Wysiwyd takes advantages of the new technologies available on the market, such as QR Code scanning and generating, NFC tags, to sort bottles. Photos of the bottles can be captured, so the user can see them right in the app as well. A search can be made on a lot of bottle properties to retrieve a desired bottle. The target OS is Android, leader on the smartphone market. The combination of the discovery of those technologies, the world of Android, the experience gained in mobile programming and design, is what makes this project interesting.\\
+~\\
+
+Managing a large number of element can be tedious and complicated, even when you love doing it. This applies to oenologists as well when it comes to organising their wine cellar. This is where Wysiwyd enters the game. The goal of Wysiwyd is to simplify the management of a wine cellar, to allow the oenologists and others to get the most of it.\\
+
+Wysiwyd takes advantages of the new technologies available on the market, such as QR Code scanning and generating, NFC tags, to sort bottles. Photos of the bottles can be captured, so the user can see them right in the app as well. A search can be made on a lot of bottle properties to retrieve a desired bottle. The target OS is Android. The combination of the discovery of those technologies, the world of Android, the experience gained in mobile programming and design, is what makes this project interesting for me in my engineer formation.\\
 
 These technologies are also what differentiate this app from other wine cellar management apps already available on the market. QR and NFC allow quick retrieval of bottles.
 
 \section{Comparing to other solutions}
 
-What differentiate Wysiwyd from the other applications? In this section this app will be compared to other apps.
+In this section, we will compare Wysiwyd to other wine cellar applications available on the Android Play Store.
 
 \begin{description}
-	\item[Vivino] The app Vivino requires an internet connection to work, to recognise a bottle. On the other side, Wysiwyd only uses the local database to get the corresponding bottle and does not work with image recognition, but with QR/bar code or NFC.
+	\item[Vivino] Vivino allows users to take pictures of wine bottles to get information about it. This information is created by a community of users. The app Vivino requires an internet connection to work, to recognise a bottle. This is the main drawback. Wine cellar management is not the main purpose of the app. On the other side, Wysiwyd only uses the local database to get the corresponding bottle and does not work with image recognition, but with QR/bar code or NFC.
 	
-	\item[Eurocave] Does not offer quick bottle recognition, and presents a lot of bugs, as reported on the Playstore.
+	\item[Eurocave] Eurocave also allows to manage a wine cellar. The user can select a predefined cellar model to represent his own one. Bottles can be edited to fill in the corresponding information. The app also sorts bottles by apogee period, and can share content on social networks. However, it does not offer quick bottle recognition, and presents a lot of bugs, as reported on the Playstore. Wysiwyd has been thought with a user friendly perspective, and tries to reach bug free status.
 	
-	\item[Wine Cellar] Does not offer NFC tag functionality. Less properties are editable for a bottle.
+	\item[Wine Cellar] Wine Cellar offers wine cellar management, as Wysiwyd, but with an interface not that user friendly. Bottles information can also be edited, but less properties are editable, and quick bottle recovery is also possible. It does not offer NFC tag functionality.
 	
 \end{description}
 
@@ -132,10 +138,6 @@ What differentiate Wysiwyd from the other applications? In this section this app
 %----------------------------------------------------------------------------------------
 \newpage
 \section{The App}
-
-\begin{quotation}
-\center \emph{"What you scan is what you drink."\\ "Wysiwyd"}
-\end{quotation}
 
 \subsection{Functionalities}
 
@@ -151,7 +153,7 @@ Once the app is loaded, the user has to choose between 2 actions. To \emph{scan 
 \end{center}
 \end{figure}
 
-If the user touches the first bottle, a new choice pops up: \emph{visual code}, or \emph{NFC tag} scan. This time, it is represented by glasses. The first one opens another app\footnote{Barcode Scanner, by ZXing Team} to scan a bottle bar code, or QR code\footnote{This visual code is the traduction of the number just below the bar code on wine bottles.}. If the user does not have this separate application, he can download it on the playstore for free. This app is not mandatory for this one to work. However, it is highly recommended, as it leads to easier management of the cellar.\\
+If the user touches the the bottle on the left hand side, a new choice pops up: \emph{visual code}, or \emph{NFC tag} scan. This time, it is represented by glasses. The first one opens another app\footnote{Barcode Scanner, by ZXing Team} to scan a bottle bar code, or QR code\footnote{This visual code is the traduction of the number just below the bar code on wine bottles.}. If the user does not have this separate application, he can download it on the playstore for free. This app is not mandatory for this one to work. However, it is highly recommended, as it leads to easier management of the cellar.\\
 
 Behind the glasses, and if the app has at least one image of a bottle, is a blurred picture of a bottle. This picture is one that the user took to illustrate his mobile database.
 
@@ -174,7 +176,7 @@ By choosing the second glass, the user arrives in a third screen, only if NFC is
 \end{center}
 \end{figure}
 
-When the code has been captured, one way or another, the app shows a list of the corresponding bottles (fig. \ref{list_results}). If the user decides to add a bottle, the code will be copied in the corresponding text field automatically. If on figure \ref{main_screen} the user selected the second bottle, the screen on figure \ref{list_results} opens directly, displaying all the bottles in the order they were added to the database.
+When the code has been captured, one way or another, the app shows a list of the corresponding bottles (fig. \ref{list_results}). If the user decides to add a bottle, the code will be copied in the corresponding text field automatically. If on the screen, which is depicted in fig. \ref{main_screen}, the user selected the second bottle, the screen on figure \ref{list_results} opens directly, displaying all the bottles in the order they were added to the database.
 
 \begin{figure}[H]
 \begin{center}
@@ -184,7 +186,7 @@ When the code has been captured, one way or another, the app shows a list of the
 \end{center}
 \end{figure}
 
-On this figure, one can see all the details about a bottle. This is the view shown on a large screen device. On smaller devices, only one view is displayed at a time, either the details or the list.\\
+On this figure \ref{list_results}, one can see all the details about a bottle. This is the view shown on a large screen device. On smaller devices, only one view is displayed at a time, either the details or the list.\\
 
 Several buttons are aligned at the top right of the screen:
 \begin{description}
@@ -194,11 +196,11 @@ Several buttons are aligned at the top right of the screen:
 \item[See:] To see the captured image of the bottle lying behind the view. This hides the details to show the background.
 \end{description}
 
-A \emph{long touch on the code section} in the details will open the code exportation functionality. It will allow you to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass" and bring a tag close to the device NFC ship. After generating the QR code, one can send it to a web service like Drive from Google, or email it.
+A \emph{long touch on the code section} in the details will open the code exportation functionality. It will allow the user to export the code to a QR code or/and to NFC tag. The layout of the corresponding view is similar to the figure \ref{scan_choice}. To generate a QR code and send it, the user is supposed to click on the "QR glass", while to write a NFC tag, the user has to push the "NFC glass" and bring a tag close to the device NFC ship. After generating the QR code, one can send it to a web service like Drive from Google, or email it.
 
 \subsubsection{Adding a Bottle}
 
-There are several ways to add a bottle in the database:
+There are 2 ways to add a bottle in the database:
 
 \begin{enumerate}
 \item The user \emph{can touch the "search bottle"} on the main screen (fig. \ref{main_screen}), then \emph{touch New Bottle}. This is the preferred method if no visual code is on the bottle, like a bar code or a QR code. If the user wants to add a bottle that has a lot in common with another saved bottle in the database, he can just \emph{keep his finger on that bottle} for a while. After a short time, the new bottle view will appear with all the fields already completed with the information from the previous bottle.
@@ -208,7 +210,7 @@ There are several ways to add a bottle in the database:
 
 \subsubsection{Finding a bottle}
 
-To retrieve a bottle in the database, one can choose between different methods:
+To retrieve a bottle in the database, one can choose between 2 methods:
 
 \begin{enumerate}
 \item If the code of the bottle has been correctly entered in the database, and a NFC tag and/or a bar/QR code is on the bottle, the best option is to \emph{choose the first action} on figure \ref{main_screen}. Then another choice is available to the user to choose between the 2 technologies offered with the app.
@@ -229,7 +231,7 @@ The database used in this project is made with SQLite. The global architecture o
 
 \subsubsection{The Entity Relationship Diagram}
 
-Here is the ERD. The diagram contains 2 entities, linked with a relation. All attributes characterising one bottle are in the Bottle entity, they are not represented by separate entities. This would result in more tables in the database, and more resource consuming queries. Having more tables for these attributes would have been useful if these attributes were changed a lot by the user and if a lot of bottles shared same values for them. Here we supposed that the user will not change these values a lot after entering the bottle information, as the information associated to a bottle of wine rarely change in the market.
+The diagram contains 2 entities, linked with a relation. All attributes characterising one bottle are in the Bottle entity, they are not represented by separate entities. This would result in more tables in the database, and more resource consuming queries. Having more tables for these attributes would have been useful if these attributes were changed a lot by the user and if a lot of bottles shared same values for them. Here we supposed that the user will not change these values a lot after entering the bottle information, as the information associated to a bottle of wine rarely change in the market.
 
 \begin{figure}[H]
 \begin{center}
@@ -284,11 +286,9 @@ The translation of the ENR into the relational model:
 \paragraph{Remark}
 Numbers are given to colours, varieties, etc. to allow the use of string resources. This is recommended by the Android best practices, and allows to create multiple versions of the string resources for multiple languages.
 
-\subsubsection{Normalisation}
-
-No normalisation was necessary.
-
 \subsection{The Code}
+
+In this section, the reader is assumed to have a minimum knowledge of the Android framework. Please refer to the documentation for further details: \url{http://developer.android.com/guide/index.html}.\\
 
 The implementation of the app was made by trying to respect the best practices in Android application development. All information concerning the UI was stored in xml files (layout files). The hole architecture was thought in an optimisation and object oriented perspective, by taking advantages of the given Android callbacks and life cycle methods.\\
 
@@ -305,7 +305,7 @@ The code is split in several packages. Each package providing a functionality. T
 
 The root package (root means the highest level of the src packages hierarchy) contains the main navigation Android activities, from the welcome screen activity to the export chooser for the code exportation. Each situation in the app is associated with another activity in the code.\\
 
-The results activity, the one that shows the list of bottles is special in the sense that it uses fragments. This allows a better modularisation of the code, and easier management of the view. Indeed, 2 modes are currently available in the app, depending on what type of device the app is running on. If the app is run on a large screen device, then the app will use a different layout to take advantage of the screen. 2 fragments will be displayed at the same time: the list and the details/modification/new bottle/search fragment.\\
+The results activity, the one that shows the list of bottles is special in the sense that it uses fragments. This allows a better modularisation of the code, and easier management of the view. Indeed, 2 modes are currently available in the app, depending on what type of device the app is running on. If the app is run on a large screen device, then the app will use a different layout to take advantage of the screen. Two fragments will be displayed at the same time: the list and the details/modification/new bottle/search fragment.\\
 
 To be able to communicate with their parent activities, each fragment defines an interface. This interface must be implement by the interface, and this is checked by the fragment each time the fragment is attached to the activity, in the life cycle callback \emph{onAttach}. This interface contains the callbacks methods that are needed by the fragment when it needs to send a message to the activity. As an example, the search fragment has a callback method to give the activity a Bundle object containing all the information needed to build the search query. That way the activity can contact the list fragment, so this latter can build and execute the query.\\
 
@@ -380,7 +380,9 @@ Here are explained the main difficulties met during the implementation of the ap
 %	Some Ideas for the Future
 %----------------------------------------------------------------------------------------
 
-\section{Some Ideas for the Future}
+\section{Possible Extra Features (Future Work)}
+
+This section introduces possible extra features that would be interesting for the app. They were not implemented due to lack of time, but could improve the user experience even more.
 
 \begin{description}
 	\item[Cloud Database] The current database is local, on the device itself. Putting a copy of the database in the cloud would allow the user to use different devices to manage his wine cellar, these devices being synchronised. The user could also share its cellar content with other people. This could be used by shops to offer another view of their stock.
