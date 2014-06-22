@@ -31,7 +31,7 @@
                     android:layout_column="0"
                     android:layout_row="1"
                     android:inputType="text"
-                    android:hint="@string/search_hint_appellation" />
+                    android:hint="@string/hint_appellation" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                     android:layout_row="3"
                     android:inputType="text"
                     android:textAppearance="@style/TextName"
-                    android:hint="@string/search_hint_name" />
+                    android:hint="@string/hint_name" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                     android:layout_column="0"
                     android:layout_row="5"
                     android:inputType="number"
-                    android:hint="@string/search_hint_vintage" />
+                    android:hint="@string/hint_vintage" />
                 
                 <CheckBox
                     android:id="@+id/search_checkbox_vintage_from"
@@ -84,7 +84,7 @@
                     android:layout_column="0"
                     android:layout_row="6"
                     android:inputType="number"
-                    android:hint="@string/search_hint_vintage" />
+                    android:hint="@string/hint_vintage" />
                 
                 <CheckBox
                     android:id="@+id/search_checkbox_vintage_to"
@@ -109,7 +109,7 @@
                     android:layout_column="0"
                     android:layout_row="8"
                     android:inputType="text"                    
-                    android:hint="@string/search_hint_region" />
+                    android:hint="@string/hint_region" />
 
             </GridLayout>
 
@@ -136,7 +136,7 @@
                     android:layout_gravity="left"
                     android:layout_row="1"
                     android:inputType="number"
-                    android:hint="@string/search_hint_quantity" />
+                    android:hint="@string/hint_quantity" />
                 
                 <CheckBox
                     android:id="@+id/search_checkbox_quantity_min"
@@ -153,7 +153,7 @@
                     android:layout_gravity="left"
                     android:layout_row="2"
                     android:inputType="number"
-                    android:hint="@string/search_hint_quantity" />
+                    android:hint="@string/hint_quantity" />
                 
                 <CheckBox
                     android:id="@+id/search_checkbox_quantity_max"
@@ -179,7 +179,7 @@
                     android:layout_gravity="left"
                     android:layout_row="4"
                     android:inputType="numberDecimal"
-                    android:hint="@string/search_hint_price" />
+                    android:hint="@string/hint_price" />
                 
                 <CheckBox
                     android:id="@+id/search_checkbox_price_min"
@@ -196,7 +196,7 @@
                     android:layout_gravity="left"
                     android:layout_row="5"
                     android:inputType="numberDecimal"
-                    android:hint="@string/search_hint_price" />
+                    android:hint="@string/hint_price" />
 
                 <CheckBox
                     android:id="@+id/search_checkbox_price_max"
@@ -448,7 +448,7 @@
                     android:layout_gravity="center"
                     android:layout_row="1"
                     android:inputType="number"
-                    android:hint="@string/search_hint_code" />
+                    android:hint="@string/hint_code" />
             </GridLayout>
         </LinearLayout>
     </ScrollView>

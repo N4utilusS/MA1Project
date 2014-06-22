@@ -134,14 +134,14 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_nfcwriter">NFCWriterActivity</string>
     
-    <string name="search_hint_appellation">Appellation</string>
-    <string name="search_hint_name">Name</string>
-    <string name="search_hint_vintage">1992</string>
-    <string name="search_hint_region">Region</string>
-    <string name="search_hint_quantity">42</string>
-    <string name="search_hint_price">10.03</string>
+    <string name="hint_appellation">Appellation</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_vintage">1992</string>
+    <string name="hint_region">Region</string>
+    <string name="hint_quantity">42</string>
+    <string name="hint_price">10.03</string>
     <string name="search_hint_variety">Variety</string>
-    <string name="search_hint_code">999999</string>
+    <string name="hint_code">999999</string>
     
 
 </resources>

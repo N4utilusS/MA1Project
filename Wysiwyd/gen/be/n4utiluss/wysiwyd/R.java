@@ -393,6 +393,13 @@ public final class R {
          */
         public static final int generation_chooser_title=0x7f06000d;
         public static final int hello_world=0x7f060041;
+        public static final int hint_appellation=0x7f060043;
+        public static final int hint_code=0x7f06004a;
+        public static final int hint_name=0x7f060044;
+        public static final int hint_price=0x7f060048;
+        public static final int hint_quantity=0x7f060047;
+        public static final int hint_region=0x7f060046;
+        public static final int hint_vintage=0x7f060045;
         /**  List Fragment 
          */
         public static final int list_action_search=0x7f060010;
@@ -431,14 +438,7 @@ public final class R {
         public static final int search_checkbox_quantity_min=0x7f060035;
         public static final int search_checkbox_vintage_from=0x7f060033;
         public static final int search_checkbox_vintage_to=0x7f060034;
-        public static final int search_hint_appellation=0x7f060043;
-        public static final int search_hint_code=0x7f06004a;
-        public static final int search_hint_name=0x7f060044;
-        public static final int search_hint_price=0x7f060048;
-        public static final int search_hint_quantity=0x7f060047;
-        public static final int search_hint_region=0x7f060046;
         public static final int search_hint_variety=0x7f060049;
-        public static final int search_hint_vintage=0x7f060045;
         public static final int title_activity_generation_chooser=0x7f060040;
         /**  NFC 
          */

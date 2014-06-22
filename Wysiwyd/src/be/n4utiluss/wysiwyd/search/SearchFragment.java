@@ -145,100 +145,7 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 	}
 	
 	private void resetValues(Bundle savedInstanceState) {
-		/*
-		EditText appellation = (EditText) getView().findViewById(R.id.search_appellation);
-		EditText name = (EditText) getView().findViewById(R.id.search_name);
-		EditText vintageFrom = (EditText) getView().findViewById(R.id.search_vintage_from);
-		EditText vintageTo = (EditText) getView().findViewById(R.id.search_vintage_to);
-		EditText region = (EditText) getView().findViewById(R.id.search_region);
-		EditText quantityMin = (EditText) getView().findViewById(R.id.search_quantity_min);
-		EditText quantityMax = (EditText) getView().findViewById(R.id.search_quantity_max);
-		EditText priceMin = (EditText) getView().findViewById(R.id.search_price_min);
-		EditText priceMax = (EditText) getView().findViewById(R.id.search_price_max);
-		RatingBar ratingBarMin = (RatingBar) getView().findViewById(R.id.search_mark_min);
-		RatingBar ratingBarMax = (RatingBar) getView().findViewById(R.id.search_mark_max);
-		Spinner colour = (Spinner) getView().findViewById(R.id.search_colour);
-		Spinner sugar = (Spinner) getView().findViewById(R.id.search_sugar);
-		Spinner effervescence = (Spinner) getView().findViewById(R.id.search_effervescence);
-		DatePicker addDateFrom = (DatePicker) getView().findViewById(R.id.search_addDate_from);
-		DatePicker addDateTo = (DatePicker) getView().findViewById(R.id.search_addDate_to);
-		DatePicker apogeeFrom = (DatePicker) getView().findViewById(R.id.search_apogee_from);
-		DatePicker apogeeTo = (DatePicker) getView().findViewById(R.id.search_apogee_to);
-		EditText code = (EditText) getView().findViewById(R.id.search_code);
 		
-		appellation.setText(savedInstanceState.getString(APPELLATION));
-		name.setText(savedInstanceState.getString(NAME));
-		vintageFrom.setText(savedInstanceState.getString(VINTAGE_FROM));
-		vintageTo.setText(savedInstanceState.getString(VINTAGE_TO));
-		region.setText(savedInstanceState.getString(REGION));
-		quantityMin.setText(savedInstanceState.getString(QUANTITY_MIN));
-		quantityMax.setText(savedInstanceState.getString(QUANTITY_MAX));
-		priceMin.setText(savedInstanceState.getString(PRICE_MIN));
-		priceMax.setText(savedInstanceState.getString(PRICE_MAX));
-		ratingBarMin.setRating(savedInstanceState.getInt(RATING_MIN));
-		ratingBarMax.setRating(savedInstanceState.getInt(RATING_MAX));
-		colour.setSelection(savedInstanceState.getInt(COLOUR));
-		sugar.setSelection(savedInstanceState.getInt(SUGAR));
-		effervescence.setSelection(savedInstanceState.getInt(EFFERVESCENCE));
-		
-		String addDateFromString = savedInstanceState.getString(ADD_DATE_FROM);
-		String[] addDateFromArray = addDateFromString.split("-");
-		
-		try {
-			int year = Integer.parseInt(addDateFromArray[0]);
-			int month = Integer.parseInt(addDateFromArray[1]);
-			int day = Integer.parseInt(addDateFromArray[2]);
-			
-			addDateFrom.init(year, month, day, null);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			Log.e("NumberFormatException", "Number provided is not correctly formatted (add date from)");
-		}
-		
-		String addDateToString = savedInstanceState.getString(ADD_DATE_TO);
-		String[] addDateToArray = addDateToString.split("-");
-		
-		try {
-			int year = Integer.parseInt(addDateToArray[0]);
-			int month = Integer.parseInt(addDateToArray[1]);
-			int day = Integer.parseInt(addDateToArray[2]);
-			
-			addDateTo.init(year, month, day, null);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			Log.e("NumberFormatException", "Number provided is not correctly formatted (add date to)");
-		}
-		
-		String apogeeFromString = savedInstanceState.getString(APOGEE_FROM);
-		String[] apogeeFromArray = apogeeFromString.split("-");
-		
-		try {
-			int year = Integer.parseInt(apogeeFromArray[0]);
-			int month = Integer.parseInt(apogeeFromArray[1]);
-			int day = Integer.parseInt(apogeeFromArray[2]);
-			
-			apogeeFrom.init(year, month, day, null);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			Log.e("NumberFormatException", "Number provided is not correctly formatted (apogee from)");
-		}
-		
-		String apogeeToString = savedInstanceState.getString(APOGEE_TO);
-		String[] apogeeToArray = apogeeToString.split("-");
-		
-		try {
-			int year = Integer.parseInt(apogeeToArray[0]);
-			int month = Integer.parseInt(apogeeToArray[1]);
-			int day = Integer.parseInt(apogeeToArray[2]);
-			
-			apogeeTo.init(year, month, day, null);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			Log.e("NumberFormatException", "Number provided is not correctly formatted (apogee to)");
-		}
-		
-		code.setText(savedInstanceState.getString(CODE));
-		*/
 		// The varieties:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.search_varieties_layout);
 		ArrayList<String> varieties = savedInstanceState.getStringArrayList(VARIETIES);
@@ -451,53 +358,7 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		/*
-		EditText appellation = (EditText) getView().findViewById(R.id.search_appellation);
-		EditText name = (EditText) getView().findViewById(R.id.search_name);
-		EditText vintageFrom = (EditText) getView().findViewById(R.id.search_vintage_from);
-		EditText vintageTo = (EditText) getView().findViewById(R.id.search_vintage_to);
-		EditText region = (EditText) getView().findViewById(R.id.search_region);
-		EditText quantityMin = (EditText) getView().findViewById(R.id.search_quantity_min);
-		EditText quantityMax = (EditText) getView().findViewById(R.id.search_quantity_max);
-		EditText priceMin = (EditText) getView().findViewById(R.id.search_price_min);
-		EditText priceMax = (EditText) getView().findViewById(R.id.search_price_max);
-		RatingBar ratingBarMin = (RatingBar) getView().findViewById(R.id.search_mark_min);
-		RatingBar ratingBarMax = (RatingBar) getView().findViewById(R.id.search_mark_max);
-		Spinner colour = (Spinner) getView().findViewById(R.id.search_colour);
-		Spinner sugar = (Spinner) getView().findViewById(R.id.search_sugar);
-		Spinner effervescence = (Spinner) getView().findViewById(R.id.search_effervescence);
-		DatePicker addDateFrom = (DatePicker) getView().findViewById(R.id.search_addDate_from);
-		DatePicker addDateTo = (DatePicker) getView().findViewById(R.id.search_addDate_to);
-		DatePicker apogeeFrom = (DatePicker) getView().findViewById(R.id.search_apogee_from);
-		DatePicker apogeeTo = (DatePicker) getView().findViewById(R.id.search_apogee_to);
-		EditText code = (EditText) getView().findViewById(R.id.search_code);
 		
-		savedInstanceState.putString(APPELLATION, appellation.getText().toString());
-		savedInstanceState.putString(NAME, name.getText().toString());
-		savedInstanceState.putString(VINTAGE_FROM, vintageFrom.getText().toString());
-		savedInstanceState.putString(VINTAGE_TO, vintageTo.getText().toString());
-		savedInstanceState.putString(REGION, region.getText().toString());
-		savedInstanceState.putString(QUANTITY_MIN, quantityMin.getText().toString());
-		savedInstanceState.putString(QUANTITY_MAX, quantityMax.getText().toString());
-		savedInstanceState.putString(PRICE_MIN, priceMin.getText().toString());
-		savedInstanceState.putString(PRICE_MAX, priceMax.getText().toString());
-		savedInstanceState.putInt(RATING_MIN, (int) ratingBarMin.getRating());
-		savedInstanceState.putInt(RATING_MAX, (int) ratingBarMax.getRating());
-		savedInstanceState.putInt(COLOUR, colour.getSelectedItemPosition());
-		savedInstanceState.putInt(SUGAR, sugar.getSelectedItemPosition());
-		savedInstanceState.putInt(EFFERVESCENCE, effervescence.getSelectedItemPosition());
-
-		String addDateFromValue = addDateFrom.getYear() + "-" + addDateFrom.getMonth() + "-" + addDateFrom.getDayOfMonth();
-		savedInstanceState.putString(ADD_DATE_FROM, addDateFromValue);
-		String addDateToValue = addDateTo.getYear() + "-" + addDateTo.getMonth() + "-" + addDateTo.getDayOfMonth();
-		savedInstanceState.putString(ADD_DATE_TO, addDateToValue);
-		String apogeeFromValue = apogeeFrom.getYear() + "-" + apogeeFrom.getMonth() + "-" + apogeeFrom.getDayOfMonth();
-		savedInstanceState.putString(APOGEE_FROM, apogeeFromValue);
-		String apogeeToValue = apogeeTo.getYear() + "-" + apogeeTo.getMonth() + "-" + apogeeTo.getDayOfMonth();
-		savedInstanceState.putString(APOGEE_TO, apogeeToValue);
-		
-		savedInstanceState.putString(CODE, code.getText().toString());
-		*/
 		// Save the varieties:
 		LinearLayout ll = (LinearLayout) getView().findViewById(R.id.search_varieties_layout);
 		int count = ll.getChildCount();	// There is one title view and the auto complete (so put -2).
