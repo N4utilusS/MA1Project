@@ -112,9 +112,9 @@ footnotesep=50mm
 
 ~\\
 
-Managing a large number of element can be tedious and complicated, even when you love doing it. This applies to oenologists as well when it comes to organising their wine cellar. This is where Wysiwyd enters the game. The goal of Wysiwyd is to simplify the management of a wine cellar, to allow the oenologists and others to get the most of it.\\
+Managing a large number of elements can be tedious and complicated, even when you love doing it. This applies to oenologists as well when it comes to organising their wine cellar. This is where Wysiwyd, the wine cellar mobile application, enters the game. The goal of Wysiwyd is to simplify the management of a wine cellar, to allow people to get the most of it.\\
 
-Wysiwyd takes advantages of the new technologies available on the market, such as QR Code scanning and generating, NFC tags, to sort bottles. Photos of the bottles can be captured, so the user can see them right in the app as well. A search can be made on a lot of bottle properties to retrieve a desired bottle. The target OS is Android. The combination of the discovery of those technologies, the world of Android, the experience gained in mobile programming and design, is what makes this project interesting for me in my engineer formation.\\
+Wysiwyd takes advantages of the new technologies, such as QR Code scanning and generating, NFC tags. Photos of the bottles can be captured, so the user can see them right in the app as well. A search can be made on a lot of bottle properties to retrieve a desired bottle. The target OS is Android. The combination of the discovery of those technologies, the world of Android, the experience gained in mobile programming and design, is what makes this project interesting for me in my engineer formation.\\
 
 These technologies are also what differentiate this app from other wine cellar management apps already available on the market. QR and NFC allow quick retrieval of bottles.
 
@@ -125,13 +125,13 @@ In this section, we will compare Wysiwyd to other wine cellar applications avail
 \begin{description}
 	\item[Vivino] Vivino allows users to take pictures of wine bottles to get information about it. This information is created by a community of users. The app Vivino requires an internet connection to work, to recognise a bottle. This is the main drawback. Wine cellar management is not the main purpose of the app. On the other side, Wysiwyd only uses the local database to get the corresponding bottle and does not work with image recognition, but with QR/bar code or NFC.
 	
-	\item[Eurocave] Eurocave also allows to manage a wine cellar. The user can select a predefined cellar model to represent his own one. Bottles can be edited to fill in the corresponding information. The app also sorts bottles by apogee period, and can share content on social networks. However, it does not offer quick bottle recognition, and presents a lot of bugs, as reported on the Playstore. Wysiwyd has been thought with a user friendly perspective, and tries to reach bug free status.
+	\item[Eurocave] Eurocave also provide tools to the users to manage a wine cellar. The user can select a predefined cellar model to represent his own one. Bottles can be edited to fill in the corresponding information. The app also sorts bottles by apogee period, and can share content on social networks. However, it does not offer quick bottle recognition, and presents a lot of bugs, as reported on the Playstore. Wysiwyd has been designed with a user friendly perspective.
 	
 	\item[Wine Cellar] Wine Cellar offers wine cellar management, as Wysiwyd, but with an interface not that user friendly. Bottles information can also be edited, but less properties are editable, and quick bottle recovery is also possible. It does not offer NFC tag functionality.
 	
 \end{description}
 
-	Wysiwyd tries answer the needs of oenologists in an ergonomic and aesthetic way.
+	Wysiwyd tries to help people manage their wine cellar in an ergonomic and aesthetic way.
 
 %----------------------------------------------------------------------------------------
 %	The App
@@ -235,7 +235,7 @@ The diagram contains 2 entities, linked with a relation. All attributes characte
 
 \begin{figure}[H]
 \begin{center}
-	\includegraphics[scale=0.7]{../Entity Relationship DB diagram.png}
+	\includegraphics[scale=0.7]{../ERD.png}
 	\caption{The ERD. Key is underlined, and optional attributes are together with a (0,1).}
 \end{center}
 \end{figure}
@@ -305,7 +305,7 @@ The code is split in several packages. Each package providing a functionality. T
 
 The root package (root means the highest level of the src packages hierarchy) contains the main navigation Android activities, from the welcome screen activity to the export chooser for the code exportation. Each situation in the app is associated with another activity in the code.\\
 
-The results activity, the one that shows the list of bottles is special in the sense that it uses fragments. This allows a better modularisation of the code, and easier management of the view. Indeed, 2 modes are currently available in the app, depending on what type of device the app is running on. If the app is run on a large screen device, then the app will use a different layout to take advantage of the screen. Two fragments will be displayed at the same time: the list and the details/modification/new bottle/search fragment.\\
+The results activity, the one that shows the list of bottles is special in the sense that it uses fragments. This ensures a better modularisation of the code, and easier management of the view. Indeed, 2 modes are currently available in the app, depending on what type of device the app is running on. If the app is run on a large screen device, then the app will use a different layout to take advantage of the screen. Two fragments will be displayed at the same time: the list and the details/modification/new bottle/search fragment.\\
 
 To be able to communicate with their parent activities, each fragment defines an interface. This interface must be implement by the interface, and this is checked by the fragment each time the fragment is attached to the activity, in the life cycle callback \emph{onAttach}. This interface contains the callbacks methods that are needed by the fragment when it needs to send a message to the activity. As an example, the search fragment has a callback method to give the activity a Bundle object containing all the information needed to build the search query. That way the activity can contact the list fragment, so this latter can build and execute the query.\\
 
@@ -347,7 +347,7 @@ Rather than importing all the code needed to scan visual codes, like QR/bar code
 \label{used_libraries}
 
 \begin{description}
-\item[CWAC LoaderEx (commonsguy)] Loaders are a way to load information in a separate thread, and not in the UI thread to avoid lag in the interface. Since the use of loaders was encouraged by the Android best practices, searches were made in that direction. Apparently, the use of loaders with SQLite queries was depreciated, and only their use with content providers was possible. Content providers are useful when it comes to data interaction between applications, and seemed a bit overkill in this app. So an external library was used to compensate this: CWAC LoaderEx from commonsguy. See \url{https://github.com/commonsguy/cwac-loaderex}.
+\item[CWAC LoaderEx (commonsguy)] Loaders are a way to load information in a separate thread, and not in the UI thread to avoid lag in the interface. Since the use of loaders was encouraged by the Android best practices, searches were made in that direction. The use of loaders with SQLite queries was depreciated, and only their use with content providers was possible. Content providers are useful when it comes to data interaction between applications, but seemed a bit disproportionate for this app. So an external library was used to compensate this: CWAC LoaderEx from commonsguy. See \url{https://github.com/commonsguy/cwac-loaderex}.
 
 \item[NDEF Tools for Android] This library offers high level programming for NFC communications, as the Android framework does not provide it. This made the implementation of the NFC communication easier, and faster. See \url{https://code.google.com/p/ndef-tools-for-android/}.
 
@@ -385,7 +385,7 @@ Here are explained the main difficulties met during the implementation of the ap
 This section introduces possible extra features that would be interesting for the app. They were not implemented due to lack of time, but could improve the user experience even more.
 
 \begin{description}
-	\item[Cloud Database] The current database is local, on the device itself. Putting a copy of the database in the cloud would allow the user to use different devices to manage his wine cellar, these devices being synchronised. The user could also share its cellar content with other people. This could be used by shops to offer another view of their stock.
+	\item[Cloud Database] The current database is local, on the device itself. Putting a copy of the database in the cloud would allow the user to use different devices to manage his wine cellar, these devices being synchronised. The user could also share its cellar content with other users. This could be used by shops to offer another view of their stock.
 	
 	\item[Notification System] A notification system would alert the user that some bottles are going to enter apogee. Another filter could also be based on the apogee criterion in the sorting preference for the results list.
 	
