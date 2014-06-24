@@ -33,7 +33,6 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.Spinner;
 import android.widget.Toast;
 import be.n4utiluss.wysiwyd.R;
-import be.n4utiluss.wysiwyd.database.DatabaseContract;
 import be.n4utiluss.wysiwyd.database.DatabaseHelper;
 import be.n4utiluss.wysiwyd.database.DatabaseContract.VarietyTable;
 
@@ -313,14 +312,14 @@ public class SearchFragment extends Fragment implements OnLongClickListener,
 			String month = ((apogeeFrom.getMonth()+1) < 10) ? ("0"+(apogeeFrom.getMonth()+1)) : Integer.toString((apogeeFrom.getMonth()+1));
 			String day = (apogeeFrom.getDayOfMonth() < 10) ? ("0"+apogeeFrom.getDayOfMonth()) : Integer.toString(apogeeFrom.getDayOfMonth());
 			
-			String apogeeFromValue = apogeeFrom.getYear() + "-" + month + "-" + apogeeFrom.getDayOfMonth();
+			String apogeeFromValue = apogeeFrom.getYear() + "-" + month + "-" + day;
 			info.putString(APOGEE_FROM, apogeeFromValue);
 		}
 		if(apogeeToCheckBox.isChecked()) {
 			String month = ((apogeeFrom.getMonth()+1) < 10) ? ("0"+(apogeeFrom.getMonth()+1)) : Integer.toString((apogeeFrom.getMonth()+1));
 			String day = (apogeeFrom.getDayOfMonth() < 10) ? ("0"+apogeeFrom.getDayOfMonth()) : Integer.toString(apogeeFrom.getDayOfMonth());
 			
-			String apogeeToValue = apogeeTo.getYear() + "-" + month + "-" + apogeeTo.getDayOfMonth();
+			String apogeeToValue = apogeeTo.getYear() + "-" + month + "-" + day;
 			info.putString(APOGEE_TO, apogeeToValue);
 		}
 		
